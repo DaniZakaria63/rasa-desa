@@ -19,6 +19,6 @@ interface APIEndpoint {
     }
 
     // GET MEAL CATEGORIES
-    @GET("api/json/v1/1/categories.php")
-    fun getCategories() : Call<List<CategoryModel>>
+    @GET("/api/json/v1/1/categories.php")
+    fun getCategories() : Call<ResponseCategory<CategoryModel>>
 }
