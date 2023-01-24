@@ -1,9 +1,7 @@
 package com.shapeide.rasadesa.networks
 
 import com.shapeide.rasadesa.BuildConfig
-import com.shapeide.rasadesa.models.CategoryModel
-import com.shapeide.rasadesa.models.FilterMealModel
-import com.shapeide.rasadesa.models.MealModel
+import com.shapeide.rasadesa.models.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,6 +24,19 @@ interface APIEndpoint {
     @GET("/api/json/v1/1/categories.php")
     fun getCategories() : Call<ResponseCategory<CategoryModel>>
 
+    // GET LIST OF MEALS BY CATEGORIES
     @GET("/api/json/v1/1/filter.php")
     fun getMealsByCategory(@Query("c") category: String) : Call<ResponseMeals<FilterMealModel>>
+
+    // GET LIST OF AREA/COUNTRY
+    @GET("/api/json/v1/1/list.php")
+    fun getArea(@Query("a") area: String) : Call<ResponseMeals<AreaModel>>
+
+    // GET LIST OF INGREDIENTS
+    @GET("/api/json/v1/1/list.php")
+    fun getIngredients(@Query("i") ingredients: String) : Call<ResponseMeals<IngredientsModel>>
+
+    // GET LIST OF CATEGORY, JUST NAME OF THE CATEGORIES
+    @GET("/api/json/v1/1/list.php")
+    fun getCategories(@Query("c") categories: String) : Call<ResponseMeals<CategoryModel>>
 }

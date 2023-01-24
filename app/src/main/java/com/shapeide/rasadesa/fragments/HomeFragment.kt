@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         apiEndpoint = APIEndpoint.create()
-        rvAdapter = HomeCategoryAdapter(requireContext(), categoryModels)
+        rvAdapter = HomeCategoryAdapter(requireContext(), categoryModels, type = 1)
         rvMealAdapter = HomeMealAdapter(requireContext(), mealModels)
         //TODO: Load Saved Internal Category Data
     }
@@ -57,10 +57,8 @@ class HomeFragment : Fragment() {
         rv_listmeals.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_listmeals.adapter = rvMealAdapter
 
-        //TODO: Load Category Data From an API
         callCategoriesAPI()
 
-        //TODO: Load Meal list by categories
         callMealsByCategoriesAPI()
     }
 
