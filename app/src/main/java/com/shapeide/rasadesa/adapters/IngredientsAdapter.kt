@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.models.IngredientsModel
 
-class IngredientsAdapter(val items: ArrayList<IngredientsModel>) :
+class IngredientsAdapter(val items: ArrayList<IngredientsModel>, val listener: OnClickListener) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
+    class OnClickListener(val listener: (name: String) -> Unit) {
+        fun onClick(name: String) = listener(name)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_discover_ingredient, parent, false))
@@ -20,6 +23,7 @@ class IngredientsAdapter(val items: ArrayList<IngredientsModel>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
             tv_ingredients.text = items[position].strIngredient
+            iv_ingredients.setOnClickListener { listener.onClick(items.get(position).strIngredient) }
         }
     }
 

@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.shapeide.rasadesa.BuildConfig.TAG
+import com.shapeide.rasadesa.MainActivity
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.CountryAdapter
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
@@ -22,12 +25,15 @@ import retrofit2.Response
 
 class DiscoverFragment : Fragment() {
     private lateinit var apiEndpoint: APIEndpoint
+    private lateinit var swipe_refresh : SwipeRefreshLayout
     private lateinit var rv_bycountry : RecyclerView
     private lateinit var rv_bycategories : RecyclerView
     private lateinit var rv_ingredients : RecyclerView
     private lateinit var categoryAdapter : HomeCategoryAdapter
     private lateinit var countryAdapter: CountryAdapter
     private lateinit var ingredientsAdapter: IngredientsAdapter
+    private lateinit var mCallbackListener: CallbackListener
+    private lateinit var btn_randomdish: Button
     private var areaModel = ArrayList<AreaModel>()
     private var categoryModel = ArrayList<CategoryModel>()
     private var ingredientsModel = ArrayList<IngredientsModel>()
@@ -35,17 +41,24 @@ class DiscoverFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //TODO: Load Saved Internal Category, Country, and Ingredients Data
-
+        mCallbackListener = activity as MainActivity
         apiEndpoint = APIEndpoint.create()
 
         //TODO: category will be showing list of categories, same as home fragment, onClicked will be shown list of meals based on categories
-        categoryAdapter = HomeCategoryAdapter(requireContext(), categoryModel, 2)
+        categoryAdapter = HomeCategoryAdapter(requireContext(), categoryModel, type = 2, HomeCategoryAdapter.OnClickListener { name ->
+            mCallbackListener.onNeedIntent("c", "Category", name)
+        })
 
         //TODO: country will be showing list of country and also the flags, onClicked will be show list of meals based on country
-        countryAdapter = CountryAdapter(areaModel)
+        countryAdapter = CountryAdapter(areaModel, CountryAdapter.OnClickListener { name ->
+            mCallbackListener.onNeedIntent("a", "Area", name)
+        })
 
         //TODO: ingredients will be showing list of ingredients, onClicked will be show list of meals that include the ingredients
-        ingredientsAdapter = IngredientsAdapter(ingredientsModel)
+        ingredientsAdapter = IngredientsAdapter(ingredientsModel, IngredientsAdapter.OnClickListener{ name->
+            mCallbackListener.onNeedIntent("i", "Ingredients", name)
+        })
+
     }
 
     override fun onCreateView(
@@ -63,6 +76,29 @@ class DiscoverFragment : Fragment() {
         getDataArea()
         getDataCategories()
         getDataIngredients()
+
+        btn_randomdish = view.findViewById(R.id.btn_randomdish)
+        btn_randomdish.setOnClickListener {
+            swipe_refresh.isRefreshing = true
+            apiEndpoint.getRandomMeal().enqueue(object: Callback<ResponseMeals<MealModel>>{
+                override fun onResponse(
+                    call: Call<ResponseMeals<MealModel>>,
+                    response: Response<ResponseMeals<MealModel>>
+                ) {
+                    swipe_refresh.isRefreshing = false
+                    if(response.isSuccessful){
+                        val theData : MealModel? = response.body()?.meals?.get(0)
+                        // TODO: sent to activity to new intent after finish loading api
+                        mCallbackListener.onDetailMeal(theData?.idMeal.toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseMeals<MealModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: getRandomMeal", t)
+                }
+
+            })
+        }
     }
 
     private fun getDataArea(){
@@ -93,15 +129,13 @@ class DiscoverFragment : Fragment() {
                 response: Response<ResponseMeals<CategoryModel>>
             ) {
                 if(response.isSuccessful){
-                    categoryModel.clear()
                     val theDatas : List<CategoryModel>? = response.body()?.meals
-                    categoryModel.addAll(theDatas?.toList()!!)
-                    categoryAdapter.notifyDataSetChanged()
+                    categoryAdapter.updateCategoryList(ArrayList(theDatas))
                 }
             }
 
             override fun onFailure(call: Call<ResponseMeals<CategoryModel>>, t: Throwable) {
-                Log.e(TAG, "onFailure: getDataArea", t)
+                Log.e(TAG, "onFailure: getDataCategories", t)
             }
 
         })
@@ -122,7 +156,7 @@ class DiscoverFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ResponseMeals<IngredientsModel>>, t: Throwable) {
-                Log.e(TAG, "onFailure: getDataArea", t)
+                Log.e(TAG, "onFailure: getDataIngredients", t)
             }
 
         })
@@ -140,5 +174,14 @@ class DiscoverFragment : Fragment() {
         rv_ingredients = view.findViewById(R.id.rv_ingredients)
         rv_ingredients.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_ingredients.adapter = ingredientsAdapter
+
+        swipe_refresh = view.findViewById(R.id.swipe_refresh)
+        swipe_refresh.isRefreshing = false
     }
+
+    interface CallbackListener{
+        fun onNeedIntent(key: String, value: String, name: String)
+        fun onDetailMeal(idMeal: String)
+    }
+
 }

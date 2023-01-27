@@ -22,7 +22,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(){
     private lateinit var rv_categories : RecyclerView
     private lateinit var rv_listmeals : RecyclerView
     private lateinit var rvAdapter: HomeCategoryAdapter
@@ -34,7 +34,9 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         apiEndpoint = APIEndpoint.create()
-        rvAdapter = HomeCategoryAdapter(requireContext(), categoryModels, type = 1)
+        rvAdapter = HomeCategoryAdapter(requireContext(), categoryModels, type = 1, HomeCategoryAdapter.OnClickListener { mealName->
+            callMealsByCategoriesAPI(mealName)
+        })
         rvMealAdapter = HomeMealAdapter(requireContext(), mealModels)
         //TODO: Load Saved Internal Category Data
     }

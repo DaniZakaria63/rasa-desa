@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.models.AreaModel
 
-class CountryAdapter(private val arealist: ArrayList<AreaModel>) :
+class CountryAdapter(private val arealist: ArrayList<AreaModel>, val listener: OnClickListener) :
     RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
 
+    class OnClickListener(val listener: (name: String) -> Unit) {
+        fun onClick(name: String) = listener(name)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_discover_area, parent, false))
     }
@@ -20,6 +23,7 @@ class CountryAdapter(private val arealist: ArrayList<AreaModel>) :
         with(holder){
             tv_area.text = arealist[position].strArea
             //TODO: Set the area icons
+            iv_area.setOnClickListener { listener.onClick(arealist.get(position).strArea) }
         }
     }
 
