@@ -4,9 +4,11 @@ import com.shapeide.rasadesa.BuildConfig
 import com.shapeide.rasadesa.models.*
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
@@ -42,9 +44,15 @@ interface APIEndpoint {
     @GET("/api/json/v1/1/list.php")
     fun getCategories(@Query("c") categories: String) : Call<ResponseMeals<CategoryModel>>
 
+    // GET LIST BY FILTER CATEGORIES, AREA, OR INGREDIENTS
     @GET("/api/json/v1/1/filter.php")
     fun getDataWithFilter(@QueryMap mapString: Map<String?, String?>) : Call<ResponseMeals<FilterMealModel>>
 
+    // GET RANDOM MEAL
     @GET("/api/json/v1/1/random.php")
     fun getRandomMeal() : Call<ResponseMeals<MealModel>>
+
+    // GET METHOD FOR ALL REQUEST, ESPECIALLY AT GET METHOD ONLY
+    @GET("{url}")
+    suspend fun <T> getRequest(@Path(value = "url", encoded = true) path: String, @QueryMap hashMap: HashMap<String, String>) : Response<T>
 }
