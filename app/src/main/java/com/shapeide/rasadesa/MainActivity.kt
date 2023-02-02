@@ -1,24 +1,24 @@
 package com.shapeide.rasadesa
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.adapters.TablayoutAdapter
 import com.shapeide.rasadesa.fragments.DiscoverFragment
-import com.shapeide.rasadesa.networks.ResultAPI
-import com.shapeide.rasadesa.utills.TablayoutController
-import com.shapeide.rasadesa.viewmodel.MainActivityViewModel
+import com.shapeide.rasadesa.utills.Resource
+import com.shapeide.rasadesa.viewmodel.MainActivityVM
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() , DiscoverFragment.CallbackListener{
+class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
-    private val layoutId : Int = R.layout.activity_main
-    private val mViewModel: MainActivityViewModel by viewModels()
+    private val layoutId: Int = R.layout.activity_main
+    private val mMainActivityVM: MainActivityVM by viewModels { MainActivityVM.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,22 +29,38 @@ class MainActivity : AppCompatActivity() , DiscoverFragment.CallbackListener{
 
         // TablayoutController(this, viewPager, tabLayout).setUp()
 
-        // TEST FOR NETWORK
-        mViewModel.getRandomMeal()
-        mViewModel.result.observe(this, { hasil->
-            hasil?.let {
-                when(it){
-                    is ResultAPI.InProgress -> Log.d(TAG, "ResultAPI.InProgress : MASIH PROGRESS GAN")
-                    is ResultAPI.Success -> Log.d(TAG, "ResultAPI.Success : REQUEST SELESAI, BERHASIL, SUCCESS")
+        /**
+         * Test for network 2
+         * based on https://medium.com/dsc-sastra-deemed-to-be-university/retrofit-with-viewmodel-in-kotlin-part-2-15f395e32424
+         */
+
+        lifecycleScope.launch {
+            mMainActivityVM.getRandomMeal()
+            mMainActivityVM.randomMeal.observe(this@MainActivity) { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        Log.d(TAG, "onCreate: ${response.data.toString()}")
+                    }
+                    is Resource.Error -> {
+                        Log.e(TAG, "onCreate: ${response.message}")
+                    }
+                    is Resource.Loading -> {
+                        Log.d(TAG, "onCreate: Just Still Loading")
+                    }
                 }
             }
-        })
+        }
+
+        /**
+         * Network 2 has chosen
+         */
+
     }
 
     override fun onNeedIntent(key: String, value: String, name: String) {
         Log.d(TAG, "onNeedIntent: {$key} and {$value} and {$name}")
         val intent = Intent(this, FilterActivity::class.java)
-        with(intent){
+        with(intent) {
             putExtra("key", key)
             putExtra("value", value)
             putExtra("name", name)
