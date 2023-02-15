@@ -9,25 +9,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.shapeide.rasadesa.BuildConfig.TAG
+import com.shapeide.rasadesa.databinding.ActivityMainBinding
 import com.shapeide.rasadesa.fragments.DiscoverFragment
 import com.shapeide.rasadesa.utills.Resource
 import com.shapeide.rasadesa.viewmodel.MainActivityVM
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager2
-    private val layoutId: Int = R.layout.activity_main
+    private lateinit var binding: ActivityMainBinding
     private val mMainActivityVM: MainActivityVM by viewModels { MainActivityVM.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutId)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tabLayout = findViewById(R.id.tab_layout)
-        viewPager = findViewById(R.id.view_pager)
-
-        // TablayoutController(this, viewPager, tabLayout).setUp()
+//         TablayoutController(this, binding.viewPager, binding.tabLayout).setUp()
 
         /**
          * Test for network 2
