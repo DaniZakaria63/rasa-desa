@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.shapeide.rasadesa.BuildConfig.TAG
@@ -24,7 +26,8 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//         TablayoutController(this, binding.viewPager, binding.tabLayout).setUp()
+        val navController = findNavController(R.id.fragmentContainer)
+        binding.bottomNav.setupWithNavController(navController)
 
         /**
          * Test for network 2
