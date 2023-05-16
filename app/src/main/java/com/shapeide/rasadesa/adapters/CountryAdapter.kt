@@ -22,8 +22,7 @@ class CountryAdapter(private val arealist: ArrayList<AreaModel>, val listener: O
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
             tv_area.text = arealist[position].strArea
-            //TODO: Set the area icons
-            iv_area.setOnClickListener { listener.onClick(arealist.get(position).strArea) }
+            tv_area.setOnClickListener { listener.onClick(arealist.get(position).strArea) }
         }
     }
 
@@ -31,6 +30,5 @@ class CountryAdapter(private val arealist: ArrayList<AreaModel>, val listener: O
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tv_area : TextView = itemView.findViewById(R.id.tv_area)
-        val iv_area : ImageView = itemView.findViewById(R.id.iv_area)
     }
 }

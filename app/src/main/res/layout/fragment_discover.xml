@@ -13,55 +13,93 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Discover"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="all recipes"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="By Country"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bycountry"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="By Categories"/>
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bycategories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <TextView
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Discover"
+                android:layout_marginTop="@dimen/small"
+                android:textSize="@dimen/text_medium" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="By Ingredients"/>
+            <TextView
+                style="@style/TextNormal"
+                android:textSize="@dimen/text_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="all recipes" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_ingredients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/btn_randomdish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="click for random dishes"
-            android:textAllCaps="false"/>
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_marginTop="@dimen/big"
+                android:layout_marginBottom="@dimen/small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_randomdish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/normal"
+                    app:icon="@drawable/ic_outline_shuffle"
+                    android:text="Random"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/normal"
+                    android:layout_marginTop="@dimen/normal"
+                    android:text="By Country"
+                    android:textSize="@dimen/text_small" />
+
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bycountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small" />
+
+            <TextView
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/normal"
+                android:layout_marginTop="@dimen/normal"
+                android:layout_marginBottom="@dimen/small"
+                android:text="By Categories"
+                android:textSize="@dimen/text_small" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bycategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small" />
+
+            <TextView
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/normal"
+                android:layout_marginTop="@dimen/normal"
+                android:layout_marginBottom="@dimen/small"
+                android:text="By Ingredients"
+                android:textSize="@dimen/text_small" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small" />
+
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

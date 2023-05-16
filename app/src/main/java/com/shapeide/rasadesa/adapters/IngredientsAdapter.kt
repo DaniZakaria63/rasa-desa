@@ -23,7 +23,7 @@ class IngredientsAdapter(val items: ArrayList<IngredientsModel>, val listener: O
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
             tv_ingredients.text = items[position].strIngredient
-            iv_ingredients.setOnClickListener { listener.onClick(items.get(position).strIngredient) }
+            tv_ingredients.setOnClickListener { listener.onClick(items.get(position).strIngredient) }
         }
     }
 
@@ -31,6 +31,6 @@ class IngredientsAdapter(val items: ArrayList<IngredientsModel>, val listener: O
 
     class ViewHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
         val tv_ingredients : TextView = itemView.findViewById(R.id.tv_ingredients)
-        val iv_ingredients : ImageView = itemView.findViewById(R.id.iv_ingredients)
+//        val iv_ingredients : ImageView = itemView.findViewById(R.id.iv_ingredients)
     }
 }

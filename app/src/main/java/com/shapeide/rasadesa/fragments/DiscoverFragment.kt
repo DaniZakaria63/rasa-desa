@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.MainActivity
@@ -155,13 +157,13 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
     }
 
     private fun binding(binding : FragmentDiscoverBinding){
-        binding.rvBycountry.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvBycountry.layoutManager = StaggeredGridLayoutManager(3, GridLayoutManager.HORIZONTAL)
         binding.rvBycountry.adapter = countryAdapter
 
-        binding.rvBycategories.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvBycategories.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.HORIZONTAL)
         binding.rvBycategories.adapter = categoryAdapter
 
-        binding.rvIngredients.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvIngredients.layoutManager = StaggeredGridLayoutManager(5, GridLayoutManager.HORIZONTAL)
         binding.rvIngredients.adapter = ingredientsAdapter
     }
 
