@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
     private lateinit var binding: ActivityMainBinding
-    private val mMainActivityVM: MainActivityVM by viewModels { MainActivityVM.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +33,10 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
          * based on https://medium.com/dsc-sastra-deemed-to-be-university/retrofit-with-viewmodel-in-kotlin-part-2-15f395e32424
          */
 
+        /**
+         * move this to Detail for random dishes
+         */
+        /*
         lifecycleScope.launch {
             mMainActivityVM.getRandomMeal()
             mMainActivityVM.randomMeal.observe(this@MainActivity) { response ->
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
                 }
             }
         }
+         */
 
         /**
          * Network 2 has chosen
@@ -69,6 +73,8 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
     }
 
     override fun onDetailMeal(idMeal: String) {
+        // display the detail of the meal
         Log.d(TAG, "onDetailMeal: $idMeal")
+        startActivity(Intent(this, DetailActivity::class.java))
     }
 }

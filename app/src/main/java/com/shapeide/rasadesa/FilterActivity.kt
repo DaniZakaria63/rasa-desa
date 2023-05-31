@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
-import com.shapeide.rasadesa.models.CategoryModel
-import com.shapeide.rasadesa.models.FilterMealModel
+import com.shapeide.rasadesa.networks.models.CategoryModel
+import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals
 import retrofit2.Call

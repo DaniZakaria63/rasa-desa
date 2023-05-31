@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.models.CategoryModel
+import com.shapeide.rasadesa.networks.models.CategoryModel
 
 internal class HomeCategoryAdapter(
     val context: Context,

@@ -19,9 +19,12 @@ import com.shapeide.rasadesa.adapters.CountryAdapter
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.IngredientsAdapter
 import com.shapeide.rasadesa.databinding.FragmentDiscoverBinding
-import com.shapeide.rasadesa.models.*
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals
+import com.shapeide.rasadesa.networks.models.AreaModel
+import com.shapeide.rasadesa.networks.models.CategoryModel
+import com.shapeide.rasadesa.networks.models.IngredientsModel
+import com.shapeide.rasadesa.networks.models.MealModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

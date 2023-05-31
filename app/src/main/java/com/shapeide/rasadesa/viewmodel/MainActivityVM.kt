@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.shapeide.rasadesa.models.MealModel
+import com.shapeide.rasadesa.networks.models.MealModel
 import com.shapeide.rasadesa.networks.NetworkRepository
 import com.shapeide.rasadesa.utills.Resource
 import kotlinx.coroutines.launch

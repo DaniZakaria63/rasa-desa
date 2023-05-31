@@ -8,8 +8,9 @@
     <color name="secondaryDarkColor">#c63f17</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
+    <color name="white">#f2f5df</color>
 
-<!--    Transparent 50%-->
+    <!--    Transparent 50%-->
     <color name="primaryColor50">#80A5D6A7</color>
     <color name="secondaryColor50">#80FF7043</color>
 </resources>

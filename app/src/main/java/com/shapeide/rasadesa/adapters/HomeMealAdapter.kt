@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.models.FilterMealModel
-import com.shapeide.rasadesa.models.MealModel
+import com.shapeide.rasadesa.networks.models.FilterMealModel
+import com.shapeide.rasadesa.networks.models.MealModel
 
 class HomeMealAdapter(val context: Context, private val itemList: List<FilterMealModel>) : RecyclerView.Adapter<HomeMealAdapter.ViewHolder>() {
 

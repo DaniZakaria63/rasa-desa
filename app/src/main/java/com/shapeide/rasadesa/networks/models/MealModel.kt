@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.models
+package com.shapeide.rasadesa.networks.models
 
 data class MealModel(
     var idMeal: Int,

@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.models.IngredientsModel
+import com.shapeide.rasadesa.networks.models.IngredientsModel
 
 class IngredientsAdapter(val items: ArrayList<IngredientsModel>, val listener: OnClickListener) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {

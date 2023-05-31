@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.models.AreaModel
+import com.shapeide.rasadesa.networks.models.AreaModel
 
 class CountryAdapter(private val arealist: ArrayList<AreaModel>, val listener: OnClickListener) :
     RecyclerView.Adapter<CountryAdapter.ViewHolder>() {

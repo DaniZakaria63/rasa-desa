@@ -5,18 +5,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.shapeide.rasadesa.local.entity.Category
+import com.shapeide.rasadesa.local.entity.CategoryEntity
 
 @Dao
 interface CategoryDAO {
+    @Query("select * from tbl_category")
+    fun findAll() : LiveData<List<CategoryEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addOne(category: Category)
+    suspend fun addOne(categoryEntity: CategoryEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addAll(categories: List<Category>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(categories: List<CategoryEntity>)
 
-    @Query(value = "SELECT * FROM tbl_category ORDER BY id DESC")
-    fun findAll() : LiveData<List<Category>>
+    @Query("delete from tbl_category")
+    fun deleteAll()
 
 }
