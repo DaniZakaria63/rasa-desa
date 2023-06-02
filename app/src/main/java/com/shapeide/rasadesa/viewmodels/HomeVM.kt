@@ -5,13 +5,22 @@ import androidx.lifecycle.*
 import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.databases.category.CategoryRepository
+import com.shapeide.rasadesa.databases.meals.MealRepository
 import com.shapeide.rasadesa.utills.RasaApplication
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 class HomeVM(application: RasaApplication) : AndroidViewModel(application) {
-    private val categoryRepository = CategoryRepository(application.database, application.apiEndpoint)
+    private val categoryRepository =
+        CategoryRepository(application.database, application.apiEndpoint)
     val categoryData = categoryRepository._categoryData
+
+    private val mealRepository =
+        MealRepository(application.database.mealDao, application.apiEndpoint)
+    val filterMealData = mealRepository._filterMealData
+
+    private val _selectedMealCategory = MutableLiveData("Beef")
+    val selectedMealCategory: LiveData<String> get() = _selectedMealCategory
 
     private val _isNetworkEventError = MutableLiveData(false)
     val isNetworkEventError: LiveData<Boolean> get() = _isNetworkEventError
@@ -34,7 +43,28 @@ class HomeVM(application: RasaApplication) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteLocalCategory(){
+    /* For giving the data based on clicked meal category */
+    fun syncFilterMealByMealName(mealName: String) {
+        viewModelScope.launch {
+            Log.d(TAG, "syncFilterMealByMealName: Start sync filter meal result")
+            try {
+                mealRepository.syncByMeal(mealName)
+                _isNetworkEventError.value = false
+                _isNetworkGeneralError.value = false
+            } catch (networkError: IOException) {
+                _isNetworkEventError.value = true
+            }
+        }
+    }
+
+    fun updateMealFilter(mealName: String){
+        viewModelScope.launch {
+            _selectedMealCategory.value = mealName
+            syncFilterMealByMealName(mealName)
+        }
+    }
+
+    fun deleteLocalCategory() {
         viewModelScope.launch {
             Log.d(TAG, "deleteLocalCategory: Delete all the datas")
             categoryRepository.deleteLocalCategory()

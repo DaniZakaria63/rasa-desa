@@ -34,7 +34,7 @@ interface APIEndpoint {
 
     // GET LIST OF MEALS BY CATEGORIES
     @GET("/api/json/v1/1/filter.php")
-    fun getMealsByCategory(@Query("c") category: String): Call<ResponseMeals<FilterMealModel>>
+    suspend fun getMealsByCategory(@Query("c") category: String): ResponseMeals<FilterMealModel>
 
     // GET LIST OF AREA/COUNTRY
     @GET("/api/json/v1/1/list.php")

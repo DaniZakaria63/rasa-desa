@@ -15,6 +15,7 @@ import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
 import com.shapeide.rasadesa.databinding.FragmentHomeBinding
 import com.shapeide.rasadesa.domains.Category
+import com.shapeide.rasadesa.domains.FilterMeal
 import com.shapeide.rasadesa.networks.models.CategoryModel
 import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.utills.RasaApplication
@@ -29,24 +30,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val homeViewModel: HomeVM by viewModels {
         HomeVM.HomeFactoryVM(application)
     }
-    private var categoryModels = ArrayList<Category>()
-    private var mealModels = ArrayList<FilterMealModel>()
+    private var mealModels = ArrayList<FilterMeal>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         application = requireActivity().application as RasaApplication
-        rvCategoryAdapter = HomeCategoryAdapter(
-            requireContext(),
-            categoryModels,
-            type = 1
-        ) { mealName ->
-            // callMealsByCategoriesAPI(mealName)
+        rvCategoryAdapter = HomeCategoryAdapter(requireContext(), 1) { mealName ->
+            homeViewModel.updateMealFilter(mealName)
         }
         rvMealAdapter = HomeMealAdapter(requireContext(), mealModels)
 
         /* It's already synchronized, while in initialized, now just need to be observed */
         homeViewModel.categoryData.observe(this) { category ->
             rvCategoryAdapter.updateCategoryList(ArrayList(category))
+        }
+
+        /* Observe the data filter-meals and update the data from adapter */
+        homeViewModel.filterMealData.observe(this) { filterMeals ->
+            rvMealAdapter.updateCategoryList(ArrayList(filterMeals))
+        }
+
+        homeViewModel.selectedMealCategory.observe(this){ name->
+            try {
+                mFragmentHomeBinding?.tvListmeals?.text = "The Meals: $name"
+            }catch(err : NullPointerException){
+                err.printStackTrace()
+            }
         }
     }
 
@@ -63,42 +72,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         binding.rvListmeals.adapter = rvMealAdapter
 
-        binding.delete.setOnClickListener {
-            lifecycleScope.launch { homeViewModel.deleteLocalCategory() }
-        }
-/*
-        TODO: Observe for probability network error
-        callMealsByCategoriesAPI()
- */
+        /* TODO: Observe for probability network error */
     }
 
     override fun onDestroyView() {
         mFragmentHomeBinding = null
         super.onDestroyView()
     }
-
-    /*
-
-    internal fun callMealsByCategoriesAPI(category: String = "Beef") {
-        application.apiEndpoint.getMealsByCategory(category)
-            .enqueue(object : Callback<ResponseMeals<FilterMealModel>> {
-                override fun onResponse(
-                    call: Call<ResponseMeals<FilterMealModel>>,
-                    response: Response<ResponseMeals<FilterMealModel>>
-                ) {
-                    if (response.isSuccessful) {
-                        mealModels.clear()
-                        val theDatas: List<FilterMealModel>? = response.body()?.meals
-                        mealModels.addAll(theDatas?.toList()!!)
-                        rvMealAdapter.notifyDataSetChanged()
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseMeals<FilterMealModel>>, t: Throwable) {
-                    Log.e(TAG, "onFailure, callMealsByCategoriesAPI : ", t)
-                }
-
-            })
-    }
-     */
 }

@@ -7,7 +7,8 @@ import com.shapeide.rasadesa.domains.Category
 
 @Entity(tableName = "tbl_category")
 data class CategoryEntity constructor(
-    @PrimaryKey(autoGenerate = true) val idCategory: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "_id") val idCategory: Int,
     @ColumnInfo(name = "name") val strCategory: String,
     @ColumnInfo(name = "image_thumb_url") val strCategoryThumb: String,
     @ColumnInfo(name = "image_desc") val strCategoryDescription: String,

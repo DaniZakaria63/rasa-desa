@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+/* tableName : tbl_category */
 @Dao
 interface CategoryDAO {
     @Query("SELECT * FROM tbl_category")

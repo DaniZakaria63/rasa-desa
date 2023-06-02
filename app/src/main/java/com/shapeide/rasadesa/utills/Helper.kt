@@ -2,6 +2,7 @@ package com.shapeide.rasadesa.utills
 
 import androidx.recyclerview.widget.DiffUtil
 import com.shapeide.rasadesa.domains.Category
+import com.shapeide.rasadesa.domains.FilterMeal
 
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 
@@ -35,9 +36,28 @@ fun String.smartTruncate(length: Int): String {
     return builder.toString()
 }
 
+/*  ---- DONT REPEAT YOUR SELF!!!
+    *but i still haven't get enlighten from this suffering yet
+ */
+
 class CategoryDiffCallback(
     val oldValue: ArrayList<Category>,
     val newValue: ArrayList<Category>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldValue.size
+
+    override fun getNewListSize(): Int = newValue.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldValue.get(oldItemPosition).id == newValue.get(newItemPosition).id
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldValue.get(oldItemPosition).name.equals(newValue.get(newItemPosition).name)
+}
+
+class FilterMealDiffCallback(
+    val oldValue: ArrayList<FilterMeal>,
+    val newValue: ArrayList<FilterMeal>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldValue.size
 

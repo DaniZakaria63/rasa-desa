@@ -15,10 +15,10 @@ import com.shapeide.rasadesa.utills.CategoryDiffCallback
 
 internal class HomeCategoryAdapter(
     val context: Context,
-    private val items: ArrayList<Category>,
     val type: Int,
     val listener: (name: String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val items: ArrayList<Category> = ArrayList()
 
     fun updateCategoryList(newItems: ArrayList<Category>) {
         val diffResult: DiffUtil.DiffResult =

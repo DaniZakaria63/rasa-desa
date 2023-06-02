@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.shapeide.rasadesa.BuildConfig
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
+import com.shapeide.rasadesa.domains.FilterMeal
 import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals
@@ -23,7 +24,7 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var tv_category_key : TextView
     private lateinit var tv_category_value : TextView
     private lateinit var mealAdapter: HomeMealAdapter
-    private var mealModels = ArrayList<FilterMealModel>()
+    private var mealModels = ArrayList<FilterMeal>()
     private val layout_id : Int = R.layout.activity_filter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +48,10 @@ class FilterActivity : AppCompatActivity() {
         rv_mealslist.layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
         rv_mealslist.adapter = mealAdapter
 
-        getDataWithFilter(key.toString(), name.toString())
+        // getDataWithFilter(key.toString(), name.toString())
     }
 
+    /*
     private fun getDataWithFilter(key: String, value: String){
         apiEndpoint.getDataWithFilter(buildMap {
             put(key, value)
@@ -73,4 +75,5 @@ class FilterActivity : AppCompatActivity() {
 
         })
     }
+     */
 }

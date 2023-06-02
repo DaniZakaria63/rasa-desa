@@ -42,7 +42,7 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
         apiEndpoint = APIEndpoint.create()
 
         //TODO: category will be showing list of categories, same as home fragment, onClicked will be shown list of meals based on categories
-        categoryAdapter = HomeCategoryAdapter(requireContext(), categoryModel, type = 2) { name ->
+        categoryAdapter = HomeCategoryAdapter(requireContext(), type = 2) { name ->
             mCallbackListener.onNeedIntent("c", "Category", name)
         }
 

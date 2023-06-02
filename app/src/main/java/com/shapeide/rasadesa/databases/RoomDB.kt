@@ -7,12 +7,19 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.shapeide.rasadesa.databases.category.CategoryDAO
 import com.shapeide.rasadesa.databases.category.CategoryEntity
+import com.shapeide.rasadesa.databases.meals.FilterMealEntity
+import com.shapeide.rasadesa.databases.meals.MealDAO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [CategoryEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [CategoryEntity::class, FilterMealEntity::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class RoomDB : RoomDatabase() {
     abstract val categoryDao: CategoryDAO
+    abstract val mealDao: MealDAO
 
     companion object {
         @Volatile
@@ -25,7 +32,11 @@ abstract class RoomDB : RoomDatabase() {
                     context.applicationContext,
                     RoomDB::class.java,
                     INSTANCE_NAME
-                ).addCallback(RoomDBCallback(scope)).build()
+                )
+                    .addCallback(RoomDBCallback(scope))
+                    .fallbackToDestructiveMigration() // this function really scary
+                    .build()
+
                 INSTANCE = instance
                 return instance
             }
