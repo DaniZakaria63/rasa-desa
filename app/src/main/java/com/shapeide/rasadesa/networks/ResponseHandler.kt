@@ -1,7 +1,7 @@
 package com.shapeide.rasadesa.networks
 
-import com.shapeide.rasadesa.domain.Category
-import com.shapeide.rasadesa.local.entity.CategoryEntity
+import com.shapeide.rasadesa.databases.category.CategoryEntity
+import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.networks.models.CategoryModel
 import com.squareup.moshi.JsonClass
 

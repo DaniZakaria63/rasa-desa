@@ -1,9 +1,9 @@
-package com.shapeide.rasadesa.local.entity
+package com.shapeide.rasadesa.databases.category
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.shapeide.rasadesa.domain.Category
+import com.shapeide.rasadesa.domains.Category
 
 @Entity(tableName = "tbl_category")
 data class CategoryEntity constructor(

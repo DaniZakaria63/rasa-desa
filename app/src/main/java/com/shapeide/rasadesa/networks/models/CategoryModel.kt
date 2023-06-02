@@ -1,6 +1,5 @@
 package com.shapeide.rasadesa.networks.models
 
-import com.shapeide.rasadesa.local.entity.CategoryEntity
 import com.squareup.moshi.JsonClass
 
 /* Response handler from API */

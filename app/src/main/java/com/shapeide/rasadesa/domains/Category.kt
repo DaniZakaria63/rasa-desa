@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.domain
+package com.shapeide.rasadesa.domains
 
 import com.shapeide.rasadesa.utills.smartTruncate
 

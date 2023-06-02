@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa
+package com.shapeide.rasadesa.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,8 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.shapeide.rasadesa.BuildConfig
+import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
-import com.shapeide.rasadesa.networks.models.CategoryModel
 import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals

@@ -1,12 +1,12 @@
-package com.shapeide.rasadesa.local
+package com.shapeide.rasadesa.databases
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.shapeide.rasadesa.local.dao.CategoryDAO
-import com.shapeide.rasadesa.local.entity.CategoryEntity
+import com.shapeide.rasadesa.databases.category.CategoryDAO
+import com.shapeide.rasadesa.databases.category.CategoryEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -32,24 +32,18 @@ abstract class RoomDB : RoomDatabase() {
         }
     }
 
+    /**
+     * functional of onCreate event inside Callback class would be populate the database
+     * this time will be clear all database while new instance created
+     */
     private class RoomDBCallback(private val scope: CoroutineScope) : Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.categoryDao)
+                    database.categoryDao.deleteAll()
                 }
             }
         }
-
-        suspend fun populateDatabase(categoryDAO: CategoryDAO) {
-            scope.launch {
-                // delete all content
-                categoryDAO.deleteAll()
-
-                /* TODO: ADD SOME CODES FOR INITIAL DATABASE */
-            }
-        }
-
     }
 }

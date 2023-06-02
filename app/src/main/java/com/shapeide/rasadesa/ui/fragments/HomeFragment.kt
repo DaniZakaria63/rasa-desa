@@ -1,10 +1,8 @@
-package com.shapeide.rasadesa.fragments
+package com.shapeide.rasadesa.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,43 +14,39 @@ import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
 import com.shapeide.rasadesa.databinding.FragmentHomeBinding
+import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.networks.models.CategoryModel
 import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.utills.RasaApplication
-import com.shapeide.rasadesa.viewmodel.HomeVM
+import com.shapeide.rasadesa.viewmodels.HomeVM
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private var mFragmentHomeBinding: FragmentHomeBinding? = null
     private lateinit var application: RasaApplication
-    private lateinit var rvAdapter: HomeCategoryAdapter
+    private lateinit var rvCategoryAdapter: HomeCategoryAdapter
     private lateinit var rvMealAdapter: HomeMealAdapter
     private val homeViewModel: HomeVM by viewModels {
         HomeVM.HomeFactoryVM(application)
     }
-    private var categoryModels = ArrayList<CategoryModel>()
+    private var categoryModels = ArrayList<Category>()
     private var mealModels = ArrayList<FilterMealModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         application = requireActivity().application as RasaApplication
-        rvAdapter = HomeCategoryAdapter(
+        rvCategoryAdapter = HomeCategoryAdapter(
             requireContext(),
             categoryModels,
-            type = 1,
-            HomeCategoryAdapter.OnClickListener { _ ->
-                // callMealsByCategoriesAPI(mealName)
-            })
+            type = 1
+        ) { mealName ->
+            // callMealsByCategoriesAPI(mealName)
+        }
         rvMealAdapter = HomeMealAdapter(requireContext(), mealModels)
 
-        /* TODO: Load Saved Internal Category Data */
         /* It's already synchronized, while in initialized, now just need to be observed */
         homeViewModel.categoryData.observe(this) { category ->
-            category.let {
-
-                /* TODO: Update the adapter for incoming changed data */
-                Log.d(TAG, "onCreate: There's update of data, and now observer actived")
-            }
+            rvCategoryAdapter.updateCategoryList(ArrayList(category))
         }
     }
 
@@ -63,18 +57,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mFragmentHomeBinding = binding
         binding.rvCategories.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCategories.adapter = rvAdapter
+        binding.rvCategories.adapter = rvCategoryAdapter
 
         binding.rvListmeals.layoutManager =
             StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         binding.rvListmeals.adapter = rvMealAdapter
-        
-        binding.random.setOnClickListener {
-            homeViewModel.getLocalCategory()
+
+        binding.delete.setOnClickListener {
+            lifecycleScope.launch { homeViewModel.deleteLocalCategory() }
         }
 /*
-        callCategoriesAPI()
-
+        TODO: Observe for probability network error
         callMealsByCategoriesAPI()
  */
     }
@@ -85,26 +78,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     /*
-    internal fun callCategoriesAPI() {
-        application.apiEndpoint.getCategories().enqueue(object : Callback<ResponseCategory<List<CategoryModel>>> {
-            override fun onResponse(
-                call: Call<ResponseCategory<List<CategoryModel>>>,
-                response: Response<ResponseCategory<List<CategoryModel>>>
-            ) {
-                if (response.isSuccessful) {
-                    categoryModels.clear()
-//                    val theDatas: List<CategoryModel>? = response.body()
-//                    categoryModels.addAll(theDatas)
-                    rvAdapter.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseCategory<List<CategoryModel>>>, t: Throwable) {
-                Log.e(TAG, "onFailure, callCategoriesAPI : ", t)
-            }
-
-        })
-    }
 
     internal fun callMealsByCategoriesAPI(category: String = "Beef") {
         application.apiEndpoint.getMealsByCategory(category)

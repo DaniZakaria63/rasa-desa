@@ -10,20 +10,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.networks.models.CategoryModel
+import com.shapeide.rasadesa.domains.Category
+import com.shapeide.rasadesa.utills.CategoryDiffCallback
 
 internal class HomeCategoryAdapter(
     val context: Context,
-    private val items: ArrayList<CategoryModel>,
+    private val items: ArrayList<Category>,
     val type: Int,
-    val listener: OnClickListener
+    val listener: (name: String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class OnClickListener(val listener: (name: String) -> Unit) {
-        fun onClick(name: String) = listener(name)
-    }
-
-    fun updateCategoryList(newItems: ArrayList<CategoryModel>) {
+    fun updateCategoryList(newItems: ArrayList<Category>) {
         val diffResult: DiffUtil.DiffResult =
             DiffUtil.calculateDiff(CategoryDiffCallback(items, newItems))
 
@@ -32,36 +29,21 @@ internal class HomeCategoryAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    internal class CategoryDiffCallback(
-        val oldValue: ArrayList<CategoryModel>,
-        val newValue: ArrayList<CategoryModel>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int = oldValue.size
-
-        override fun getNewListSize(): Int = newValue.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldValue.get(oldItemPosition).idCategory == newValue.get(newItemPosition).idCategory
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldValue.get(oldItemPosition).strCategory.equals(newValue.get(newItemPosition).strCategory)
-    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (type == 1) {
             val holder1: ViewHolder1 = holder as ViewHolder1
             with(holder1) {
-                tv_category.text = items[position].strCategory
-                Glide.with(context).load(items[position].strCategoryThumb)
+                tv_category.text = items[position].name
+                Glide.with(context).load(items[position].thumb)
                     .placeholder(R.drawable.ic_outline_reload).into(iv_category)
 //                listener.onClick(items.get(position))
-                iv_category.setOnClickListener { listener.onClick(items[position].strCategory) }
+                iv_category.setOnClickListener { listener.invoke(items[position].name) }
             }
         } else {
             val holder2: ViewHolder2 = holder as ViewHolder2
             with(holder2) {
-                tv_category.text = items[position].strCategory
-                tv_category.setOnClickListener { listener.onClick(items[position].strCategory) }
+                tv_category.text = items[position].name
+                tv_category.setOnClickListener { listener.invoke(items[position].name) }
             }
         }
     }

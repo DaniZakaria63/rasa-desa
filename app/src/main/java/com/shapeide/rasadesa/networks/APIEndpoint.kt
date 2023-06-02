@@ -13,6 +13,10 @@ import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 
+/**
+ * based on https://medium.com/dsc-sastra-deemed-to-be-university/retrofit-with-viewmodel-in-kotlin-part-2-15f395e32424
+ */
+
 interface APIEndpoint {
     companion object {
         val BASE_URL = BuildConfig.BASE_URL

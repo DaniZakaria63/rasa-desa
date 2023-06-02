@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.fragments
+package com.shapeide.rasadesa.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa
+package com.shapeide.rasadesa.ui.activities
 
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
