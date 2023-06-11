@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextNormal" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/roboto_style</item>
+        <item name="android:textSize">@dimen/text_normal</item>
+    </style>
+    <style name="TextSmall" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/roboto_style</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+    <style name="TextMedium" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/roboto_style</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+    <style name="TextBig" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/roboto_style</item>
+        <item name="android:textSize">@dimen/text_big</item>
+    </style>
+    <style name="TextXSmall" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/roboto_style</item>
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+</resources>
