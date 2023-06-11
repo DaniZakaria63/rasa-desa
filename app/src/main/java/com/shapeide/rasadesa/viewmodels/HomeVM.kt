@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.viewmodels
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.shapeide.rasadesa.BuildConfig.TAG
@@ -10,13 +11,12 @@ import com.shapeide.rasadesa.utills.RasaApplication
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class HomeVM(application: RasaApplication) : AndroidViewModel(application) {
-    private val categoryRepository =
-        CategoryRepository(application.database, application.apiEndpoint)
+class HomeVM(_application: Application) : AndroidViewModel(_application) {
+    private val application = (_application as RasaApplication)
+    private val categoryRepository = application.categoryRepository
     val categoryData = categoryRepository._categoryData
 
-    private val mealRepository =
-        MealRepository(application.database.mealDao, application.apiEndpoint)
+    private val mealRepository = application.mealRepository
     val filterMealData = mealRepository._filterMealData
 
     private val _selectedMealCategory = MutableLiveData("Beef")
@@ -68,16 +68,6 @@ class HomeVM(application: RasaApplication) : AndroidViewModel(application) {
         viewModelScope.launch {
             Log.d(TAG, "deleteLocalCategory: Delete all the datas")
             categoryRepository.deleteLocalCategory()
-        }
-    }
-
-    class HomeFactoryVM(private val application: RasaApplication) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(HomeVM::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return HomeVM(application) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel Class, #1")
         }
     }
 }

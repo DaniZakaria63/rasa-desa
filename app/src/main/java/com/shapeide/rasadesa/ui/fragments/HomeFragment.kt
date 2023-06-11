@@ -1,34 +1,28 @@
 package com.shapeide.rasadesa.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
 import com.shapeide.rasadesa.databinding.FragmentHomeBinding
-import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.domains.FilterMeal
-import com.shapeide.rasadesa.networks.models.CategoryModel
-import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.HomeVM
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private var mFragmentHomeBinding: FragmentHomeBinding? = null
     private lateinit var application: RasaApplication
     private lateinit var rvCategoryAdapter: HomeCategoryAdapter
     private lateinit var rvMealAdapter: HomeMealAdapter
-    private val homeViewModel: HomeVM by viewModels {
-        HomeVM.HomeFactoryVM(application)
+    private val homeViewModel: HomeVM by lazy {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+            .create(HomeVM::class.java)
     }
     private var mealModels = ArrayList<FilterMeal>()
 
@@ -50,10 +44,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             rvMealAdapter.updateCategoryList(ArrayList(filterMeals))
         }
 
-        homeViewModel.selectedMealCategory.observe(this){ name->
+        homeViewModel.selectedMealCategory.observe(this) { name ->
             try {
                 mFragmentHomeBinding?.tvListmeals?.text = "The Meals: $name"
-            }catch(err : NullPointerException){
+            } catch (err: NullPointerException) {
                 err.printStackTrace()
             }
         }
@@ -72,11 +66,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         binding.rvListmeals.adapter = rvMealAdapter
 
-        /* TODO: Observe for probability network error */
     }
 
     override fun onDestroyView() {
         mFragmentHomeBinding = null
+        homeViewModel.filterMealData.removeObservers(this)
+        homeViewModel.categoryData.removeObservers(this)
+        homeViewModel.selectedMealCategory.removeObservers(this)
         super.onDestroyView()
     }
 }
