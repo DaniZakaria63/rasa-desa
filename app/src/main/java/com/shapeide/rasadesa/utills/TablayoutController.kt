@@ -23,9 +23,7 @@ class TablayoutController(
                 R.drawable.ic_outline_compass,
                 R.drawable.ic_outline_favorite
             )
-            val teks = listOf("Home", "Discover", "Favourites")
             tab.setIcon(icons[position])
-            tab.setText(teks[position])
         }.attach()
 
         //TODO: Add some transition or page transformer

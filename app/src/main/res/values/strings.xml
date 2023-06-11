@@ -1,17 +1,5 @@
 <resources>
     <string name="app_name">Rasa Desa</string>
-    <string name="app_title">Rasa-Desa</string>
-    <string name="app_subtitle">Resep masakan rumah</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="lipsum">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent in libero volutpat, ullamcorper ligula eget, finibus massa. Suspendisse diam est, hendrerit vel pharetra nec, ornare eu mauris. Suspendisse dapibus scelerisque est aliquet iaculis. Phasellus aliquam sed ex vitae mollis. Donec ut orci ante. Quisque sit amet viverra diam, quis tempor nunc. Mauris placerat pulvinar lectus, sed varius metus posuere eget. Suspendisse sagittis purus at neque ullamcorper, nec fringilla dui facilisis. Mauris ultricies sodales lectus. Quisque malesuada fringilla sapien, pharetra aliquet nisl luctus eget.
-<br />
-Etiam varius rhoncus arcu, vitae scelerisque lorem. Cras maximus pretium molestie. Mauris at viverra elit. Ut ac cursus lectus, nec varius dolor. Aenean gravida lacus in elit pharetra varius. Duis augue felis, egestas eget bibendum id, aliquet id lorem. Curabitur egestas mauris eu vulputate tempor. Sed nec commodo risus, non facilisis ante. Aliquam erat volutpat. Nam lectus libero, tempor in mi dapibus, pellentesque pulvinar metus. Sed ac tristique ligula. Phasellus egestas, odio quis auctor tincidunt, lectus libero imperdiet dui, ac faucibus enim nunc imperdiet velit. Mauris sollicitudin metus ipsum, nec elementum neque hendrerit sed.
-<br />
-Morbi pharetra, sem ut tristique laoreet, quam neque congue lacus, eget aliquam felis mi et est. Ut mollis nec eros in dignissim. Cras id semper nulla. Vivamus ut dui tempus, feugiat arcu nec, scelerisque dolor. Donec eu ligula iaculis lacus maximus hendrerit. Morbi maximus auctor odio eu pharetra. In rutrum lectus sed ligula fermentum, sed bibendum velit sollicitudin. Vivamus sodales, lorem a ornare aliquam, dolor arcu viverra arcu, vel posuere massa tortor eget lorem. Sed venenatis dolor diam, vel accumsan lectus vehicula ac. Integer vitae interdum justo, id congue tellus. Suspendisse potenti. Vestibulum in augue non metus pellentesque pulvinar interdum in turpis. In in lacinia velit. Donec risus nisi, condimentum sit amet tincidunt at, pharetra non arcu. Quisque sollicitudin condimentum velit euismod imperdiet.
-<br />
-Donec venenatis lorem vehicula imperdiet congue. Cras eu velit posuere, pellentesque metus ac, imperdiet sapien. Nulla facilisi. Pellentesque dignissim nunc vel sem viverra, ac maximus velit pretium. Aenean suscipit augue et metus sodales gravida. Curabitur sed aliquet sapien, ac pulvinar nisi. Nulla consectetur hendrerit nulla, at dictum quam scelerisque nec. Quisque eget rhoncus nisi, ut vehicula quam. Aenean consectetur iaculis suscipit. Etiam rhoncus eget turpis vitae laoreet. Nullam eu tristique augue, in pulvinar purus. Aliquam quis odio eu magna vestibulum laoreet id eleifend tortor. Curabitur sed nibh ut arcu suscipit consequat in sed enim. Quisque ultrices nisl ante, eget malesuada tellus vehicula ac. Nulla at tempor ipsum.
-<br />
-Integer aliquet venenatis nibh, ac ornare felis tristique a. Integer malesuada lorem vel tempus luctus. Ut eget velit sed nisl volutpat suscipit vel in ipsum. Aenean at mattis arcu, eget pellentesque ipsum. Duis sit amet iaculis urna, sit amet venenatis ligula. Nulla facilisi. Mauris elementum, leo eget rhoncus maximus, elit arcu varius lacus, sit amet vehicula metus erat a elit.
-    </string>
 </resources>
