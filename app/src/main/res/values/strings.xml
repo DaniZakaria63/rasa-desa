@@ -14,4 +14,5 @@ Donec venenatis lorem vehicula imperdiet congue. Cras eu velit posuere, pellente
 <br />
 Integer aliquet venenatis nibh, ac ornare felis tristique a. Integer malesuada lorem vel tempus luctus. Ut eget velit sed nisl volutpat suscipit vel in ipsum. Aenean at mattis arcu, eget pellentesque ipsum. Duis sit amet iaculis urna, sit amet venenatis ligula. Nulla facilisi. Mauris elementum, leo eget rhoncus maximus, elit arcu varius lacus, sit amet vehicula metus erat a elit.
     </string>
+    <string name="trigger">This just trigger for resolve the conflict</string>
 </resources>
