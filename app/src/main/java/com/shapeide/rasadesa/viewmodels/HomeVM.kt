@@ -4,19 +4,21 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.shapeide.rasadesa.BuildConfig.TAG
+import com.shapeide.rasadesa.databases.RoomDB
 import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.databases.category.CategoryRepository
 import com.shapeide.rasadesa.databases.meals.MealRepository
+import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.utills.RasaApplication
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
-class HomeVM(_application: Application) : AndroidViewModel(_application) {
-    private val application = (_application as RasaApplication)
-    private val categoryRepository = application.categoryRepository
+@HiltViewModel
+class HomeVM @Inject constructor(val mealRepository: MealRepository, val categoryRepository: CategoryRepository): ViewModel() {
+
     val categoryData = categoryRepository._categoryData
-
-    private val mealRepository = application.mealRepository
     val filterMealData = mealRepository._filterMealData
 
     private val _selectedMealCategory = MutableLiveData("Beef")
@@ -57,7 +59,7 @@ class HomeVM(_application: Application) : AndroidViewModel(_application) {
         }
     }
 
-    fun updateMealFilter(mealName: String){
+    fun updateMealFilter(mealName: String) {
         viewModelScope.launch {
             _selectedMealCategory.value = mealName
             syncFilterMealByMealName(mealName)

@@ -13,7 +13,9 @@ import com.shapeide.rasadesa.ui.fragments.DiscoverFragment
 import com.shapeide.rasadesa.ui.dialog.NetworkDialog
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.NetworkStateViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var networkStateViewModel: NetworkStateViewModel

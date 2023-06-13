@@ -3,6 +3,7 @@ package com.shapeide.rasadesa.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,16 +15,19 @@ import com.shapeide.rasadesa.databinding.FragmentHomeBinding
 import com.shapeide.rasadesa.domains.FilterMeal
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.HomeVM
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private var mFragmentHomeBinding: FragmentHomeBinding? = null
     private lateinit var application: RasaApplication
     private lateinit var rvCategoryAdapter: HomeCategoryAdapter
     private lateinit var rvMealAdapter: HomeMealAdapter
-    private val homeViewModel: HomeVM by lazy {
-        ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
-            .create(HomeVM::class.java)
-    }
+    private val homeViewModel: HomeVM by viewModels()
+//    private val homeViewModel: HomeVM by lazy {
+//        ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+//            .create(HomeVM::class.java)
+//    }
     private var mealModels = ArrayList<FilterMeal>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
