@@ -1,6 +1,7 @@
 package com.shapeide.rasadesa.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
@@ -16,6 +18,7 @@ import com.shapeide.rasadesa.domains.FilterMeal
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.HomeVM
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.log
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -24,17 +27,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var rvCategoryAdapter: HomeCategoryAdapter
     private lateinit var rvMealAdapter: HomeMealAdapter
     private val homeViewModel: HomeVM by viewModels()
-//    private val homeViewModel: HomeVM by lazy {
-//        ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
-//            .create(HomeVM::class.java)
-//    }
     private var mealModels = ArrayList<FilterMeal>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         application = requireActivity().application as RasaApplication
         rvCategoryAdapter = HomeCategoryAdapter(requireContext(), 1) { mealName ->
-            homeViewModel.updateMealFilter(mealName)
+            homeViewModel.syncFilterMealByMealName(mealName)
         }
         rvMealAdapter = HomeMealAdapter(requireContext(), mealModels)
 
@@ -45,6 +44,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         /* Observe the data filter-meals and update the data from adapter */
         homeViewModel.filterMealData.observe(this) { filterMeals ->
+            Log.d(TAG, "onCreate: Done observed filterMeals data")
             rvMealAdapter.updateCategoryList(ArrayList(filterMeals))
         }
 

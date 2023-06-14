@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.databases.category
 
+import android.content.Context
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -9,6 +10,7 @@ import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.databases.RoomDB
 import com.shapeide.rasadesa.networks.*
 import com.shapeide.rasadesa.networks.models.CategoryModel
+import com.shapeide.rasadesa.utills.isOnline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,7 +20,11 @@ import javax.inject.Inject
  */
 
 
-class CategoryRepository @Inject constructor(private val roomDB: RoomDB, private val apiEndpoint: APIEndpoint) {
+class CategoryRepository @Inject constructor(
+    private val roomDB: RoomDB,
+    private val apiEndpoint: APIEndpoint,
+    private val context: Context
+) {
     val _categoryData: LiveData<List<Category>> =
         Transformations.map(roomDB.categoryDao.findAll()) {
             Log.d(TAG, "RoomRepo: transformation map")
@@ -26,23 +32,18 @@ class CategoryRepository @Inject constructor(private val roomDB: RoomDB, private
         }
 
     suspend fun syncCategory() {
-        withContext(Dispatchers.IO) {
+        if(isOnline(context)) {
             // Getting from API
             val newData: ResponseCategory<CategoryModel> = apiEndpoint.getCategories()
+            insertCategory(newData.asDatabaseModel())
             Log.d(TAG, "syncCategory: Already get an API of category data")
-
-            //insert to local database
-            roomDB.categoryDao.insertAll(newData.asDatabaseModel())
-            Log.d(TAG, "syncCategory: was saving all data to local database")
         }
     }
 
-    suspend fun getLocalCategory(): LiveData<List<Category>> {
-        return withContext(Dispatchers.IO){
-            Log.d(TAG, "getLocalCategory: Currently just getting data from database [Repository]")
-            return@withContext Transformations.map(roomDB.categoryDao.findAll()) {
-                it.asDomainModel()
-            }
+    suspend fun insertCategory(datas : List<CategoryEntity>){
+        withContext(Dispatchers.IO) {
+            roomDB.categoryDao.insertAll(datas)
+            Log.d(TAG, "syncCategory: was saving all data to local database")
         }
     }
 

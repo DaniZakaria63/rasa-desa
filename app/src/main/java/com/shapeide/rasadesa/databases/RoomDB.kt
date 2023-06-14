@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [CategoryEntity::class, FilterMealEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -53,6 +53,7 @@ abstract class RoomDB : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch {
                     database.categoryDao.deleteAll()
+                    database.mealDao.deleteAll_FM()
                 }
             }
         }

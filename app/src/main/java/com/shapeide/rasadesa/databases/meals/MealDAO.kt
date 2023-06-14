@@ -15,8 +15,8 @@ interface MealDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll_FM(meals: List<FilterMealEntity>)
 
-    @Query("SELECT * FROM tbl_filter_meals WHERE name LIKE :meal")
-    fun findByName_FM(meal: String?) : LiveData<List<FilterMealEntity>>
+    @Query("SELECT * FROM tbl_filter_meals WHERE  type = :meal")
+    fun findByName_FM(meal: String?) : List<FilterMealEntity>
 
     @Query("DELETE FROM tbl_filter_meals")
     fun deleteAll_FM()

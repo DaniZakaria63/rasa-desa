@@ -11,6 +11,7 @@ data class FilterMealEntity constructor(
     @ColumnInfo(name = "_id") val idMeal : Int,
     @ColumnInfo(name = "name") val strMeal: String,
     @ColumnInfo(name = "image_thumb_url") val strMealThumb: String,
+    @ColumnInfo(name = "type") val strType : String,
 )
 
 fun List<FilterMealEntity>.asDomainModel() : List<FilterMeal> {
@@ -18,7 +19,8 @@ fun List<FilterMealEntity>.asDomainModel() : List<FilterMeal> {
         FilterMeal(
             id = it.idMeal,
             name = it.strMeal,
-            thumb = it.strMealThumb
+            thumb = it.strMealThumb,
+            type = it.strType
         )
     }
 }

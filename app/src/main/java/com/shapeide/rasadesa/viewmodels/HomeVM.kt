@@ -19,7 +19,7 @@ import javax.inject.Inject
 class HomeVM @Inject constructor(val mealRepository: MealRepository, val categoryRepository: CategoryRepository): ViewModel() {
 
     val categoryData = categoryRepository._categoryData
-    val filterMealData = mealRepository._filterMealData
+    val filterMealData = mealRepository.filterMealData
 
     private val _selectedMealCategory = MutableLiveData("Beef")
     val selectedMealCategory: LiveData<String> get() = _selectedMealCategory
@@ -34,9 +34,8 @@ class HomeVM @Inject constructor(val mealRepository: MealRepository, val categor
         viewModelScope.launch {
             Log.d(TAG, "HomeVM : Initialized ViewModel")
             try {
-                // check for internet connection first,
-                // then if its disconnected just load the local data
                 categoryRepository.syncCategory()
+                syncFilterMealByMealName("Beef") //The beginning
                 _isNetworkEventError.value = false
                 _isNetworkGeneralError.value = false
             } catch (networkError: IOException) {
@@ -47,22 +46,12 @@ class HomeVM @Inject constructor(val mealRepository: MealRepository, val categor
 
     /* For giving the data based on clicked meal category */
     fun syncFilterMealByMealName(mealName: String) {
+        Log.d(TAG, "syncFilterMealByMealName: Start sync filter meal result")
         viewModelScope.launch {
-            Log.d(TAG, "syncFilterMealByMealName: Start sync filter meal result")
-            try {
-                mealRepository.syncByMeal(mealName)
-                _isNetworkEventError.value = false
-                _isNetworkGeneralError.value = false
-            } catch (networkError: IOException) {
-                _isNetworkEventError.value = true
-            }
-        }
-    }
-
-    fun updateMealFilter(mealName: String) {
-        viewModelScope.launch {
+            mealRepository.syncByMeal(mealName)
             _selectedMealCategory.value = mealName
-            syncFilterMealByMealName(mealName)
+            _isNetworkEventError.value = false
+            _isNetworkGeneralError.value = false
         }
     }
 

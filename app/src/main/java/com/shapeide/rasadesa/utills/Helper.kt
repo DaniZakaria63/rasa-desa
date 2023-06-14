@@ -1,12 +1,15 @@
 package com.shapeide.rasadesa.utills
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.recyclerview.widget.DiffUtil
 import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.domains.FilterMeal
 
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 
-/**
+/*
  * Truncate long text with a preference for word boundaries and without trailing punctuation.
  */
 fun String.smartTruncate(length: Int): String {
@@ -34,6 +37,20 @@ fun String.smartTruncate(length: Int): String {
         builder.append("...")
     }
     return builder.toString()
+}
+
+/*
+    isOnline() function will check the network state inside repository files,
+    it is different from the NetworkStateListener that listen real-time as ViewModel.
+ */
+fun isOnline(context: Context) : Boolean{
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if(cm == null) return false
+    val cap = cm.getNetworkCapabilities(cm.activeNetwork) ?: return false
+    if(cap.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) return true
+    if(cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) return true
+    if(cap.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) return true
+    return false
 }
 
 /*  ---- DONT REPEAT YOUR SELF!!!
