@@ -38,11 +38,11 @@ interface APIEndpoint {
 
     // GET LIST OF AREA/COUNTRY
     @GET("/api/json/v1/1/list.php")
-    fun getArea(@Query("a") area: String): Call<ResponseMeals<AreaModel>>
+    suspend fun getArea(@Query("a") area: String): ResponseMeals<AreaModel>
 
     // GET LIST OF INGREDIENTS
     @GET("/api/json/v1/1/list.php")
-    fun getIngredients(@Query("i") ingredients: String): Call<ResponseMeals<IngredientsModel>>
+    suspend fun getIngredients(@Query("i") ingredients: String): ResponseMeals<IngredientsModel>
 
     // GET LIST OF CATEGORY, JUST NAME OF THE CATEGORIES
     @GET("/api/json/v1/1/list.php")

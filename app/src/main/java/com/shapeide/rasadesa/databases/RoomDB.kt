@@ -5,21 +5,27 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.shapeide.rasadesa.databases.area.AreaDAO
+import com.shapeide.rasadesa.databases.area.AreaEntity
 import com.shapeide.rasadesa.databases.category.CategoryDAO
 import com.shapeide.rasadesa.databases.category.CategoryEntity
+import com.shapeide.rasadesa.databases.ingredient.IngredientDAO
+import com.shapeide.rasadesa.databases.ingredient.IngredientEntity
 import com.shapeide.rasadesa.databases.meals.FilterMealEntity
 import com.shapeide.rasadesa.databases.meals.MealDAO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [CategoryEntity::class, FilterMealEntity::class],
-    version = 3,
+    entities = [CategoryEntity::class, FilterMealEntity::class, AreaEntity::class, IngredientEntity::class],
+    version = 5,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
     abstract val categoryDao: CategoryDAO
     abstract val mealDao: MealDAO
+    abstract val areaDao: AreaDAO
+    abstract val ingredientDao: IngredientDAO
 
     companion object {
         @Volatile
@@ -54,6 +60,8 @@ abstract class RoomDB : RoomDatabase() {
                 scope.launch {
                     database.categoryDao.deleteAll()
                     database.mealDao.deleteAll_FM()
+                    database.areaDao.deleteAll()
+                    database.ingredientDao.deleteAll()
                 }
             }
         }

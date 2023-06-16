@@ -4,8 +4,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.recyclerview.widget.DiffUtil
+import com.shapeide.rasadesa.domains.Area
 import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.domains.FilterMeal
+import com.shapeide.rasadesa.domains.Ingredient
 
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 
@@ -85,4 +87,34 @@ class FilterMealDiffCallback(
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
         oldValue.get(oldItemPosition).name.equals(newValue.get(newItemPosition).name)
+}
+
+class AreaDiffCallback(
+    val oldValue: ArrayList<Area>,
+    val newValue: ArrayList<Area>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldValue.size
+
+    override fun getNewListSize(): Int = newValue.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldValue.get(oldItemPosition).strArea == newValue.get(newItemPosition).strArea
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldValue.get(oldItemPosition).strArea.equals(newValue.get(newItemPosition).strArea)
+}
+
+class IngredientDiffCallback(
+    val oldValue: ArrayList<Ingredient>,
+    val newValue: ArrayList<Ingredient>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldValue.size
+
+    override fun getNewListSize(): Int = newValue.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldValue.get(oldItemPosition).idIngredient == newValue.get(newItemPosition).idIngredient
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldValue.get(oldItemPosition).idIngredient.equals(newValue.get(newItemPosition).idIngredient)
 }

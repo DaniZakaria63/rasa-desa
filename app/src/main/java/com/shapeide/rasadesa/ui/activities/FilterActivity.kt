@@ -42,7 +42,7 @@ class FilterActivity : AppCompatActivity() {
         tv_category_value.text = name
         tv_category_key.text = value
 
-        mealAdapter = HomeMealAdapter(this, mealModels)
+        mealAdapter = HomeMealAdapter(this, mealModels){}
 
         rv_mealslist = findViewById(R.id.rv_mealslist)
         rv_mealslist.layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)

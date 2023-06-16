@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +16,7 @@ import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
 import com.shapeide.rasadesa.databinding.FragmentHomeBinding
 import com.shapeide.rasadesa.domains.FilterMeal
+import com.shapeide.rasadesa.ui.activities.DetailActivity
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.HomeVM
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +25,6 @@ import kotlin.math.log
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private var mFragmentHomeBinding: FragmentHomeBinding? = null
-    private lateinit var application: RasaApplication
     private lateinit var rvCategoryAdapter: HomeCategoryAdapter
     private lateinit var rvMealAdapter: HomeMealAdapter
     private val homeViewModel: HomeVM by viewModels()
@@ -31,11 +32,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        application = requireActivity().application as RasaApplication
         rvCategoryAdapter = HomeCategoryAdapter(requireContext(), 1) { mealName ->
             homeViewModel.syncFilterMealByMealName(mealName)
         }
-        rvMealAdapter = HomeMealAdapter(requireContext(), mealModels)
+        rvMealAdapter = HomeMealAdapter(requireContext(), mealModels){ id ->
+            //TODO: Going to next activity
+            startActivity(Intent(context, DetailActivity::class.java))
+        }
 
         /* It's already synchronized, while in initialized, now just need to be observed */
         homeViewModel.categoryData.observe(this) { category ->

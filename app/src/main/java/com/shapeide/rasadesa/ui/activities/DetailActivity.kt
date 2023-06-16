@@ -19,7 +19,6 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.title = "My Dish"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
-            Log.e(TAG, "onCreate: ANJAYYYYYY")
             finish()
         }
 

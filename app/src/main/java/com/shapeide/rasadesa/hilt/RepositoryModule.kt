@@ -2,7 +2,9 @@ package com.shapeide.rasadesa.hilt
 
 import android.content.Context
 import com.shapeide.rasadesa.databases.RoomDB
+import com.shapeide.rasadesa.databases.area.AreaRepository
 import com.shapeide.rasadesa.databases.category.CategoryRepository
+import com.shapeide.rasadesa.databases.ingredient.IngredientRepository
 import com.shapeide.rasadesa.databases.meals.MealRepository
 import com.shapeide.rasadesa.networks.APIEndpoint
 import dagger.Module
@@ -25,5 +27,17 @@ object RepositoryModule{
     @ViewModelScoped
     fun provideCategoryRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context): CategoryRepository {
         return CategoryRepository(roomDB, apiEndpoint, context)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAreaRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : AreaRepository {
+        return AreaRepository(roomDB, apiEndpoint, context)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideIngredientRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : IngredientRepository {
+        return IngredientRepository(roomDB, apiEndpoint, context)
     }
 }

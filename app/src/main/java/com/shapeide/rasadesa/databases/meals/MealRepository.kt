@@ -10,8 +10,6 @@ import com.shapeide.rasadesa.databases.RoomDB
 import com.shapeide.rasadesa.domains.FilterMeal
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals
-import com.shapeide.rasadesa.networks.asDatabaseModel
-import com.shapeide.rasadesa.networks.asDomainModel
 import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.networks.models.MealModel
 import com.shapeide.rasadesa.utills.RasaApplication
@@ -27,7 +25,7 @@ class MealRepository @Inject constructor(
     private val apiEndpoint: APIEndpoint,
     private val context: Context
 ) {
-    /* TODO: Make the data depends by category name */
+    /* Make the data depends by category name */
     private val _filterMealData = MutableLiveData<List<FilterMeal>>()
     val filterMealData: LiveData<List<FilterMeal>> get() = _filterMealData
 
@@ -50,7 +48,7 @@ class MealRepository @Inject constructor(
         }
     }
 
-    /* TODO: Getting Meal From Internet, By Category Name */
+    /* Getting Meal From Internet, By Category Name */
     suspend fun getFilterMealsInternet(mealName: String): ResponseMeals<FilterMealModel> {
         val newData: ResponseMeals<FilterMealModel> = apiEndpoint.getMealsByCategory(mealName)
         newData.meals.map { data -> data.typeMeal = mealName }
@@ -58,17 +56,17 @@ class MealRepository @Inject constructor(
         return newData
     }
 
-    /* TODO: Save the Meal to Local, all of the data */
+    /* Save the Meal to Local, all of the data */
     suspend fun setFilterMealsLocal(datas: List<FilterMealEntity>) = withContext(Dispatchers.IO) {
         roomDB.mealDao.insertAll_FM(datas)
         Log.d(TAG, "syncByMeal: Success to insert filter meals to local")
     }
 
-    /* TODO: Query from local based on/where category data */
+    /* Query from local based on/where category data */
     suspend fun getFilterMealsLocal(mealName: String): List<FilterMeal> =
         withContext(Dispatchers.IO) {
             val datas: List<FilterMealEntity> = roomDB.mealDao.findByName_FM(mealName)
             Log.d(TAG, "getFilterMealsLocal: Done get the local filter meals data")
-            return@withContext datas.asDomainModel()
+            return@withContext datas.entityAsDomainModel()
         }
 }

@@ -16,12 +16,6 @@
         android:layout_above="@id/bottomNav"
         app:navGraph="@navigation/main_navigation" />
 
-    <!--    <androidx.viewpager2.widget.ViewPager2-->
-    <!--        android:id="@+id/view_pager"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_weight="1" />-->
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"

@@ -17,16 +17,24 @@ import com.shapeide.rasadesa.networks.models.MealModel
 import com.shapeide.rasadesa.utills.CategoryDiffCallback
 import com.shapeide.rasadesa.utills.FilterMealDiffCallback
 
-class HomeMealAdapter(val context: Context, private val itemList: ArrayList<FilterMeal>) : RecyclerView.Adapter<HomeMealAdapter.ViewHolder>() {
+class HomeMealAdapter(
+    val context: Context,
+    private val itemList: ArrayList<FilterMeal>,
+    private val callback: (id: String) -> Unit) :
+    RecyclerView.Adapter<HomeMealAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder){
+        with(holder) {
             tv_preview.text = itemList[position].name
-            Glide.with(context).load(itemList[position].thumb).placeholder(R.drawable.ic_outline_reload).into(iv_preview)
+            Glide.with(context).load(itemList[position].thumb)
+                .placeholder(R.drawable.ic_outline_reload).into(iv_preview)
+            iv_preview.setOnClickListener { callback(itemList[position].id.toString()) }
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val root = LayoutInflater.from(parent.context).inflate(R.layout.item_home_meals, parent, false)
+        val root =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_home_meals, parent, false)
         return ViewHolder(root)
     }
 
@@ -41,9 +49,9 @@ class HomeMealAdapter(val context: Context, private val itemList: ArrayList<Filt
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val tv_preview : TextView = itemView.findViewById(R.id.tv_preview)
-        val iv_preview : ImageView = itemView.findViewById(R.id.iv_preview)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tv_preview: TextView = itemView.findViewById(R.id.tv_preview)
+        val iv_preview: ImageView = itemView.findViewById(R.id.iv_preview)
     }
 
 }
