@@ -21,6 +21,7 @@ import com.shapeide.rasadesa.networks.models.AreaModel
 import com.shapeide.rasadesa.networks.models.CategoryModel
 import com.shapeide.rasadesa.networks.models.IngredientsModel
 import com.shapeide.rasadesa.networks.models.MealModel
+import com.shapeide.rasadesa.ui.listener.MealDetailListener
 import com.shapeide.rasadesa.viewmodels.DiscoverVM
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
@@ -29,19 +30,17 @@ import retrofit2.Response
 
 @AndroidEntryPoint
 class DiscoverFragment : Fragment(R.layout.fragment_discover) {
-    private lateinit var apiEndpoint: APIEndpoint
     private lateinit var categoryAdapter: HomeCategoryAdapter
     private lateinit var countryAdapter: CountryAdapter
     private lateinit var ingredientsAdapter: IngredientsAdapter
-    private lateinit var mCallbackListener: CallbackListener
+    private lateinit var mCallbackListener: MealDetailListener
+    private var mBinding: FragmentDiscoverBinding? = null
     private val discoverVM : DiscoverVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: Load Saved Internal Category, Country, and Ingredients Data
         mCallbackListener = activity as MainActivity
 
-        //TODO: category will be showing list of categories, same as home fragment, onClicked will be shown list of meals based on categories
         categoryAdapter = HomeCategoryAdapter(requireContext(), type = 2) { name ->
             mCallbackListener.onNeedIntent("c", "Category", name)
         }
@@ -51,7 +50,6 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
             mCallbackListener.onNeedIntent("a", "Area", name)
         }
 
-        //TODO: ingredients will be showing list of ingredients, onClicked will be show list of meals that include the ingredients
         ingredientsAdapter = IngredientsAdapter{ name ->
             mCallbackListener.onNeedIntent("i", "Ingredients", name)
         }
@@ -73,7 +71,7 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentDiscoverBinding.bind(view)
-
+        mBinding = binding
         binding.rvBycountry.layoutManager =
             StaggeredGridLayoutManager(3, GridLayoutManager.HORIZONTAL)
         binding.rvBycountry.adapter = countryAdapter
@@ -87,31 +85,20 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
         binding.rvIngredients.adapter = ingredientsAdapter
         binding.swipeRefresh.isRefreshing = false
 
+        /* This random meal will through the detail meal,
+        *  right after entering its time to get the data
+        */
         binding.btnRandomdish.setOnClickListener {
-            binding.swipeRefresh.isRefreshing = true
-            apiEndpoint.getRandomMeal().enqueue(object : Callback<ResponseMeals<MealModel>> {
-                override fun onResponse(
-                    call: Call<ResponseMeals<MealModel>>,
-                    response: Response<ResponseMeals<MealModel>>
-                ) {
-                    binding.swipeRefresh.isRefreshing = false
-                    if (response.isSuccessful) {
-                        val theData: MealModel? = response.body()?.meals?.get(0)
-                        // TODO: sent to activity to new intent after finish loading api
-                        mCallbackListener.onDetailMeal(theData?.idMeal.toString())
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseMeals<MealModel>>, t: Throwable) {
-                    Log.e(TAG, "onFailure: getRandomMeal", t)
-                }
-
-            })
+            mCallbackListener.onDetailMeal(DetailFragment.VAL_TYPE_RANDOM,0)
         }
     }
-    interface CallbackListener {
-        fun onNeedIntent(key: String, value: String, name: String)
-        fun onDetailMeal(idMeal: String)
+
+    override fun onDestroyView() {
+        mBinding = null
+        discoverVM.areaData.removeObservers(this)
+        discoverVM.ingredientData.removeObservers(this)
+        discoverVM.categoryData.removeObservers(this)
+        super.onDestroyView()
     }
 
 }

@@ -25,7 +25,6 @@ class IngredientRepository @Inject constructor(
             it.asDomainModel()
         }
 
-    // TODO: for refresh the data from internet, or do show local data
     suspend fun syncIngredient() {
         if (isOnline(context = context)) {
             val newData: ResponseMeals<IngredientsModel> = apiEndpoint.getIngredients("list")
@@ -34,15 +33,13 @@ class IngredientRepository @Inject constructor(
         }
     }
 
-    // TODO: for save all the data, i mean replaced
-    suspend fun insertAll(datas: List<IngredientEntity>) {
+    private suspend fun insertAll(datas: List<IngredientEntity>) {
         Log.d(TAG, "insertAll: IngredientRepo: insert all data into local")
         withContext(Dispatchers.IO) {
             roomDB.ingredientDao.insertAll(datas)
         }
     }
 
-    //TODO: delete all the data, for reinitialize
     suspend fun deleteAll() {
         Log.d(TAG, "deleteAll: DeleteRepo: delete all the local data")
         withContext(Dispatchers.IO) {

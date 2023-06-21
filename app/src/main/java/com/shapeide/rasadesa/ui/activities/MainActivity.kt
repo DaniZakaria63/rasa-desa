@@ -11,12 +11,14 @@ import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.databinding.ActivityMainBinding
 import com.shapeide.rasadesa.ui.fragments.DiscoverFragment
 import com.shapeide.rasadesa.ui.dialog.NetworkDialog
+import com.shapeide.rasadesa.ui.fragments.DetailFragment
+import com.shapeide.rasadesa.ui.listener.MealDetailListener
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.NetworkStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
+class MainActivity : AppCompatActivity(), MealDetailListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var networkStateViewModel: NetworkStateViewModel
 
@@ -33,8 +35,8 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
 
     override fun onStart() {
         super.onStart()
-        networkStateViewModel.networkStateLiveData.observe(this){ isConnected->
-            if(!isConnected) NetworkDialog(context = this@MainActivity).show()
+        networkStateViewModel.networkStateLiveData.observe(this) { isConnected ->
+            if (!isConnected) NetworkDialog(context = this@MainActivity).show()
         }
     }
 
@@ -45,8 +47,7 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
 
     override fun onNeedIntent(key: String, value: String, name: String) {
         Log.d(TAG, "onNeedIntent: {$key} and {$value} and {$name}")
-        val intent = Intent(this, FilterActivity::class.java)
-        with(intent) {
+        val intent = Intent(this, FilterActivity::class.java).apply {
             putExtra("key", key)
             putExtra("value", value)
             putExtra("name", name)
@@ -54,9 +55,13 @@ class MainActivity : AppCompatActivity(), DiscoverFragment.CallbackListener {
         startActivity(intent)
     }
 
-    override fun onDetailMeal(idMeal: String) {
+    override fun onDetailMeal(type: String, idMeal: Int) {
         // display the detail of the meal
         Log.d(TAG, "onDetailMeal: $idMeal")
-        startActivity(Intent(this, DetailActivity::class.java))
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra(DetailFragment.ARG_TYPE, type)
+            putExtra(DetailFragment.ARG_IDMEAL, idMeal)
+        }
+        startActivity(intent)
     }
 }

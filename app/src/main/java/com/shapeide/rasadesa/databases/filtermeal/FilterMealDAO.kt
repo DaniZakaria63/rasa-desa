@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.databases.meals
+package com.shapeide.rasadesa.databases.filtermeal
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -8,7 +8,7 @@ import androidx.room.Query
 
 /* tableName = tbl_filter_meals */
 @Dao
-interface MealDAO {
+interface FilterMealDAO {
     @Query("SELECT * FROM tbl_filter_meals")
     fun findAll_FM() : LiveData<List<FilterMealEntity>>
 

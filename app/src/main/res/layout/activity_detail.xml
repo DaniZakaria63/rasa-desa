@@ -44,14 +44,11 @@
         app:layout_anchorGravity="top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_medium"
-            android:text="@string/lipsum"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:layout="@layout/fragment_detail" />
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

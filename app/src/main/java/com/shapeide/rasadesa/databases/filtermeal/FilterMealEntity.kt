@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.databases.meals
+package com.shapeide.rasadesa.databases.filtermeal
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -9,7 +9,7 @@ import com.shapeide.rasadesa.networks.models.FilterMealModel
 
 @Entity(tableName = "tbl_filter_meals")
 data class FilterMealEntity constructor(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "_id") val idMeal : Int,
     @ColumnInfo(name = "name") val strMeal: String,
     @ColumnInfo(name = "image_thumb_url") val strMealThumb: String,

@@ -1,9 +1,6 @@
-package com.shapeide.rasadesa.networks.models
+package com.shapeide.rasadesa.domains
 
-import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = true)
-data class MealModel(
+data class Meal(
     val idMeal: Int,
     val strMeal: String?="",
     val strDrinkAlternate: String?="",

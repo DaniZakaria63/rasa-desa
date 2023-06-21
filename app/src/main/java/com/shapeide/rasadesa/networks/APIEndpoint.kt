@@ -54,7 +54,11 @@ interface APIEndpoint {
 
     // GET RANDOM MEAL
     @GET("/api/json/v1/1/random.php")
-    fun getRandomMeal(): Call<ResponseMeals<MealModel>>
+    suspend fun getRandomMeal(): ResponseMeals<MealModel>
+
+    // GET ONE MEAL
+    @GET("/api/json/v1/1/lookup.php")
+    suspend fun getDetailMeal(@Query("i") id: Int) : ResponseMeals<MealModel>
 
     // GET METHOD FOR ALL REQUEST, ESPECIALLY AT GET METHOD ONLY
     @GET("{url}")

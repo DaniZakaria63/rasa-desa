@@ -11,21 +11,24 @@ import com.shapeide.rasadesa.databases.category.CategoryDAO
 import com.shapeide.rasadesa.databases.category.CategoryEntity
 import com.shapeide.rasadesa.databases.ingredient.IngredientDAO
 import com.shapeide.rasadesa.databases.ingredient.IngredientEntity
-import com.shapeide.rasadesa.databases.meals.FilterMealEntity
-import com.shapeide.rasadesa.databases.meals.MealDAO
+import com.shapeide.rasadesa.databases.filtermeal.FilterMealEntity
+import com.shapeide.rasadesa.databases.filtermeal.FilterMealDAO
+import com.shapeide.rasadesa.databases.meal.MealDAO
+import com.shapeide.rasadesa.databases.meal.MealEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [CategoryEntity::class, FilterMealEntity::class, AreaEntity::class, IngredientEntity::class],
-    version = 5,
+    entities = [CategoryEntity::class, FilterMealEntity::class, AreaEntity::class, IngredientEntity::class, MealEntity::class],
+    version = 6,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
     abstract val categoryDao: CategoryDAO
-    abstract val mealDao: MealDAO
+    abstract val filterMealDao: FilterMealDAO
     abstract val areaDao: AreaDAO
     abstract val ingredientDao: IngredientDAO
+    abstract val mealDao: MealDAO
 
     companion object {
         @Volatile
@@ -59,9 +62,10 @@ abstract class RoomDB : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch {
                     database.categoryDao.deleteAll()
-                    database.mealDao.deleteAll_FM()
+                    database.filterMealDao.deleteAll_FM()
                     database.areaDao.deleteAll()
                     database.ingredientDao.deleteAll()
+                    database.mealDao.deleteAll()
                 }
             }
         }

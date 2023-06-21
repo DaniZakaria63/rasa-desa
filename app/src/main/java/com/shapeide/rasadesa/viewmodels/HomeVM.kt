@@ -1,25 +1,20 @@
 package com.shapeide.rasadesa.viewmodels
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.databases.RoomDB
-import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.databases.category.CategoryRepository
-import com.shapeide.rasadesa.databases.meals.MealRepository
-import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.utills.RasaApplication
+import com.shapeide.rasadesa.databases.filtermeal.FilterMealRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeVM @Inject constructor(val mealRepository: MealRepository, val categoryRepository: CategoryRepository): ViewModel() {
+class HomeVM @Inject constructor(val filterMealRepository: FilterMealRepository, val categoryRepository: CategoryRepository): ViewModel() {
 
     val categoryData = categoryRepository._categoryData
-    val filterMealData = mealRepository.filterMealData
+    val filterMealData = filterMealRepository.filterMealData
 
     private val _selectedMealCategory = MutableLiveData("Beef")
     val selectedMealCategory: LiveData<String> get() = _selectedMealCategory
@@ -48,7 +43,7 @@ class HomeVM @Inject constructor(val mealRepository: MealRepository, val categor
     fun syncFilterMealByMealName(mealName: String) {
         Log.d(TAG, "syncFilterMealByMealName: Start sync filter meal result")
         viewModelScope.launch {
-            mealRepository.syncByMeal(mealName)
+            filterMealRepository.syncByMeal(mealName)
             _selectedMealCategory.value = mealName
             _isNetworkEventError.value = false
             _isNetworkGeneralError.value = false
