@@ -8,14 +8,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
+import com.shapeide.rasadesa.adapters.SearchAdapter
 import com.shapeide.rasadesa.databinding.ActivitySearchBinding
+import com.shapeide.rasadesa.domains.Search
+import com.shapeide.rasadesa.ui.fragments.DetailFragment
+import com.shapeide.rasadesa.viewmodels.SearchVM
 
-class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SearchAdapter.Companion.Listener  {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchView: SearchView
+    private lateinit var rvSearchAdapter: SearchAdapter
+    private val searchViewModel: SearchVM by lazy {
+        application.let {
+            ViewModelProvider.AndroidViewModelFactory.getInstance(it)
+                .create(SearchVM::class.java)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +37,18 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         parseIntentAction(intent)
+        rvSearchAdapter = SearchAdapter(this)
+        binding.searchList.adapter = rvSearchAdapter
+        binding.searchList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.searchList.isNestedScrollingEnabled = false
+
+        searchViewModel.mealSearchData.observe(this){ searchList ->
+            rvSearchAdapter.submitList(searchList)
+        }
+
+        searchViewModel.errorMessage.observe(this){ err ->
+            Toast.makeText(application, err, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -49,6 +75,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             /* while user still typing the query */
             Intent.ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY)
+                searchViewModel.queryMealSearch(query.toString())
                 Log.i(TAG, "Searching Query: $query")
             }
 
@@ -61,6 +88,15 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 Log.i(TAG, "Intent Branch: else")
             }
         }
+    }
+
+    override fun onDelete(search: Search) {
+        searchViewModel.deleteMealSearch(search)
+    }
+
+    override fun onDetail(search: Search) {
+        searchViewModel.addMealSearch(search)
+        // Sent back the data into MainActivity
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean = false

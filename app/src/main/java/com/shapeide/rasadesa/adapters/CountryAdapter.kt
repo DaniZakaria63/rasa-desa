@@ -3,16 +3,11 @@ package com.shapeide.rasadesa.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.domains.Area
-import com.shapeide.rasadesa.domains.Category
-import com.shapeide.rasadesa.networks.models.AreaModel
-import com.shapeide.rasadesa.utills.AreaDiffCallback
-import com.shapeide.rasadesa.utills.CategoryDiffCallback
 
 class CountryAdapter(val listener: (name: String) -> Unit) :
     RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
@@ -33,7 +28,7 @@ class CountryAdapter(val listener: (name: String) -> Unit) :
 
     fun updateAreaList(newItems : ArrayList<Area>){
         val diffResult: DiffUtil.DiffResult =
-            DiffUtil.calculateDiff(AreaDiffCallback(arealist, newItems))
+            DiffUtil.calculateDiff(Comparator(arealist, newItems))
 
         this.arealist.clear()
         this.arealist.addAll(newItems)
@@ -42,6 +37,21 @@ class CountryAdapter(val listener: (name: String) -> Unit) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tv_area : TextView = itemView.findViewById(R.id.tv_area)
+    }
+
+    inner class Comparator(
+        val oldValue: ArrayList<Area>,
+        val newValue: ArrayList<Area>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldValue.size
+
+        override fun getNewListSize(): Int = newValue.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).strArea == newValue.get(newItemPosition).strArea
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).strArea.equals(newValue.get(newItemPosition).strArea)
     }
 
 }

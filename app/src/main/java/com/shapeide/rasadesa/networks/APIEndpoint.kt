@@ -61,7 +61,7 @@ interface APIEndpoint {
 
     // GET MEAL FROM KEYWORD
     @GET("/api/json/v1/1/search.php")
-    fun getSearchMeal(@Query("s") keyword: String) : Response<ResponseMeals<MealModel>>
+    fun getSearchMeal(@Query("s") keyword: String) : ResponseMeals<MealModel>
 
     // GET METHOD FOR ALL REQUEST, ESPECIALLY AT GET METHOD ONLY
     @GET("{url}")

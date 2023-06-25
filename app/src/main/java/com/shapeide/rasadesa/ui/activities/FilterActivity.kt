@@ -24,7 +24,6 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var tv_category_key : TextView
     private lateinit var tv_category_value : TextView
     private lateinit var mealAdapter: HomeMealAdapter
-    private var mealModels = ArrayList<FilterMeal>()
     private val layout_id : Int = R.layout.activity_filter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,7 @@ class FilterActivity : AppCompatActivity() {
         tv_category_value.text = name
         tv_category_key.text = value
 
-        mealAdapter = HomeMealAdapter(this, mealModels){}
+        mealAdapter = HomeMealAdapter(this){}
 
         rv_mealslist = findViewById(R.id.rv_mealslist)
         rv_mealslist.layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)

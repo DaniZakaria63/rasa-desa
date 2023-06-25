@@ -10,18 +10,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.domains.Category
 import com.shapeide.rasadesa.domains.FilterMeal
-import com.shapeide.rasadesa.networks.models.FilterMealModel
-import com.shapeide.rasadesa.networks.models.MealModel
-import com.shapeide.rasadesa.utills.CategoryDiffCallback
-import com.shapeide.rasadesa.utills.FilterMealDiffCallback
 
 class HomeMealAdapter(
     val context: Context,
-    private val itemList: ArrayList<FilterMeal>,
     private val callback: (id: String) -> Unit) :
     RecyclerView.Adapter<HomeMealAdapter.ViewHolder>() {
+    private val itemList: ArrayList<FilterMeal> = ArrayList()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
@@ -42,7 +37,7 @@ class HomeMealAdapter(
 
     fun updateCategoryList(newItems: ArrayList<FilterMeal>) {
         val diffResult: DiffUtil.DiffResult =
-            DiffUtil.calculateDiff(FilterMealDiffCallback(itemList, newItems))
+            DiffUtil.calculateDiff(Comparator(itemList, newItems))
 
         this.itemList.clear()
         this.itemList.addAll(newItems)
@@ -54,4 +49,18 @@ class HomeMealAdapter(
         val iv_preview: ImageView = itemView.findViewById(R.id.iv_preview)
     }
 
+    inner class Comparator(
+        val oldValue: ArrayList<FilterMeal>,
+        val newValue: ArrayList<FilterMeal>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldValue.size
+
+        override fun getNewListSize(): Int = newValue.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).id == newValue.get(newItemPosition).id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).name.equals(newValue.get(newItemPosition).name)
+    }
 }

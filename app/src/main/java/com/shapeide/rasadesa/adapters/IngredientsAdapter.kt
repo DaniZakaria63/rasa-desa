@@ -3,15 +3,11 @@ package com.shapeide.rasadesa.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.domains.Ingredient
-import com.shapeide.rasadesa.networks.models.IngredientsModel
-import com.shapeide.rasadesa.utills.IngredientDiffCallback
 
 class IngredientsAdapter(val listener: (name: String) -> Unit) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
@@ -35,7 +31,7 @@ class IngredientsAdapter(val listener: (name: String) -> Unit) :
 
     fun updateIngredientList(newList: ArrayList<Ingredient>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-            IngredientDiffCallback(items, newList)
+            Comparator(items, newList)
         )
 
         this.items.clear()
@@ -47,4 +43,20 @@ class IngredientsAdapter(val listener: (name: String) -> Unit) :
         val tv_ingredients: TextView = itemView.findViewById(R.id.tv_ingredients)
 //        val iv_ingredients : ImageView = itemView.findViewById(R.id.iv_ingredients)
     }
+
+    inner class Comparator(
+        val oldValue: ArrayList<Ingredient>,
+        val newValue: ArrayList<Ingredient>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldValue.size
+
+        override fun getNewListSize(): Int = newValue.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).idIngredient == newValue.get(newItemPosition).idIngredient
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).idIngredient.equals(newValue.get(newItemPosition).idIngredient)
+    }
+
 }

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.domains.Category
-import com.shapeide.rasadesa.utills.CategoryDiffCallback
 
 internal class HomeCategoryAdapter(
     val context: Context,
@@ -22,7 +21,7 @@ internal class HomeCategoryAdapter(
 
     fun updateCategoryList(newItems: ArrayList<Category>) {
         val diffResult: DiffUtil.DiffResult =
-            DiffUtil.calculateDiff(CategoryDiffCallback(items, newItems))
+            DiffUtil.calculateDiff(Comparator(items, newItems))
 
         this.items.clear()
         this.items.addAll(newItems)
@@ -67,5 +66,20 @@ internal class HomeCategoryAdapter(
 
     internal inner class ViewHolder2(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tv_category: TextView = itemView.findViewById(R.id.tv_category)
+    }
+
+    inner class Comparator(
+        val oldValue: ArrayList<Category>,
+        val newValue: ArrayList<Category>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldValue.size
+
+        override fun getNewListSize(): Int = newValue.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).id == newValue.get(newItemPosition).id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldValue.get(oldItemPosition).name.equals(newValue.get(newItemPosition).name)
     }
 }

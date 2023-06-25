@@ -20,10 +20,10 @@ import java.net.URL
 
 class MealSuggestionProvider : ContentProvider() {
     private val meals = ArrayList<String>()
-    lateinit var apiEndpoint : APIEndpoint
+//    lateinit var apiEndpoint : APIEndpoint
 
     override fun onCreate(): Boolean {
-        apiEndpoint = APIEndpoint.create()
+//        apiEndpoint = APIEndpoint.create()
         return false
     }
 
@@ -47,6 +47,7 @@ class MealSuggestionProvider : ContentProvider() {
         if(mealSearch?.meals == null) return cursor
          */
 
+        /*
         val buffer = StringBuffer()
         val kueri = uri.lastPathSegment.toString()
         val url = URL("http://www.themealdb.com/api/json/v1/1/search.php?s=$kueri")
@@ -75,6 +76,7 @@ class MealSuggestionProvider : ContentProvider() {
 
         meals.clear()
         meals.addAll(meals)
+         */
 /*
         mealSearch.meals.mapIndexed { index, meal ->
             cursor.addRow(arrayOf(index, meal.strMeal, index))
