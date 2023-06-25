@@ -57,18 +57,22 @@ dependencies {
     def coroutine_version = "1.5.0"
     def moshi_version = "1.13.0"
     def hilt_version = "2.41"
+    def retrofit_version = "2.9.0"
+    def appsearch_version = "1.1.0-alpha03"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -103,6 +107,12 @@ dependencies {
     // Dependency Injector
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // AppSearch
+    implementation("androidx.appsearch:appsearch:$appsearch_version")
+    implementation("androidx.appsearch:appsearch-local-storage:$appsearch_version")
+    implementation("androidx.appsearch:appsearch-platform-storage:$appsearch_version")
+    kapt("androidx.appsearch:appsearch-compiler:$appsearch_version")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

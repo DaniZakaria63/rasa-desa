@@ -18,6 +18,7 @@ import com.shapeide.rasadesa.databinding.FragmentHomeBinding
 import com.shapeide.rasadesa.domains.FilterMeal
 import com.shapeide.rasadesa.ui.activities.DetailActivity
 import com.shapeide.rasadesa.ui.activities.MainActivity
+import com.shapeide.rasadesa.ui.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.HomeVM
@@ -32,10 +33,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var rvMealAdapter: HomeMealAdapter
     private val homeViewModel: HomeVM by viewModels()
     private var mealModels = ArrayList<FilterMeal>()
+    private lateinit var searchListener: HomeSearchListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mMealDetailListener = (activity as MainActivity)
+        searchListener = (activity as MainActivity)
         rvCategoryAdapter = HomeCategoryAdapter(requireContext(), 1) { mealName ->
             homeViewModel.syncFilterMealByMealName(mealName)
         }
@@ -75,6 +78,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         binding.rvListmeals.adapter = rvMealAdapter
 
+        binding.example.setOnClickListener{
+            searchListener.onSearchClicked()
+        }
     }
 
     override fun onDestroyView() {

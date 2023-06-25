@@ -29,6 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/example"
                     style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -2,7 +2,6 @@ package com.shapeide.rasadesa.networks
 
 import com.shapeide.rasadesa.BuildConfig
 import com.shapeide.rasadesa.networks.models.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -59,6 +58,10 @@ interface APIEndpoint {
     // GET ONE MEAL
     @GET("/api/json/v1/1/lookup.php")
     suspend fun getDetailMeal(@Query("i") id: Int) : ResponseMeals<MealModel>
+
+    // GET MEAL FROM KEYWORD
+    @GET("/api/json/v1/1/search.php")
+    fun getSearchMeal(@Query("s") keyword: String) : Response<ResponseMeals<MealModel>>
 
     // GET METHOD FOR ALL REQUEST, ESPECIALLY AT GET METHOD ONLY
     @GET("{url}")

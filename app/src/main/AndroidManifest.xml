@@ -35,6 +35,29 @@
             </intent-filter>
         </activity>
 
+<!--
+        Search activity using default content provider
+        the query listener are fine, it worked
+        the problem start happened after calling retrofit
+        so, the search will revert back to home fragment
+-->
+        <activity
+            android:name=".ui.activities.SearchActivity"
+            android:exported="false"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <provider
+            android:authorities="com.shapeide.rasadesa.ui.search.mealsuggestion"
+            android:name=".ui.search.MealSuggestionProvider"
+            android:enabled="true"
+            android:exported="false"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

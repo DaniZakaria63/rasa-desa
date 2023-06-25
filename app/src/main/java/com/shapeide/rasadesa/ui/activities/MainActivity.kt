@@ -1,8 +1,11 @@
 package com.shapeide.rasadesa.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -12,15 +15,17 @@ import com.shapeide.rasadesa.databinding.ActivityMainBinding
 import com.shapeide.rasadesa.ui.fragments.DiscoverFragment
 import com.shapeide.rasadesa.ui.dialog.NetworkDialog
 import com.shapeide.rasadesa.ui.fragments.DetailFragment
+import com.shapeide.rasadesa.ui.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
 import com.shapeide.rasadesa.utills.RasaApplication
 import com.shapeide.rasadesa.viewmodels.NetworkStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MealDetailListener {
+class MainActivity : AppCompatActivity(), MealDetailListener, HomeSearchListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var networkStateViewModel: NetworkStateViewModel
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,16 @@ class MainActivity : AppCompatActivity(), MealDetailListener {
         val navController = findNavController(R.id.fragmentContainer)
         binding.bottomNav.setupWithNavController(navController)
 
+        launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                Log.i(TAG, "onSearchClicked: ${data?.extras}")
+            } else {
+                Log.i(TAG, "onCreate: What's wrong? this is else branch")
+            }
+        }
     }
 
     override fun onStart() {
@@ -63,5 +78,9 @@ class MainActivity : AppCompatActivity(), MealDetailListener {
             putExtra(DetailFragment.ARG_IDMEAL, idMeal)
         }
         startActivity(intent)
+    }
+
+    override fun onSearchClicked() {
+        launcher.launch(Intent(this, SearchActivity::class.java))
     }
 }
