@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.databases.meal
+package com.shapeide.rasadesa.databases.search
 
 import androidx.appsearch.annotation.Document
 import androidx.appsearch.app.AppSearchSchema

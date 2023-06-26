@@ -15,12 +15,14 @@ import com.shapeide.rasadesa.databases.filtermeal.FilterMealEntity
 import com.shapeide.rasadesa.databases.filtermeal.FilterMealDAO
 import com.shapeide.rasadesa.databases.meal.MealDAO
 import com.shapeide.rasadesa.databases.meal.MealEntity
+import com.shapeide.rasadesa.databases.search.MealSearchDAO
+import com.shapeide.rasadesa.databases.search.MealSearchEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [CategoryEntity::class, FilterMealEntity::class, AreaEntity::class, IngredientEntity::class, MealEntity::class],
-    version = 6,
+    entities = [CategoryEntity::class, FilterMealEntity::class, AreaEntity::class, IngredientEntity::class, MealEntity::class, MealSearchEntity::class],
+    version = 8,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -29,6 +31,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract val areaDao: AreaDAO
     abstract val ingredientDao: IngredientDAO
     abstract val mealDao: MealDAO
+    abstract val searchDao: MealSearchDAO
 
     companion object {
         @Volatile
@@ -66,6 +69,7 @@ abstract class RoomDB : RoomDatabase() {
                     database.areaDao.deleteAll()
                     database.ingredientDao.deleteAll()
                     database.mealDao.deleteAll()
+                    database.searchDao.deleteAll()
                 }
             }
         }

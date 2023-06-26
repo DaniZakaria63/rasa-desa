@@ -1,46 +1,60 @@
 package com.shapeide.rasadesa.viewmodels
 
-import android.app.Application
-import androidx.appsearch.app.SearchResult
+import android.util.Log
 import androidx.lifecycle.*
-import com.shapeide.rasadesa.databases.meal.MealSearch
+import com.shapeide.rasadesa.BuildConfig.TAG
+import com.shapeide.rasadesa.databases.search.asDatabaseModel
 import com.shapeide.rasadesa.domains.Search
-import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.networks.ResponseMeals
-import com.shapeide.rasadesa.networks.models.MealModel
-import com.shapeide.rasadesa.ui.search.SearchAppManager
-import com.shapeide.rasadesa.utills.isOnline
+import com.shapeide.rasadesa.ui.search.SearchRoomManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchVM constructor(application: Application) :
-    AndroidViewModel(application) {
-    @Inject
-    lateinit var apiEndpoint: APIEndpoint
+@HiltViewModel
+class SearchVM @Inject constructor(private val roomManager: SearchRoomManager) : ViewModel() {
+    private val allSearchHistoryData = roomManager._searchHistoryData
+
     private val _errorMessage = MutableLiveData("")
     val errorMessage: LiveData<String> get() = _errorMessage
 
     private val _mealSearchData = MutableLiveData<List<Search>>()
     val mealSearchData: LiveData<List<Search>> get() = _mealSearchData
 
-    private val searchAppManager: SearchAppManager =
-        SearchAppManager(getApplication(), viewModelScope)
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        _errorMessage.value = "error happened, try again"
+        throwable.printStackTrace()
+    }
 
-    fun queryMealSearch(query: String = "") {
+    fun searchHistoryData() {
         viewModelScope.launch {
-            /* looking for the result online,
-            *  if the device offline will be provided with AppSearch */
-            if (isOnline(getApplication())) {
-                val result: ResponseMeals<MealModel> = apiEndpoint.getSearchMeal(query)
-                _mealSearchData.postValue(result.meals.toSearchModel())
-            } else {
-                val result = searchAppManager.queryMealSearch(query)
-                _mealSearchData.postValue(result.toDomainModel())
-            }
+            _mealSearchData.postValue(allSearchHistoryData.value)
+            if (mealSearchData.value?.isEmpty() == true) _errorMessage.value = "there is no history"
         }
     }
 
+    fun queryMealSearch(query: String = "") {
+        viewModelScope.launch(exceptionHandler) {
+            val searchData: List<Search> = roomManager.queryMealSearch(query)
+            _mealSearchData.postValue(searchData)
+        }
+    }
+
+    fun addMealSearch(search: Search) {
+        viewModelScope.launch(exceptionHandler) {
+            roomManager.saveMealSearch(search.asDatabaseModel())
+            Log.d(TAG, "addMealSearch: done local saving")
+        }
+    }
+
+    fun deleteMealSearch(search: Search) {
+        viewModelScope.launch(exceptionHandler) {
+            roomManager.deleteMealSearch(search.id)
+            Log.d(TAG, "deleteMealSearch: done remove search history")
+        }
+    }
+
+    /* This are AppSearch ways, ended up broken
     fun addMealSearch(search: Search){
         viewModelScope.launch {
             val result = searchAppManager.addMealSearch(MealSearch(id = search.id, text = search.text))
@@ -65,13 +79,5 @@ class SearchVM constructor(application: Application) :
             Search(id = search.id, text = search.text)
         }
     }
-
-    private fun List<MealModel>.toSearchModel() : List<Search> {
-        return map {
-            Search(
-                id = it.idMeal.toString(),
-                text = it.strMeal.toString()
-            )
-        }
-    }
+     */
 }

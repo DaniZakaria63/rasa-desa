@@ -26,11 +26,16 @@ class SearchAdapter(private val listener: Listener) :
         val data: Search = getItem(position)
         holder.txtSearch.text = data.text.toString()
         holder.txtSearch.setOnClickListener { listener.onDetail(data) }
-        holder.btnDelete.setOnClickListener { listener.onDelete(data) }
+
+        /* btnDelete just for local data */
+        if(data.is_local){
+            holder.btnDelete.visibility = View.VISIBLE
+            holder.btnDelete.setOnClickListener { listener.onDelete(data) }
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val txtSearch: TextView = view.findViewById(R.id.tv_search)
+        val txtSearch: TextView = view.findViewById(R.id.txt_search)
         val btnDelete: Button = view.findViewById(R.id.btn_delete)
     }
 

@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.appsearch.app.*
 import androidx.appsearch.localstorage.LocalStorage
 import androidx.appsearch.platformstorage.PlatformStorage
-import com.shapeide.rasadesa.databases.meal.MealSearch
+import com.shapeide.rasadesa.databases.search.MealSearch
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first

@@ -8,6 +8,7 @@ import com.shapeide.rasadesa.databases.ingredient.IngredientRepository
 import com.shapeide.rasadesa.databases.filtermeal.FilterMealRepository
 import com.shapeide.rasadesa.databases.meal.MealRepository
 import com.shapeide.rasadesa.networks.APIEndpoint
+import com.shapeide.rasadesa.ui.search.SearchRoomManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,5 +47,11 @@ object RepositoryModule{
     @ViewModelScoped
     fun provideMealRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : MealRepository {
         return MealRepository(roomDB, apiEndpoint, context)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSearchRoomManager(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : SearchRoomManager {
+        return SearchRoomManager(roomDB, apiEndpoint, context)
     }
 }

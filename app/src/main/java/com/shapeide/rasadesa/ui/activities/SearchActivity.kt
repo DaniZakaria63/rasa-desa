@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.ui.activities
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Context
@@ -8,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.SearchEvent
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,17 +22,15 @@ import com.shapeide.rasadesa.databinding.ActivitySearchBinding
 import com.shapeide.rasadesa.domains.Search
 import com.shapeide.rasadesa.ui.fragments.DetailFragment
 import com.shapeide.rasadesa.viewmodels.SearchVM
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.log
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SearchAdapter.Companion.Listener  {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchView: SearchView
     private lateinit var rvSearchAdapter: SearchAdapter
-    private val searchViewModel: SearchVM by lazy {
-        application.let {
-            ViewModelProvider.AndroidViewModelFactory.getInstance(it)
-                .create(SearchVM::class.java)
-        }
-    }
+    private val searchViewModel : SearchVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,12 +61,14 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         menuInflater.inflate(R.menu.search_menu, menu)
         searchView = menu.findItem(R.id.search).actionView as SearchView
         searchView.setOnQueryTextListener(this)
+        searchView.isIconified = false
 
+        /* Configuration of SearchManager for provide event in SearchActivity
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(
             ComponentName(this, SearchActivity::class.java)
         ))
-        searchView.isIconified = false
+         */
 
         return true
     }
@@ -75,7 +78,6 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
             /* while user still typing the query */
             Intent.ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY)
-                searchViewModel.queryMealSearch(query.toString())
                 Log.i(TAG, "Searching Query: $query")
             }
 
@@ -91,15 +93,40 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     }
 
     override fun onDelete(search: Search) {
+        Log.d(TAG, "onDelete: Delete been selected")
         searchViewModel.deleteMealSearch(search)
+        searchViewModel.searchHistoryData()
     }
 
     override fun onDetail(search: Search) {
+        Log.d(TAG, "onDetail: List of search been clicked, ${search.text}")
         searchViewModel.addMealSearch(search)
+
         // Sent back the data into MainActivity
+        val intent = Intent().apply {
+            putExtra(KEY_ID, search.id)
+            putExtra(KEY_SEARCH, search.text)
+        }
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
-    override fun onQueryTextSubmit(p0: String?): Boolean = false
+    private fun synchronizeSearchEvent(query: String?) : Boolean{
+        if(query?.isEmpty() == true) {
+            searchViewModel.queryMealSearch(query.toString())
+        }else {
+            searchViewModel.searchHistoryData()
+        }
 
-    override fun onQueryTextChange(p0: String?): Boolean = false
+        return true
+    }
+
+    override fun onQueryTextSubmit(p0: String?): Boolean = synchronizeSearchEvent(p0)
+
+    override fun onQueryTextChange(p0: String?): Boolean = synchronizeSearchEvent(p0)
+
+    companion object {
+        const val KEY_ID = "ID"
+        const val KEY_SEARCH = "SEARCH"
+    }
 }

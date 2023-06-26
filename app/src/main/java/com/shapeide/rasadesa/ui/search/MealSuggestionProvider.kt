@@ -47,42 +47,46 @@ class MealSuggestionProvider : ContentProvider() {
         if(mealSearch?.meals == null) return cursor
          */
 
-        /*
-        val buffer = StringBuffer()
+        /* Basic Http method
+        val response = StringBuffer()
         val kueri = uri.lastPathSegment.toString()
         val url = URL("http://www.themealdb.com/api/json/v1/1/search.php?s=$kueri")
         val connection = url.openConnection() as HttpURLConnection
+        connection.apply {
+            requestMethod = "GET"
+            readTimeout = 10000
+            connectTimeout = 11000
+            setRequestProperty("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1\n")
+        }
+
         try {
-            connection.requestMethod = "GET"
-            connection.readTimeout = 10000
-            connection.connectTimeout = 11000
-            connection.doOutput = false
-            connection.doInput = true
-            connection.connect()
-
-            val input = BufferedReader(InputStreamReader(url.openStream()))
-            var line = ""
-            while (input.readLine().also { line = it } != null){
-                buffer.append("$line\n")
+            val inputStream = connection.inputStream
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            reader.use {
+                var line: String? = it.readLine()
+                while (line != null){
+                    response.append("$line\n")
+                }
             }
-            input.close()
+            reader.close()
 
-            Log.i(TAG, "query: $buffer")
+            Log.i(TAG, "query: $response")
         }catch (err: Exception){
             err.printStackTrace()
         }finally {
             connection.disconnect()
         }
+         */
 
+/*
         meals.clear()
         meals.addAll(meals)
-         */
-/*
         mealSearch.meals.mapIndexed { index, meal ->
             cursor.addRow(arrayOf(index, meal.strMeal, index))
         }
  */
 
+//        cursor.addRow(arrayOf(0, uri.lastPathSegment.toString(), 0))
         return cursor
     }
 
