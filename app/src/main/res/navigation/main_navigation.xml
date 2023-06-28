@@ -22,9 +22,9 @@
     </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.shapeide.rasadesa.ui.fragments.FavouriteFragment"
+        android:name="com.shapeide.rasadesa.ui.fragments.FavoriteFragment"
         android:label="fragment_favourite"
-        tools:layout="@layout/fragment_favourite" >
+        tools:layout="@layout/fragment_favorite" >
         <action
             android:id="@+id/action_favouriteFragment_to_homeFragment"
             app:destination="@id/homeFragment"

@@ -2,6 +2,7 @@ package com.shapeide.rasadesa.networks
 
 import com.shapeide.rasadesa.BuildConfig
 import com.shapeide.rasadesa.networks.models.*
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -18,7 +19,7 @@ import retrofit2.http.QueryMap
 
 interface APIEndpoint {
     companion object {
-        val BASE_URL = BuildConfig.BASE_URL
+         private const val BASE_URL = BuildConfig.BASE_URL
         fun create(): APIEndpoint {
             val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
@@ -45,11 +46,11 @@ interface APIEndpoint {
 
     // GET LIST OF CATEGORY, JUST NAME OF THE CATEGORIES
     @GET("/api/json/v1/1/list.php")
-    fun getCategories(@Query("c") categories: String): Call<ResponseMeals<CategoryModel>>
+    suspend fun getCategories(@Query("c") categories: String): ResponseMeals<CategoryModel>
 
     // GET LIST BY FILTER CATEGORIES, AREA, OR INGREDIENTS
     @GET("/api/json/v1/1/filter.php")
-    fun getDataWithFilter(@QueryMap mapString: Map<String?, String?>): Call<ResponseMeals<FilterMealModel>>
+    suspend fun getDataWithFilter(@QueryMap mapString: Map<String?, String?>): ResponseMeals<FilterMealModel>
 
     // GET RANDOM MEAL
     @GET("/api/json/v1/1/random.php")

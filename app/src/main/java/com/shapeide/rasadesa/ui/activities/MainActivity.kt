@@ -40,8 +40,11 @@ class MainActivity : AppCompatActivity(), MealDetailListener, HomeSearchListener
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                Log.i(TAG, "onSearchClicked: ${data?.extras}")
+                result.data?.let {
+                    Log.i(TAG, "onSearchClicked: ${it.getStringExtra(SearchActivity.KEY_SEARCH)}")
+                    val id = it.getStringExtra(SearchActivity.KEY_ID)
+                    onDetailMeal(DetailFragment.VAL_TYPE_MEAL, id?.toInt() ?: 0)
+                }
             } else {
                 Log.i(TAG, "onCreate: What's wrong? this is else branch")
             }

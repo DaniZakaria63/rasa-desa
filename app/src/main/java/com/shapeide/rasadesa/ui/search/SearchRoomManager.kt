@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import com.shapeide.rasadesa.BuildConfig
 import com.shapeide.rasadesa.databases.RoomDB
 import com.shapeide.rasadesa.databases.search.MealSearchEntity
@@ -14,6 +15,8 @@ import com.shapeide.rasadesa.networks.ResponseMeals
 import com.shapeide.rasadesa.networks.models.MealModel
 import com.shapeide.rasadesa.utills.isOnline
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -22,10 +25,7 @@ class SearchRoomManager @Inject constructor(
     private val apiEndpoint: APIEndpoint,
     private val context: Context
 ) {
-    val _searchHistoryData: LiveData<List<Search>> =
-        Transformations.map(roomDB.searchDao.findAll()) {
-            it.asSearchDomain()
-        }
+    val _searchHistoryData = roomDB.searchDao.findAll().map { it.asSearchDomain() }.asLiveData()
 
     suspend fun queryMealSearch(query: String = ""): List<Search> {
         /* looking for the result online */
@@ -39,16 +39,15 @@ class SearchRoomManager @Inject constructor(
         }
     }
 
-    suspend fun getLocalSearch(query: String): List<MealSearchEntity> =
-        withContext(Dispatchers.IO) {
-            return@withContext roomDB.searchDao.querySearch(query)
-        }
+    suspend fun getLocalSearch(query: String): List<MealSearchEntity> {
+        return roomDB.searchDao.querySearch(query)
+    }
 
-    suspend fun saveMealSearch(meal: MealSearchEntity) = withContext(Dispatchers.IO) {
+    suspend fun saveMealSearch(meal: MealSearchEntity) {
         roomDB.searchDao.insertOneSearch(meal)
     }
 
-    suspend fun deleteMealSearch(searchId: String) = withContext(Dispatchers.IO) {
+    suspend fun deleteMealSearch(searchId: String) {
         roomDB.searchDao.deleteOne(searchId)
     }
 

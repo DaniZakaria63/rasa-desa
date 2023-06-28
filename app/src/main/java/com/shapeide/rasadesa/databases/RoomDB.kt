@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [CategoryEntity::class, FilterMealEntity::class, AreaEntity::class, IngredientEntity::class, MealEntity::class, MealSearchEntity::class],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {

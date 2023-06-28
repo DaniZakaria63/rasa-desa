@@ -50,6 +50,8 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         searchViewModel.errorMessage.observe(this){ err ->
             Toast.makeText(application, err, Toast.LENGTH_SHORT).show()
         }
+
+        searchViewModel.searchHistoryData()
     }
 
     override fun onNewIntent(intent: Intent?) {

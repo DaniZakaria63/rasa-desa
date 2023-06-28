@@ -48,16 +48,15 @@ class FilterMealRepository @Inject constructor(
     }
 
     /* Save the Meal to Local, all of the data */
-    suspend fun setFilterMealsLocal(datas: List<FilterMealEntity>) = withContext(Dispatchers.IO) {
+    suspend fun setFilterMealsLocal(datas: List<FilterMealEntity>) {
         roomDB.filterMealDao.insertAll_FM(datas)
         Log.d(TAG, "syncByMeal: Success to insert filter meals to local")
     }
 
     /* Query from local based on/where category data */
-    suspend fun getFilterMealsLocal(mealName: String): List<FilterMeal> =
-        withContext(Dispatchers.IO) {
-            val datas: List<FilterMealEntity> = roomDB.filterMealDao.findByName_FM(mealName)
-            Log.d(TAG, "getFilterMealsLocal: Done get the local filter meals data")
-            return@withContext datas.entityAsDomainModel()
-        }
+    suspend fun getFilterMealsLocal(mealName: String): List<FilterMeal> {
+        val datas: List<FilterMealEntity> = roomDB.filterMealDao.findByName_FM(mealName)
+        Log.d(TAG, "getFilterMealsLocal: Done get the local filter meals data")
+        return datas.entityAsDomainModel()
+    }
 }

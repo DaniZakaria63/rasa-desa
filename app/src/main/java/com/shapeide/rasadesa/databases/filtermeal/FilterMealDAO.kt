@@ -13,11 +13,11 @@ interface FilterMealDAO {
     fun findAll_FM() : LiveData<List<FilterMealEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll_FM(meals: List<FilterMealEntity>)
+    suspend fun insertAll_FM(meals: List<FilterMealEntity>)
 
     @Query("SELECT * FROM tbl_filter_meals WHERE  type = :meal")
-    fun findByName_FM(meal: String?) : List<FilterMealEntity>
+    suspend fun findByName_FM(meal: String?) : List<FilterMealEntity>
 
     @Query("DELETE FROM tbl_filter_meals")
-    fun deleteAll_FM()
+    suspend fun deleteAll_FM()
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.databases.RoomDB
 import com.shapeide.rasadesa.domains.Ingredient
@@ -12,6 +13,7 @@ import com.shapeide.rasadesa.networks.ResponseMeals
 import com.shapeide.rasadesa.networks.models.IngredientsModel
 import com.shapeide.rasadesa.utills.isOnline
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -20,10 +22,7 @@ class IngredientRepository @Inject constructor(
     private val apiEndpoint: APIEndpoint,
     private val context: Context
 ) {
-    val _ingredientData: LiveData<List<Ingredient>> =
-        Transformations.map(roomDB.ingredientDao.findALl()) {
-            it.asDomainModel()
-        }
+    val _ingredientData  = roomDB.ingredientDao.findAll().map { it.asDomainModel() }.asLiveData()
 
     suspend fun syncIngredient() {
         if (isOnline(context = context)) {
@@ -35,15 +34,11 @@ class IngredientRepository @Inject constructor(
 
     private suspend fun insertAll(datas: List<IngredientEntity>) {
         Log.d(TAG, "insertAll: IngredientRepo: insert all data into local")
-        withContext(Dispatchers.IO) {
-            roomDB.ingredientDao.insertAll(datas)
-        }
+        roomDB.ingredientDao.insertAll(datas)
     }
 
     suspend fun deleteAll() {
         Log.d(TAG, "deleteAll: DeleteRepo: delete all the local data")
-        withContext(Dispatchers.IO) {
-            roomDB.ingredientDao.deleteAll()
-        }
+        roomDB.ingredientDao.deleteAll()
     }
 }
