@@ -1,72 +1,72 @@
 package com.shapeide.rasadesa.databases.meal
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
-import com.shapeide.rasadesa.BuildConfig
-import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.databases.RoomDB
+import com.shapeide.rasadesa.databases.DesaDatabase
 import com.shapeide.rasadesa.domains.Meal
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals
 import com.shapeide.rasadesa.networks.models.MealModel
-import com.shapeide.rasadesa.utills.isOnline
-import kotlinx.coroutines.Dispatchers
+import com.shapeide.rasadesa.utills.DispatcherProvider
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 class MealRepository @Inject constructor(
-    private val roomDB: RoomDB,
+    private val desaDatabase: DesaDatabase,
     private val apiEndpoint: APIEndpoint,
-    private val context: Context
+    private val dispatcherProvider: DispatcherProvider
 ) {
 
-    val _favoriteData: LiveData<List<Meal>> = roomDB.mealDao.allFavorite().map {
+    val _favoriteData: LiveData<List<Meal>> = desaDatabase.mealDao.allFavorite().map {
         it.asDomainListModel()
     }.asLiveData()
 
-    suspend fun getRandomMeal(): Meal {
-        if (!isOnline(context)) return getRandomMealLocal()
-
-        val randomMeal = apiEndpoint.getRandomMeal()
-        setOneMealLocal(randomMeal.asDatabaseModel())
-        return randomMeal.asDomainModel()
-    }
-
-    suspend fun getRandomMealLocal(): Meal {
-        val data: MealEntity = roomDB.mealDao.findRandomOne()
-        return data.asDomainModel()
-    }
-
-    suspend fun getMealByID(id: Int): Meal? {
-        if (!isOnline(context)) {
-            val data: Meal? = getOneMealLocal(id)
-            return data
+    suspend fun getRandomMeal(): Meal =
+        withContext(dispatcherProvider.io) {
+            try {
+                val randomMeal = apiEndpoint.getRandomMeal()
+                setOneMealLocal(randomMeal.asDatabaseModel())
+                randomMeal.asDomainModel()
+            } catch (e: Exception) {
+                getRandomMealLocal()
+            }
         }
 
-        val mealData: ResponseMeals<MealModel> = apiEndpoint.getDetailMeal(id)
-        if (mealData.meals == null || mealData.meals.isEmpty()) return null
-        setOneMealLocal(mealData.asDatabaseModel())
-        return mealData.asDomainModel()
+    private suspend fun getRandomMealLocal(): Meal =
+        withContext(dispatcherProvider.io) {
+            val data: MealEntity = desaDatabase.mealDao.findRandomOne()
+            data.asDomainModel()
+        }
+
+    suspend fun getMealByID(id: Int): Meal? = withContext(dispatcherProvider.io) {
+        try {
+            val mealData: ResponseMeals<MealModel>? = apiEndpoint.getDetailMeal(id)
+            if (mealData?.meals == null || mealData.meals.isEmpty()) return@withContext null
+            setOneMealLocal(mealData.asDatabaseModel())
+            return@withContext mealData.asDomainModel()
+        } catch (e: Exception) {
+            return@withContext getOneMealLocal(id)
+        }
+
     }
 
-    suspend fun getOneMealLocal(id: Int): Meal? {
-        val mealData: MealEntity? = roomDB.mealDao.findOne(id)
+    private fun getOneMealLocal(id: Int): Meal? { // already inside io dispatcher
+        val mealData: MealEntity? = desaDatabase.mealDao.findOne(id)
         return mealData?.asDomainModel()
     }
 
-    suspend fun setOneMealLocal(meal: MealEntity?) {
-        if (meal != null) roomDB.mealDao.insertOneMeal(meal)
-        Log.d(TAG, "setOneMealLocal: Done save the meal local")
+    private fun setOneMealLocal(meal: MealEntity?) { // already inside io dispatcher
+        if (meal != null) desaDatabase.mealDao.insertOneMeal(meal)
     }
 
     suspend fun deleteAllMeal() {
-        roomDB.mealDao.deleteAll()
+        coroutineScope {
+            launch(dispatcherProvider.io) {
+                desaDatabase.mealDao.deleteAll()
+            }
+        }
     }
 }

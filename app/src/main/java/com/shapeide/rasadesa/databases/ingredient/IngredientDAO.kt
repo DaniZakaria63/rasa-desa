@@ -15,8 +15,8 @@ interface IngredientDAO {
     fun findAll() : Flow<List<IngredientEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(datas: List<IngredientEntity>)
+    fun insertAll(datas: List<IngredientEntity>)
 
     @Query("DELETE FROM tbl_ingredient")
-    suspend fun deleteAll()
+    fun deleteAll()
 }

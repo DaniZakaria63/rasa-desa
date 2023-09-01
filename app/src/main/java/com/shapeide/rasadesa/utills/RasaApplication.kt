@@ -1,7 +1,6 @@
 package com.shapeide.rasadesa.utills
 
 import android.app.Application
-import com.shapeide.rasadesa.viewmodels.NetworkStateViewModel
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

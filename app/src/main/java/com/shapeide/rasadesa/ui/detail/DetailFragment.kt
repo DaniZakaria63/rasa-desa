@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.ui.fragments
+package com.shapeide.rasadesa.ui.detail
 
 import android.os.Bundle
 import android.util.Log
@@ -8,17 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.databases.filtermeal.FilterMealRepository
 import com.shapeide.rasadesa.databases.meal.MealRepository
 import com.shapeide.rasadesa.databinding.FragmentDetailBinding
-import com.shapeide.rasadesa.viewmodels.DetailVM
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
     private lateinit var mBinding: FragmentDetailBinding
-    private lateinit var detailViewModel: DetailVM
+    private lateinit var detailViewModel: DetailViewModel
 
     @Inject
     lateinit var repository: MealRepository
@@ -34,8 +32,8 @@ class DetailFragment : Fragment() {
 
         detailViewModel = ViewModelProvider(
             this,
-            DetailVM.DetailVMFactory(mType, mIdMeal, repository)
-        ).get(DetailVM::class.java)
+            DetailViewModel.DetailVMFactory(mType, mIdMeal, repository)
+        ).get(DetailViewModel::class.java)
     }
 
     override fun onCreateView(

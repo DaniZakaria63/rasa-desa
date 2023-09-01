@@ -19,13 +19,8 @@ import retrofit2.http.QueryMap
 
 interface APIEndpoint {
     companion object {
-         private const val BASE_URL = BuildConfig.BASE_URL
-        fun create(): APIEndpoint {
-            val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build()
-            return retrofit.create(APIEndpoint::class.java)
-        }
+        @JvmStatic
+        val BASE_URL = BuildConfig.BASE_URL
     }
 
     // GET MEAL CATEGORIES

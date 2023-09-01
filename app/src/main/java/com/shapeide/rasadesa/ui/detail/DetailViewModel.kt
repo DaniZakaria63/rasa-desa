@@ -1,11 +1,8 @@
-package com.shapeide.rasadesa.viewmodels
+package com.shapeide.rasadesa.ui.detail
 
 import androidx.lifecycle.*
-import com.shapeide.rasadesa.databases.filtermeal.FilterMealRepository
 import com.shapeide.rasadesa.databases.meal.MealRepository
 import com.shapeide.rasadesa.domains.Meal
-import com.shapeide.rasadesa.ui.fragments.DetailFragment
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
 /*
@@ -13,7 +10,7 @@ import kotlinx.coroutines.launch
  * both have similar response of json
  *  */
 
-class DetailVM constructor(
+class DetailViewModel constructor(
     mType: String,
     private val mMealID: Int,
     private val mealRepository: MealRepository
@@ -48,8 +45,8 @@ class DetailVM constructor(
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
-            if (modelClass.isAssignableFrom(DetailVM::class.java))
-                return DetailVM(type.toString(), id, mealRepository) as T
+            if (modelClass.isAssignableFrom(DetailViewModel::class.java))
+                return DetailViewModel(type.toString(), id, mealRepository) as T
 
             throw IllegalArgumentException("Unknown ViewModel Class, #1")
         }

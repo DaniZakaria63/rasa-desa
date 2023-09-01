@@ -14,12 +14,12 @@ interface CategoryDAO {
     fun findAll() : Flow<List<CategoryEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addOne(categoryEntity: CategoryEntity)
+    fun addOne(categoryEntity: CategoryEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(categories: List<CategoryEntity>)
+    fun insertAll(categories: List<CategoryEntity>)
 
     @Query("DELETE FROM tbl_category")
-    suspend fun deleteAll()
+    fun deleteAll()
 
 }

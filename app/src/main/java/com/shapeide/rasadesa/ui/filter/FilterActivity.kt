@@ -1,38 +1,33 @@
-package com.shapeide.rasadesa.ui.activities
+package com.shapeide.rasadesa.ui.filter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.shapeide.rasadesa.BuildConfig
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
-import com.shapeide.rasadesa.domains.FilterMeal
-import com.shapeide.rasadesa.networks.models.FilterMealModel
 import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.networks.ResponseMeals
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FilterActivity : AppCompatActivity() {
-    private lateinit var apiEndpoint: APIEndpoint
     private lateinit var rv_mealslist : RecyclerView
     private lateinit var tv_category_key : TextView
     private lateinit var tv_category_value : TextView
     private lateinit var mealAdapter: HomeMealAdapter
     private val layout_id : Int = R.layout.activity_filter
 
+    @Inject
+    lateinit var apiEndpoint: APIEndpoint
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val key : String? = intent.getStringExtra("key")
         val value : String? = intent.getStringExtra("value")
         val name : String? = intent.getStringExtra("name")
-        apiEndpoint = APIEndpoint.create()
-
         setContentView(layout_id)
 
         tv_category_key = findViewById(R.id.tv_category_key)

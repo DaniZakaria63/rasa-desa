@@ -1,32 +1,22 @@
-package com.shapeide.rasadesa.ui.fragments
+package com.shapeide.rasadesa.ui.discover
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.ui.activities.MainActivity
+import com.shapeide.rasadesa.ui.main.MainActivity
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.CountryAdapter
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.IngredientsAdapter
 import com.shapeide.rasadesa.databinding.FragmentDiscoverBinding
-import com.shapeide.rasadesa.domains.Category
-import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.networks.ResponseMeals
-import com.shapeide.rasadesa.networks.models.AreaModel
-import com.shapeide.rasadesa.networks.models.CategoryModel
-import com.shapeide.rasadesa.networks.models.IngredientsModel
-import com.shapeide.rasadesa.networks.models.MealModel
+import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
-import com.shapeide.rasadesa.viewmodels.DiscoverVM
+import com.shapeide.rasadesa.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class DiscoverFragment : Fragment(R.layout.fragment_discover) {
@@ -35,7 +25,7 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var mCallbackListener: MealDetailListener
     private var mBinding: FragmentDiscoverBinding? = null
-    private val discoverVM : DiscoverVM by viewModels()
+    private val discoverViewModel : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +44,17 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
             mCallbackListener.onNeedIntent("i", "Ingredients", name)
         }
 
-        discoverVM.categoryData.observe(this){ categories ->
+        discoverViewModel.syncDiscovery()
+
+        discoverViewModel.categoryData.observe(this){ categories ->
             categoryAdapter.updateCategoryList(ArrayList(categories))
         }
 
-        discoverVM.areaData.observe(this){ areas ->
+        discoverViewModel.areaData.observe(this){ areas ->
             countryAdapter.updateAreaList(ArrayList(areas))
         }
 
-        discoverVM.ingredientData.observe(this){ ingredients ->
+        discoverViewModel.ingredientData.observe(this){ ingredients ->
             ingredientsAdapter.updateIngredientList(ArrayList(ingredients))
         }
     }
@@ -95,9 +87,9 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
 
     override fun onDestroyView() {
         mBinding = null
-        discoverVM.areaData.removeObservers(this)
-        discoverVM.ingredientData.removeObservers(this)
-        discoverVM.categoryData.removeObservers(this)
+        discoverViewModel.areaData.removeObservers(this)
+        discoverViewModel.ingredientData.removeObservers(this)
+        discoverViewModel.categoryData.removeObservers(this)
         super.onDestroyView()
     }
 

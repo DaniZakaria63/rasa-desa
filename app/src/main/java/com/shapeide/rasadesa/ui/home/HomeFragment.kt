@@ -1,8 +1,9 @@
-package com.shapeide.rasadesa.ui.fragments
+package com.shapeide.rasadesa.ui.home
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,10 +12,11 @@ import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
 import com.shapeide.rasadesa.databinding.FragmentHomeBinding
-import com.shapeide.rasadesa.ui.activities.MainActivity
+import com.shapeide.rasadesa.ui.main.MainActivity
+import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
-import com.shapeide.rasadesa.viewmodels.HomeVM
+import com.shapeide.rasadesa.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,26 +26,26 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     private lateinit var rvMealAdapter: HomeMealAdapter
     private lateinit var searchListener: HomeSearchListener
     private lateinit var mMealDetailListener: MealDetailListener
-    private val homeViewModel: HomeVM by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mMealDetailListener = (activity as MainActivity)
         searchListener = (activity as MainActivity)
         rvCategoryAdapter = HomeCategoryAdapter(requireContext(), 1) { mealName ->
-            homeViewModel.syncFilterMealByMealName(mealName)
+            mainViewModel.syncFilterMealByMealName(mealName)
         }
         rvMealAdapter = HomeMealAdapter(requireContext()){ id ->
             mMealDetailListener.onDetailMeal(DetailFragment.VAL_TYPE_MEAL, id.toInt())
         }
 
         /* It's already synchronized, while in initialized, now just need to be observed */
-        homeViewModel.categoryData.observe(this) { category ->
+        mainViewModel.categoryData.observe(this) { category ->
             rvCategoryAdapter.updateCategoryList(ArrayList(category))
         }
 
         /* Observe the data filter-meals and update the data from adapter */
-        homeViewModel.filterMealData.observe(this) { filterMeals ->
+        mainViewModel.filterMealData.observe(this) { filterMeals ->
             rvMealAdapter.updateCategoryList(ArrayList(filterMeals))
         }
 
@@ -65,7 +67,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
             searchListener.onSearchClicked()
         }
 
-        homeViewModel.selectedMealCategory.observe(viewLifecycleOwner) { name ->
+        mainViewModel.selectedMealCategory.observe(viewLifecycleOwner) { name ->
             try {
                 binding.tvListmeals.text = "The Meals: $name"
             } catch (err: NullPointerException) {
@@ -75,9 +77,9 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     }
 
     override fun onDestroyView() {
-        homeViewModel.filterMealData.removeObservers(this)
-        homeViewModel.categoryData.removeObservers(this)
-        homeViewModel.selectedMealCategory.removeObservers(this)
+        mainViewModel.filterMealData.removeObservers(this)
+        mainViewModel.categoryData.removeObservers(this)
+        mainViewModel.selectedMealCategory.removeObservers(this)
         super.onDestroyView()
     }
 }

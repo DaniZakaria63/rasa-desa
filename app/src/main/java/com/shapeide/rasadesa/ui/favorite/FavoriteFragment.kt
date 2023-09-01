@@ -1,18 +1,20 @@
-package com.shapeide.rasadesa.ui.fragments
+package com.shapeide.rasadesa.ui.favorite
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.FavoriteAdapter
-import com.shapeide.rasadesa.ui.activities.MainActivity
+import com.shapeide.rasadesa.ui.main.MainActivity
+import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
-import com.shapeide.rasadesa.viewmodels.FavoriteVM
+import com.shapeide.rasadesa.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +23,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var mFavoriteAdapter: FavoriteAdapter
     private lateinit var mMealDetailListener: MealDetailListener
     private lateinit var mMainActivity: MainActivity
-    private val mFavoriteViewModel: FavoriteVM by viewModels()
+    private val mFavoriteViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,7 @@ class FavoriteFragment : Fragment() {
         rvFavorite.layoutManager = GridLayoutManager(view.context, 2)
         rvFavorite.adapter = mFavoriteAdapter
 
-        mFavoriteViewModel.favoriteAllData.observe(mMainActivity){ meals ->
+        mFavoriteViewModel.favoriteMealData.observe(mMainActivity){ meals ->
             mFavoriteAdapter.updateData(ArrayList(meals))
         }
     }

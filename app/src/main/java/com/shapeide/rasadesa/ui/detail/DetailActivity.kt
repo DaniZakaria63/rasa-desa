@@ -1,15 +1,12 @@
-package com.shapeide.rasadesa.ui.activities
+package com.shapeide.rasadesa.ui.detail
 
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.databinding.ActivityDetailBinding
 import com.shapeide.rasadesa.ui.dialog.NetworkDialog
-import com.shapeide.rasadesa.ui.fragments.DetailFragment
 import com.shapeide.rasadesa.utills.RasaApplication
-import com.shapeide.rasadesa.viewmodels.NetworkStateViewModel
+import com.shapeide.rasadesa.utills.NetworkStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

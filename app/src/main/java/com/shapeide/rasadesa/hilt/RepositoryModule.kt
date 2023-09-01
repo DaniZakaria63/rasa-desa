@@ -1,7 +1,7 @@
 package com.shapeide.rasadesa.hilt
 
 import android.content.Context
-import com.shapeide.rasadesa.databases.RoomDB
+import com.shapeide.rasadesa.databases.DesaDatabase
 import com.shapeide.rasadesa.databases.area.AreaRepository
 import com.shapeide.rasadesa.databases.category.CategoryRepository
 import com.shapeide.rasadesa.databases.ingredient.IngredientRepository
@@ -9,6 +9,7 @@ import com.shapeide.rasadesa.databases.filtermeal.FilterMealRepository
 import com.shapeide.rasadesa.databases.meal.MealRepository
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.ui.search.SearchRoomManager
+import com.shapeide.rasadesa.utills.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,37 +22,37 @@ object RepositoryModule{
 
     @Provides
     @ViewModelScoped
-    fun provideFilterMealRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : FilterMealRepository {
-        return FilterMealRepository(roomDB, apiEndpoint, context)
+    fun provideFilterMealRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : FilterMealRepository {
+        return FilterMealRepository(desaDatabase, apiEndpoint, dispatcherProvider)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideCategoryRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context): CategoryRepository {
-        return CategoryRepository(roomDB, apiEndpoint, context)
+    fun provideCategoryRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider): CategoryRepository {
+        return CategoryRepository(desaDatabase, apiEndpoint, dispatcherProvider)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideAreaRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : AreaRepository {
-        return AreaRepository(roomDB, apiEndpoint, context)
+    fun provideAreaRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : AreaRepository {
+        return AreaRepository(desaDatabase, apiEndpoint, dispatcherProvider)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideIngredientRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : IngredientRepository {
-        return IngredientRepository(roomDB, apiEndpoint, context)
+    fun provideIngredientRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : IngredientRepository {
+        return IngredientRepository(desaDatabase, apiEndpoint, dispatcherProvider)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideMealRepository(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : MealRepository {
-        return MealRepository(roomDB, apiEndpoint, context)
+    fun provideMealRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : MealRepository {
+        return MealRepository(desaDatabase, apiEndpoint, dispatcherProvider)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideSearchRoomManager(roomDB: RoomDB, apiEndpoint: APIEndpoint, context: Context) : SearchRoomManager {
-        return SearchRoomManager(roomDB, apiEndpoint, context)
+    fun provideSearchRoomManager(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : SearchRoomManager {
+        return SearchRoomManager(desaDatabase, apiEndpoint, dispatcherProvider)
     }
 }

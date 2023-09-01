@@ -1,15 +1,12 @@
-package com.shapeide.rasadesa.viewmodels
+package com.shapeide.rasadesa.utills
 
-import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 class NetworkStateListener(private val context: Context) : LiveData<Boolean>(){
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback

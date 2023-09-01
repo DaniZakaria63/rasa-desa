@@ -1,47 +1,53 @@
 package com.shapeide.rasadesa.databases.area
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.databases.RoomDB
+import com.shapeide.rasadesa.databases.DesaDatabase
 import com.shapeide.rasadesa.domains.Area
 import com.shapeide.rasadesa.networks.APIEndpoint
 import com.shapeide.rasadesa.networks.ResponseMeals
 import com.shapeide.rasadesa.networks.models.AreaModel
-import com.shapeide.rasadesa.utills.isOnline
-import kotlinx.coroutines.Dispatchers
+import com.shapeide.rasadesa.utills.DispatcherProvider
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AreaRepository @Inject constructor(
-    private val roomDB: RoomDB,
+    private val desaDatabase: DesaDatabase,
     private val apiEndpoint: APIEndpoint,
-    private val context: Context
+    private val dispatcherProvider: DispatcherProvider
 ) {
-    val _areaData: LiveData<List<Area>> = roomDB.areaDao.findAll().map {
+    val _areaData: LiveData<List<Area>> = desaDatabase.areaDao.findAll().map {
         it.asDomainModel()
     }.asLiveData()
 
     suspend fun syncArea() {
-        if (isOnline(context)) {
-            Log.d(TAG, "syncArea: AreaRepository: refresh data from internet")
-            val newData: ResponseMeals<AreaModel> = apiEndpoint.getArea("list")
-            insertArea(newData.asDatabaseModel())
+        coroutineScope {
+            launch(dispatcherProvider.io) {
+                try {
+                    val newData: ResponseMeals<AreaModel> = apiEndpoint.getArea("list")
+                    insertArea(newData.asDatabaseModel())
+                } catch (e: Exception) {
+                    Log.d(TAG, "syncArea: Debug Log Network Error", e)
+                }
+            }
         }
     }
 
-    suspend fun insertArea(newData: List<AreaEntity>) {
-        Log.d(TAG, "insertArea: AreaRepository: insert all data to local")
-        roomDB.areaDao.insertAll(newData)
+
+    private suspend fun insertArea(newData: List<AreaEntity>) {
+        coroutineScope {
+            launch(dispatcherProvider.io) { desaDatabase.areaDao.insertAll(newData) }
+        }
     }
 
-    //TODO: delete all data, for reinitialize
+
     suspend fun deleteArea() {
-        Log.d(TAG, "deleteArea: AreaRepository: delete all data from local")
-        roomDB.areaDao.deleteAll()
+        coroutineScope {
+            launch(dispatcherProvider.io) { desaDatabase.areaDao.deleteAll() }
+        }
     }
 }

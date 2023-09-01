@@ -2,7 +2,6 @@ package com.shapeide.rasadesa.databases
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.shapeide.rasadesa.databases.area.AreaDAO
@@ -25,7 +24,7 @@ import kotlinx.coroutines.launch
     version = 9,
     exportSchema = false
 )
-abstract class RoomDB : RoomDatabase() {
+abstract class DesaDatabase : RoomDatabase() {
     abstract val categoryDao: CategoryDAO
     abstract val filterMealDao: FilterMealDAO
     abstract val areaDao: AreaDAO
@@ -33,45 +32,25 @@ abstract class RoomDB : RoomDatabase() {
     abstract val mealDao: MealDAO
     abstract val searchDao: MealSearchDAO
 
-    companion object {
-        @Volatile
-        private var INSTANCE: RoomDB? = null
-        private val INSTANCE_NAME = "desa_database"
-
-        fun getInstanceDB(context: Context, scope: CoroutineScope): RoomDB {
-            return INSTANCE ?: synchronized(RoomDB::class.java) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    RoomDB::class.java,
-                    INSTANCE_NAME
-                )
-                    .addCallback(RoomDBCallback(scope))
-                    .fallbackToDestructiveMigration() // this function really scary
-                    .build()
-
-                INSTANCE = instance
-                return instance
-            }
-        }
+    companion object{
+        @JvmStatic
+        val INSTANCE_NAME = "desa_database"
     }
 
     /**
      * functional of onCreate event inside Callback class would be populate the database
      * this time will be clear all database while new instance created
-     */
-    private class RoomDBCallback(private val scope: CoroutineScope) : Callback() {
+
+    private class RoomDBCallback() : Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { database ->
-                scope.launch {
-                    database.categoryDao.deleteAll()
-                    database.filterMealDao.deleteAll_FM()
-                    database.areaDao.deleteAll()
-                    database.ingredientDao.deleteAll()
-                    database.mealDao.deleteAll()
-                    database.searchDao.deleteAll()
-                }
-            }
+            categoryDao.deleteAll()
+            filterMealDao.deleteAll_FM()
+            areaDao.deleteAll()
+            ingredientDao.deleteAll()
+            mealDao.deleteAll()
+            searchDao.deleteAll()
         }
     }
+    */
 }

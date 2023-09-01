@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.ui.activities
+package com.shapeide.rasadesa.ui.main
 
 import android.app.Activity
 import android.content.Intent
@@ -7,18 +7,20 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.databinding.ActivityMainBinding
-import com.shapeide.rasadesa.ui.fragments.DiscoverFragment
+import com.shapeide.rasadesa.ui.filter.FilterActivity
+import com.shapeide.rasadesa.ui.detail.DetailActivity
 import com.shapeide.rasadesa.ui.dialog.NetworkDialog
-import com.shapeide.rasadesa.ui.fragments.DetailFragment
+import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
+import com.shapeide.rasadesa.ui.search.SearchActivity
 import com.shapeide.rasadesa.utills.RasaApplication
-import com.shapeide.rasadesa.viewmodels.NetworkStateViewModel
+import com.shapeide.rasadesa.utills.NetworkStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,8 +35,8 @@ class MainActivity : AppCompatActivity(), MealDetailListener, HomeSearchListener
         setContentView(binding.root)
         networkStateViewModel = (application as RasaApplication).networkStateViewModel
 
-        val navController = findNavController(R.id.fragmentContainer)
-        binding.bottomNav.setupWithNavController(navController)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        binding.bottomNav.setupWithNavController(navHostFragment.navController)
 
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()

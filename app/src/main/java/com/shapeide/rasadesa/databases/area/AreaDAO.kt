@@ -14,8 +14,8 @@ interface AreaDAO {
     fun findAll() : Flow<List<AreaEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(datas: List<AreaEntity>)
+    fun insertAll(datas: List<AreaEntity>)
 
     @Query("DELETE FROM tbl_area")
-    suspend fun deleteAll()
+    fun deleteAll()
 }

@@ -1,36 +1,29 @@
-package com.shapeide.rasadesa.ui.activities
+package com.shapeide.rasadesa.ui.search
 
 import android.app.Activity
 import android.app.SearchManager
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.SearchEvent
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.SearchAdapter
 import com.shapeide.rasadesa.databinding.ActivitySearchBinding
 import com.shapeide.rasadesa.domains.Search
-import com.shapeide.rasadesa.ui.fragments.DetailFragment
-import com.shapeide.rasadesa.viewmodels.SearchVM
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.log
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SearchAdapter.Companion.Listener  {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchView: SearchView
     private lateinit var rvSearchAdapter: SearchAdapter
-    private val searchViewModel : SearchVM by viewModels()
+    private val searchViewModel : SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

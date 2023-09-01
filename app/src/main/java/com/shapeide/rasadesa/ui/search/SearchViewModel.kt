@@ -1,4 +1,4 @@
-package com.shapeide.rasadesa.viewmodels
+package com.shapeide.rasadesa.ui.search
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchVM @Inject constructor(private val roomManager: SearchRoomManager) : ViewModel() {
+class SearchViewModel @Inject constructor(private val roomManager: SearchRoomManager) : ViewModel() {
     private val allSearchHistoryData = roomManager._searchHistoryData
 
     private val _errorMessage = MutableLiveData("")
