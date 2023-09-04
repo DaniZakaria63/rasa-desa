@@ -16,9 +16,9 @@ data class CategoryEntity constructor(
 )
 
 /* Map from table data type into domain data type */
-fun List<CategoryEntity>.asDomainModel(): List<com.shapeide.rasadesa.domain.Category> {
+fun List<CategoryEntity>.asDomainModel(): List<com.shapeide.rasadesa.core.domain.Category> {
     return map {
-        com.shapeide.rasadesa.domain.Category(
+        com.shapeide.rasadesa.core.domain.Category(
             id = it.idCategory,
             name = it.strCategory,
             thumb = it.strCategoryThumb,
@@ -39,7 +39,7 @@ fun ResponseCategory<CategoryModel>.asDatabaseModel() : List<CategoryEntity>{
     }
 }
 
-fun ResponseCategory<CategoryModel>.asDomainModel() : List<com.shapeide.rasadesa.domain.Category>{
+fun ResponseCategory<CategoryModel>.asDomainModel() : List<com.shapeide.rasadesa.core.domain.Category>{
     return categories.map {
         com.shapeide.rasadesa.domain.Category(
             id = it.idCategory,

@@ -12,9 +12,9 @@ data class MealSearchEntity(
     @ColumnInfo(name = "img_url") val img_url: String? = ""
 )
 
-fun List<MealSearchEntity>.asSearchDomain(): List<com.shapeide.rasadesa.domain.Search> {
+fun List<MealSearchEntity>.asSearchDomain(): List<com.shapeide.rasadesa.core.domain.Search> {
     return map {
-        com.shapeide.rasadesa.domain.Search(
+        com.shapeide.rasadesa.core.domain.Search(
             id = it.id_ori.toString(),
             text = it.search,
             is_local = true
@@ -22,7 +22,7 @@ fun List<MealSearchEntity>.asSearchDomain(): List<com.shapeide.rasadesa.domain.S
     }
 }
 
-fun com.shapeide.rasadesa.domain.Search.asDatabaseModel(): MealSearchEntity {
+fun com.shapeide.rasadesa.core.domain.Search.asDatabaseModel(): MealSearchEntity {
     return MealSearchEntity(
         id_ori = id.toInt(),
         search = text,

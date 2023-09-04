@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.domain.Category
+import com.shapeide.rasadesa.core.domain.Category
 
 internal class HomeCategoryAdapter(
     val context: Context,
     val type: Int,
     val listener: (name: String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val items: ArrayList<com.shapeide.rasadesa.domain.Category> = ArrayList()
+    private val items: ArrayList<com.shapeide.rasadesa.core.domain.Category> = ArrayList()
 
-    fun updateCategoryList(newItems: ArrayList<com.shapeide.rasadesa.domain.Category>) {
+    fun updateCategoryList(newItems: ArrayList<com.shapeide.rasadesa.core.domain.Category>) {
         val diffResult: DiffUtil.DiffResult =
             DiffUtil.calculateDiff(Comparator(items, newItems))
 
@@ -69,8 +69,8 @@ internal class HomeCategoryAdapter(
     }
 
     inner class Comparator(
-        val oldValue: ArrayList<com.shapeide.rasadesa.domain.Category>,
-        val newValue: ArrayList<com.shapeide.rasadesa.domain.Category>
+        val oldValue: ArrayList<com.shapeide.rasadesa.core.domain.Category>,
+        val newValue: ArrayList<com.shapeide.rasadesa.core.domain.Category>
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldValue.size
 

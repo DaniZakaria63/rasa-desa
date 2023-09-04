@@ -12,6 +12,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "BASE_URL", "\"https://api.edamam.com\"")
     }
 
     buildTypes {
@@ -43,6 +44,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit.logging)
+    implementation(libs.gson.core)
 
     testImplementation(libs.junit.core)
 }

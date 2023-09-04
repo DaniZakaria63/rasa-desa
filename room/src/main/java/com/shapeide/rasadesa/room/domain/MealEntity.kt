@@ -64,8 +64,8 @@ data class MealEntity constructor(
     @ColumnInfo(name = "measure_19") val strMeasure19: String?,
     @ColumnInfo(name = "measure_20") val strMeasure20: String?,
 ) {
-    fun asDomainModel(): com.shapeide.rasadesa.domain.Meal {
-        return com.shapeide.rasadesa.domain.Meal(
+    fun asDomainModel(): com.shapeide.rasadesa.core.domain.Meal {
+        return com.shapeide.rasadesa.core.domain.Meal(
             idMeal = idMeal,
             strMeal = strMeal,
             strDrinkAlternate = strDrinkAlternate,
@@ -123,7 +123,7 @@ data class MealEntity constructor(
     }
 }
 
-fun ResponseMeals<MealModel>.asDomainModel(): com.shapeide.rasadesa.domain.Meal {
+fun ResponseMeals<MealModel>.asDomainModel(): com.shapeide.rasadesa.core.domain.Meal {
     val data: MealModel = meals[0]
     return com.shapeide.rasadesa.domain.Meal(
         idMeal = data.idMeal,
@@ -242,9 +242,9 @@ fun ResponseMeals<MealModel>.asDatabaseModel(): MealEntity {
 }
 
 
-fun List<MealEntity>.asDomainListModel(): List<com.shapeide.rasadesa.domain.Meal> {
+fun List<MealEntity>.asDomainListModel(): List<com.shapeide.rasadesa.core.domain.Meal> {
     return map { id->
-        com.shapeide.rasadesa.domain.Meal(
+        com.shapeide.rasadesa.core.domain.Meal(
             idMeal = id.idMeal,
             strMeal = id.strMeal,
             strDrinkAlternate = id.strDrinkAlternate,

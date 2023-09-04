@@ -10,9 +10,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 
-class SearchAppManager(val context: Application, coroutineScope: CoroutineScope) :
-    SearchDataSource {
+class SearchAppManager(val context: Application): SearchDataSource {
     private val isInitialized: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val coroutineScope = CoroutineScope(Dispatchers.Default + Job())
 
     /*
     * The session serving all the process of database

@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     // AppSearch
     implementation(libs.search.core)

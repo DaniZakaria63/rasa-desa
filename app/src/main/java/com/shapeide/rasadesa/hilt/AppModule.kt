@@ -3,9 +3,9 @@ package com.shapeide.rasadesa.hilt
 import android.content.Context
 import androidx.room.Room
 import com.shapeide.rasadesa.room.data.repository.DesaDatabase
-import com.shapeide.rasadesa.data.source.APIEndpoint
-import com.shapeide.rasadesa.coroutines.DefaultDispatcherProvider
-import com.shapeide.rasadesa.coroutines.DispatcherProvider
+import com.shapeide.rasadesa.remote.data.source.APIEndpoint
+import com.shapeide.rasadesa.core.coroutines.DefaultDispatcherProvider
+import com.shapeide.rasadesa.core.coroutines.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 object AppModule {
     @Provides
     fun provideApiEndpoint(): APIEndpoint {
-        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+        return Retrofit.Builder().addConverterFactory(
+            GsonConverterFactory.create(GsonBuilder().setLenient().create())
+        )
             .baseUrl(APIEndpoint.BASE_URL)
             .build()
             .create(APIEndpoint::class.java)
@@ -37,5 +39,6 @@ object AppModule {
     }
 
     @Provides
-    fun provideDispatcherProvider(): DispatcherProvider = DefaultDispatcherProvider()
+    fun provideDispatcherProvider(): com.shapeide.rasadesa.core.coroutines.DispatcherProvider =
+        com.shapeide.rasadesa.core.coroutines.DefaultDispatcherProvider()
 }

@@ -15,9 +15,9 @@ data class FilterMealEntity constructor(
     @ColumnInfo(name = "type") val strType : String,
 )
 
-fun List<FilterMealEntity>.entityAsDomainModel() : List<com.shapeide.rasadesa.domain.FilterMeal> {
+fun List<FilterMealEntity>.entityAsDomainModel() : List<com.shapeide.rasadesa.core.domain.FilterMeal> {
     return map{
-        com.shapeide.rasadesa.domain.FilterMeal(
+        com.shapeide.rasadesa.core.domain.FilterMeal(
             id = it.idMeal,
             name = it.strMeal,
             thumb = it.strMealThumb,
@@ -26,7 +26,7 @@ fun List<FilterMealEntity>.entityAsDomainModel() : List<com.shapeide.rasadesa.do
     }
 }
 
-fun ResponseMeals<FilterMealModel>.asDomainModel() : List<com.shapeide.rasadesa.domain.FilterMeal>{
+fun ResponseMeals<FilterMealModel>.asDomainModel() : List<com.shapeide.rasadesa.core.domain.FilterMeal>{
     return meals.map {
         com.shapeide.rasadesa.domain.FilterMeal(
             id = it.idMeal,

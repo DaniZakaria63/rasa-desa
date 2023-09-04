@@ -1,7 +1,5 @@
 package com.shapeide.rasadesa.utills
 
-import com.shapeide.rasadesa.domain.CacheModel
-
 class LocalCache {
     private val cache : HashMap<String, CacheModel> = HashMap()
 

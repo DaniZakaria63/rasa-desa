@@ -15,9 +15,9 @@ data class IngredientEntity(
     @ColumnInfo(name = "type") val strType: String? = "default"
 )
 
-fun List<IngredientEntity>.asDomainModel() : List<com.shapeide.rasadesa.domain.Ingredient> {
+fun List<IngredientEntity>.asDomainModel() : List<com.shapeide.rasadesa.core.domain.Ingredient> {
     return map {
-        com.shapeide.rasadesa.domain.Ingredient(
+        com.shapeide.rasadesa.core.domain.Ingredient(
             idIngredient = it.idIngredient,
             strIngredient = it.strIngredient,
             strDescription = it.strDescription ?: "",

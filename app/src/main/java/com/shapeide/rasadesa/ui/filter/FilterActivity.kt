@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
-import com.shapeide.rasadesa.data.source.APIEndpoint
+import com.shapeide.rasadesa.remote.data.source.APIEndpoint
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

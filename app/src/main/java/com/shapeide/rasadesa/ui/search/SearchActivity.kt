@@ -86,13 +86,13 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         }
     }
 
-    override fun onDelete(search: com.shapeide.rasadesa.domain.Search) {
+    override fun onDelete(search: com.shapeide.rasadesa.core.domain.Search) {
         Log.d(TAG, "onDelete: Delete been selected")
         searchViewModel.deleteMealSearch(search)
         searchViewModel.searchHistoryData()
     }
 
-    override fun onDetail(search: com.shapeide.rasadesa.domain.Search) {
+    override fun onDetail(search: com.shapeide.rasadesa.core.domain.Search) {
         Log.d(TAG, "onDetail: List of search been clicked, ${search.text}")
         searchViewModel.addMealSearch(search)
 

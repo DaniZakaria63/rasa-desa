@@ -17,17 +17,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_URL", "\"http://www.themealdb.com\""
     }
 
     buildTypes {
-        debug {
-            buildConfigField "Boolean", "DEBUG_MODE", "true"
-            buildConfigField "String", "TAG", "\"ASD\""
-        }
         release {
-            buildConfigField "Boolean", "DEBUG_MODE", "false"
-            buildConfigField "String", "TAG", "\"DANI\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
