@@ -13,8 +13,11 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/presenter" />
             <option value="$PROJECT_DIR$/remote" />
             <option value="$PROJECT_DIR$/room" />
+            <option value="$PROJECT_DIR$/search" />
+            <option value="$PROJECT_DIR$/ui" />
           </set>
         </option>
       </GradleProjectSettings>

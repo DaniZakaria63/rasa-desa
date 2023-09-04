@@ -3,7 +3,7 @@ package com.shapeide.rasadesa.hilt
 import com.shapeide.rasadesa.room.data.repository.DesaDatabase
 import com.shapeide.rasadesa.data.repository.FilterMealRepository
 import com.shapeide.rasadesa.data.source.APIEndpoint
-import com.shapeide.rasadesa.ui.search.SearchRoomManager
+import com.shapeide.rasadesa.data.repository.SearchRoomManager
 import com.shapeide.rasadesa.coroutines.DispatcherProvider
 import dagger.Module
 import dagger.Provides

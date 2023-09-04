@@ -18,28 +18,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
-        <activity
-            android:name=".ui.detail.DetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.filter.FilterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
 <!--
         Search activity using default content provider
         the query listener are fine, it worked
         the problem start happened after calling retrofit
         so, the search will revert back to home fragment
--->
         <activity
             android:name=".ui.search.SearchActivity"
             android:exported="false"
@@ -53,9 +37,10 @@
         </activity>
         <provider
             android:authorities="com.shapeide.rasadesa.ui.search.mealsuggestion"
-            android:name=".ui.search.MealSuggestionProvider"
+            android:name=".search.data.repository.MealSuggestionProvider"
             android:enabled="true"
             android:exported="false"/>
+        -->
 
         <meta-data
             android:name="preloaded_fonts"

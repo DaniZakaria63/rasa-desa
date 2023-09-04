@@ -36,13 +36,9 @@ android {
 dependencies {
 
     // AppSearch
-    val appsearch_version = "1.1.0-alpha03"
-    implementation("androidx.appsearch:appsearch:$appsearch_version")
-    implementation("androidx.appsearch:appsearch-local-storage:$appsearch_version")
-    implementation("androidx.appsearch:appsearch-platform-storage:$appsearch_version")
-    ksp("androidx.appsearch:appsearch-compiler:$appsearch_version")
+    implementation(libs.search.core)
+    implementation(libs.search.local)
+    implementation(libs.search.platform)
+    ksp(libs.search.compiler)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

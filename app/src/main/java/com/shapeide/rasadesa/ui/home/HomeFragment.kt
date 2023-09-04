@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -12,11 +11,11 @@ import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
 import com.shapeide.rasadesa.adapters.HomeMealAdapter
 import com.shapeide.rasadesa.databinding.FragmentHomeBinding
-import com.shapeide.rasadesa.ui.main.MainActivity
+import com.shapeide.rasadesa.ui.MainActivityOld
 import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
-import com.shapeide.rasadesa.ui.main.MainViewModel
+import com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,12 +25,12 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     private lateinit var rvMealAdapter: HomeMealAdapter
     private lateinit var searchListener: HomeSearchListener
     private lateinit var mMealDetailListener: MealDetailListener
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val mainViewModel: com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mMealDetailListener = (activity as MainActivity)
-        searchListener = (activity as MainActivity)
+        mMealDetailListener = (activity as com.shapeide.rasadesa.ui.MainActivityOld)
+        searchListener = (activity as com.shapeide.rasadesa.ui.MainActivityOld)
         rvCategoryAdapter = HomeCategoryAdapter(requireContext(), 1) { mealName ->
             mainViewModel.syncFilterMealByMealName(mealName)
         }

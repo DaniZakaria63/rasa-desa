@@ -15,7 +15,6 @@ import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.SearchAdapter
 import com.shapeide.rasadesa.databinding.ActivitySearchBinding
-import com.shapeide.rasadesa.domain.Search
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +22,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchView: SearchView
     private lateinit var rvSearchAdapter: SearchAdapter
-    private val searchViewModel : SearchViewModel by viewModels()
+    private val searchViewModel : com.shapeide.rasadesa.presenter.search.viewmodel.SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

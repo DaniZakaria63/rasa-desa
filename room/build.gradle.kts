@@ -37,12 +37,8 @@ dependencies {
     implementation(project(mapOf("path" to ":core")))
 
     // Room database
-    val room_version = "2.5.2"
-    implementation("androidx.room:room-ktx:$room_version")
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    implementation(libs.room.core)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

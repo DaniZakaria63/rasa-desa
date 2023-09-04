@@ -4,10 +4,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.shapeide.rasadesa.ui.main.MainActivity
+import com.shapeide.rasadesa.ui.MainActivityOld
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.CountryAdapter
 import com.shapeide.rasadesa.adapters.HomeCategoryAdapter
@@ -15,7 +14,7 @@ import com.shapeide.rasadesa.adapters.IngredientsAdapter
 import com.shapeide.rasadesa.databinding.FragmentDiscoverBinding
 import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
-import com.shapeide.rasadesa.ui.main.MainViewModel
+import com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,11 +24,11 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var mCallbackListener: MealDetailListener
     private var mBinding: FragmentDiscoverBinding? = null
-    private val discoverViewModel : MainViewModel by activityViewModels()
+    private val discoverViewModel : com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCallbackListener = activity as MainActivity
+        mCallbackListener = activity as com.shapeide.rasadesa.ui.MainActivityOld
 
         categoryAdapter = HomeCategoryAdapter(requireContext(), type = 2) { name ->
             mCallbackListener.onNeedIntent("c", "Category", name)
