@@ -2,18 +2,15 @@ package com.shapeide.rasadesa.hilt
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.shapeide.rasadesa.databases.DesaDatabase
-import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.utills.DefaultDispatcherProvider
-import com.shapeide.rasadesa.utills.DispatcherProvider
+import com.shapeide.rasadesa.room.data.repository.DesaDatabase
+import com.shapeide.rasadesa.data.source.APIEndpoint
+import com.shapeide.rasadesa.coroutines.DefaultDispatcherProvider
+import com.shapeide.rasadesa.coroutines.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

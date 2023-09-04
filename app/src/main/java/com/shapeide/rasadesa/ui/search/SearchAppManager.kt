@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.appsearch.app.*
 import androidx.appsearch.localstorage.LocalStorage
 import androidx.appsearch.platformstorage.PlatformStorage
-import com.shapeide.rasadesa.databases.search.MealSearch
+import com.shapeide.rasadesa.search.domain.MealSearch
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -44,7 +44,7 @@ class SearchAppManager(val context: Application, coroutineScope: CoroutineScope)
                 /*The schema will have the structure as MealSearch
                 * schema type in the overall database schema*/
                 val schemaRequest = SetSchemaRequest.Builder()
-                    .addDocumentClasses(MealSearch::class.java)
+                    .addDocumentClasses(com.shapeide.rasadesa.search.domain.MealSearch::class.java)
                     .build()
                 appSearchSession.setSchemaAsync(schemaRequest).get()
 
@@ -69,7 +69,7 @@ class SearchAppManager(val context: Application, coroutineScope: CoroutineScope)
     }
 
     /* Add document with its own object */
-    suspend fun addMealSearch(mealSearch: MealSearch): AppSearchBatchResult<String, Void> {
+    suspend fun addMealSearch(mealSearch: com.shapeide.rasadesa.search.domain.MealSearch): AppSearchBatchResult<String, Void> {
         awaitInitialization()
 
         val request = PutDocumentsRequest.Builder().addDocuments(mealSearch).build()

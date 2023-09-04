@@ -7,16 +7,6 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.provider.BaseColumns
-import android.util.Log
-import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.networks.ResponseMeals
-import com.shapeide.rasadesa.networks.models.MealModel
-import java.io.BufferedInputStream
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 class MealSuggestionProvider : ContentProvider() {
     private val meals = ArrayList<String>()

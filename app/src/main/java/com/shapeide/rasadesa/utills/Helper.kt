@@ -3,11 +3,6 @@ package com.shapeide.rasadesa.utills
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.recyclerview.widget.DiffUtil
-import com.shapeide.rasadesa.domains.Area
-import com.shapeide.rasadesa.domains.Category
-import com.shapeide.rasadesa.domains.FilterMeal
-import com.shapeide.rasadesa.domains.Ingredient
 
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 

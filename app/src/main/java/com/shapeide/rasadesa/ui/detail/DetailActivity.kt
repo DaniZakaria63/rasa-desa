@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.shapeide.rasadesa.databinding.ActivityDetailBinding
 import com.shapeide.rasadesa.ui.dialog.NetworkDialog
-import com.shapeide.rasadesa.utills.RasaApplication
+import com.shapeide.rasadesa.RasaApplication
 import com.shapeide.rasadesa.utills.NetworkStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.domains.Area
+import com.shapeide.rasadesa.domain.Area
 
 class CountryAdapter(val listener: (name: String) -> Unit) :
     RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
-    private val arealist: ArrayList<Area> = ArrayList()
+    private val arealist: ArrayList<com.shapeide.rasadesa.domain.Area> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_discover_area, parent, false))
@@ -26,7 +26,7 @@ class CountryAdapter(val listener: (name: String) -> Unit) :
 
     override fun getItemCount(): Int = arealist.size
 
-    fun updateAreaList(newItems : ArrayList<Area>){
+    fun updateAreaList(newItems : ArrayList<com.shapeide.rasadesa.domain.Area>){
         val diffResult: DiffUtil.DiffResult =
             DiffUtil.calculateDiff(Comparator(arealist, newItems))
 
@@ -40,8 +40,8 @@ class CountryAdapter(val listener: (name: String) -> Unit) :
     }
 
     inner class Comparator(
-        val oldValue: ArrayList<Area>,
-        val newValue: ArrayList<Area>
+        val oldValue: ArrayList<com.shapeide.rasadesa.domain.Area>,
+        val newValue: ArrayList<com.shapeide.rasadesa.domain.Area>
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldValue.size
 

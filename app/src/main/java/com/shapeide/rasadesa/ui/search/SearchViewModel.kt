@@ -3,9 +3,7 @@ package com.shapeide.rasadesa.ui.search
 import android.util.Log
 import androidx.lifecycle.*
 import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.databases.search.asDatabaseModel
-import com.shapeide.rasadesa.domains.Search
-import com.shapeide.rasadesa.ui.search.SearchRoomManager
+import com.shapeide.rasadesa.room.domain.asDatabaseModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -18,8 +16,8 @@ class SearchViewModel @Inject constructor(private val roomManager: SearchRoomMan
     private val _errorMessage = MutableLiveData("")
     val errorMessage: LiveData<String> get() = _errorMessage
 
-    private val _mealSearchData = MutableLiveData<List<Search>>()
-    val mealSearchData: LiveData<List<Search>> get() = _mealSearchData
+    private val _mealSearchData = MutableLiveData<List<com.shapeide.rasadesa.domain.Search>>()
+    val mealSearchData: LiveData<List<com.shapeide.rasadesa.domain.Search>> get() = _mealSearchData
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         _errorMessage.value = "error happened, try again"
@@ -35,19 +33,19 @@ class SearchViewModel @Inject constructor(private val roomManager: SearchRoomMan
 
     fun queryMealSearch(query: String = "") {
         viewModelScope.launch(exceptionHandler) {
-            val searchData: List<Search> = roomManager.queryMealSearch(query)
+            val searchData: List<com.shapeide.rasadesa.domain.Search> = roomManager.queryMealSearch(query)
             _mealSearchData.postValue(searchData)
         }
     }
 
-    fun addMealSearch(search: Search) {
+    fun addMealSearch(search: com.shapeide.rasadesa.domain.Search) {
         viewModelScope.launch(exceptionHandler) {
             roomManager.saveMealSearch(search.asDatabaseModel())
             Log.d(TAG, "addMealSearch: done local saving")
         }
     }
 
-    fun deleteMealSearch(search: Search) {
+    fun deleteMealSearch(search: com.shapeide.rasadesa.domain.Search) {
         viewModelScope.launch(exceptionHandler) {
             roomManager.deleteMealSearch(search.id)
             Log.d(TAG, "deleteMealSearch: done remove search history")

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.domains.FilterMeal
+import com.shapeide.rasadesa.domain.FilterMeal
 
 class HomeMealAdapter(
     val context: Context,
     private val callback: (id: String) -> Unit) :
     RecyclerView.Adapter<HomeMealAdapter.ViewHolder>() {
-    private val itemList: ArrayList<FilterMeal> = ArrayList()
+    private val itemList: ArrayList<com.shapeide.rasadesa.domain.FilterMeal> = ArrayList()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
@@ -35,7 +35,7 @@ class HomeMealAdapter(
 
     override fun getItemCount(): Int = itemList.size
 
-    fun updateCategoryList(newItems: ArrayList<FilterMeal>) {
+    fun updateCategoryList(newItems: ArrayList<com.shapeide.rasadesa.domain.FilterMeal>) {
         val diffResult: DiffUtil.DiffResult =
             DiffUtil.calculateDiff(Comparator(itemList, newItems))
 
@@ -50,8 +50,8 @@ class HomeMealAdapter(
     }
 
     inner class Comparator(
-        val oldValue: ArrayList<FilterMeal>,
-        val newValue: ArrayList<FilterMeal>
+        val oldValue: ArrayList<com.shapeide.rasadesa.domain.FilterMeal>,
+        val newValue: ArrayList<com.shapeide.rasadesa.domain.FilterMeal>
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldValue.size
 

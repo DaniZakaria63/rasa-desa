@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.databases.meal.MealRepository
+import com.shapeide.rasadesa.data.repository.MealRepository
 import com.shapeide.rasadesa.databinding.FragmentDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class DetailFragment : Fragment() {
     private lateinit var detailViewModel: DetailViewModel
 
     @Inject
-    lateinit var repository: MealRepository
+    lateinit var repository: com.shapeide.rasadesa.data.repository.MealRepository
     private var mType: String = VAL_TYPE_RANDOM
     private var mIdMeal: Int = 0
 

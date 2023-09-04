@@ -1,15 +1,10 @@
 package com.shapeide.rasadesa.hilt
 
-import android.content.Context
-import com.shapeide.rasadesa.databases.DesaDatabase
-import com.shapeide.rasadesa.databases.area.AreaRepository
-import com.shapeide.rasadesa.databases.category.CategoryRepository
-import com.shapeide.rasadesa.databases.ingredient.IngredientRepository
-import com.shapeide.rasadesa.databases.filtermeal.FilterMealRepository
-import com.shapeide.rasadesa.databases.meal.MealRepository
-import com.shapeide.rasadesa.networks.APIEndpoint
+import com.shapeide.rasadesa.room.data.repository.DesaDatabase
+import com.shapeide.rasadesa.data.repository.FilterMealRepository
+import com.shapeide.rasadesa.data.source.APIEndpoint
 import com.shapeide.rasadesa.ui.search.SearchRoomManager
-import com.shapeide.rasadesa.utills.DispatcherProvider
+import com.shapeide.rasadesa.coroutines.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,32 +17,52 @@ object RepositoryModule{
 
     @Provides
     @ViewModelScoped
-    fun provideFilterMealRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : FilterMealRepository {
-        return FilterMealRepository(desaDatabase, apiEndpoint, dispatcherProvider)
+    fun provideFilterMealRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : com.shapeide.rasadesa.data.repository.FilterMealRepository {
+        return com.shapeide.rasadesa.data.repository.FilterMealRepository(
+            desaDatabase,
+            apiEndpoint,
+            dispatcherProvider
+        )
     }
 
     @Provides
     @ViewModelScoped
-    fun provideCategoryRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider): CategoryRepository {
-        return CategoryRepository(desaDatabase, apiEndpoint, dispatcherProvider)
+    fun provideCategoryRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider): com.shapeide.rasadesa.data.repository.CategoryRepository {
+        return com.shapeide.rasadesa.data.repository.CategoryRepository(
+            desaDatabase,
+            apiEndpoint,
+            dispatcherProvider
+        )
     }
 
     @Provides
     @ViewModelScoped
-    fun provideAreaRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : AreaRepository {
-        return AreaRepository(desaDatabase, apiEndpoint, dispatcherProvider)
+    fun provideAreaRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : com.shapeide.rasadesa.data.repository.DefaultAreaRepository {
+        return com.shapeide.rasadesa.data.repository.DefaultAreaRepository(
+            desaDatabase,
+            apiEndpoint,
+            dispatcherProvider
+        )
     }
 
     @Provides
     @ViewModelScoped
-    fun provideIngredientRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : IngredientRepository {
-        return IngredientRepository(desaDatabase, apiEndpoint, dispatcherProvider)
+    fun provideIngredientRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : com.shapeide.rasadesa.data.repository.IngredientRepository {
+        return com.shapeide.rasadesa.data.repository.IngredientRepository(
+            desaDatabase,
+            apiEndpoint,
+            dispatcherProvider
+        )
     }
 
     @Provides
     @ViewModelScoped
-    fun provideMealRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : MealRepository {
-        return MealRepository(desaDatabase, apiEndpoint, dispatcherProvider)
+    fun provideMealRepository(desaDatabase: DesaDatabase, apiEndpoint: APIEndpoint, dispatcherProvider: DispatcherProvider) : com.shapeide.rasadesa.data.repository.MealRepository {
+        return com.shapeide.rasadesa.data.repository.MealRepository(
+            desaDatabase,
+            apiEndpoint,
+            dispatcherProvider
+        )
     }
 
     @Provides

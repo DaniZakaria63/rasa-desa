@@ -4,17 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Filter
-import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.domains.Search
+import com.shapeide.rasadesa.domain.Search
 
 class SearchAdapter(private val listener: Listener) :
-    ListAdapter<Search, SearchAdapter.ViewHolder>(SEARCH_COMPARATOR){
+    ListAdapter<com.shapeide.rasadesa.domain.Search, SearchAdapter.ViewHolder>(SEARCH_COMPARATOR){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,7 +21,7 @@ class SearchAdapter(private val listener: Listener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data: Search = getItem(position)
+        val data: com.shapeide.rasadesa.domain.Search = getItem(position)
         holder.txtSearch.text = data.text.toString()
         holder.txtSearch.setOnClickListener { listener.onDetail(data) }
 
@@ -41,16 +39,16 @@ class SearchAdapter(private val listener: Listener) :
 
     companion object {
         interface Listener {
-            fun onDelete(search: Search)
-            fun onDetail(search: Search)
+            fun onDelete(search: com.shapeide.rasadesa.domain.Search)
+            fun onDetail(search: com.shapeide.rasadesa.domain.Search)
         }
 
-        val SEARCH_COMPARATOR = object : DiffUtil.ItemCallback<Search>() {
-            override fun areItemsTheSame(oldItem: Search, newItem: Search): Boolean {
+        val SEARCH_COMPARATOR = object : DiffUtil.ItemCallback<com.shapeide.rasadesa.domain.Search>() {
+            override fun areItemsTheSame(oldItem: com.shapeide.rasadesa.domain.Search, newItem: com.shapeide.rasadesa.domain.Search): Boolean {
                 return oldItem.id === newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Search, newItem: Search): Boolean {
+            override fun areContentsTheSame(oldItem: com.shapeide.rasadesa.domain.Search, newItem: com.shapeide.rasadesa.domain.Search): Boolean {
                 return oldItem == newItem
             }
 

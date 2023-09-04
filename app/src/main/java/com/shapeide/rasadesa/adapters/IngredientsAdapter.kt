@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shapeide.rasadesa.R
-import com.shapeide.rasadesa.domains.Ingredient
+import com.shapeide.rasadesa.domain.Ingredient
 
 class IngredientsAdapter(val listener: (name: String) -> Unit) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
-    private val items: ArrayList<Ingredient> = ArrayList()
+    private val items: ArrayList<com.shapeide.rasadesa.domain.Ingredient> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -29,7 +29,7 @@ class IngredientsAdapter(val listener: (name: String) -> Unit) :
 
     override fun getItemCount(): Int = items.size
 
-    fun updateIngredientList(newList: ArrayList<Ingredient>) {
+    fun updateIngredientList(newList: ArrayList<com.shapeide.rasadesa.domain.Ingredient>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             Comparator(items, newList)
         )
@@ -45,8 +45,8 @@ class IngredientsAdapter(val listener: (name: String) -> Unit) :
     }
 
     inner class Comparator(
-        val oldValue: ArrayList<Ingredient>,
-        val newValue: ArrayList<Ingredient>
+        val oldValue: ArrayList<com.shapeide.rasadesa.domain.Ingredient>,
+        val newValue: ArrayList<com.shapeide.rasadesa.domain.Ingredient>
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldValue.size
 

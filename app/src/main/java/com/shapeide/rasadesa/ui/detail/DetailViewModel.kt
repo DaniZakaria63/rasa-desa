@@ -1,8 +1,8 @@
 package com.shapeide.rasadesa.ui.detail
 
 import androidx.lifecycle.*
-import com.shapeide.rasadesa.databases.meal.MealRepository
-import com.shapeide.rasadesa.domains.Meal
+import com.shapeide.rasadesa.data.repository.MealRepository
+import com.shapeide.rasadesa.domain.Meal
 import kotlinx.coroutines.launch
 
 /*
@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 class DetailViewModel constructor(
     mType: String,
     private val mMealID: Int,
-    private val mealRepository: MealRepository
+    private val mealRepository: com.shapeide.rasadesa.data.repository.MealRepository
 ) : ViewModel() {
-    private val _mealData = MutableLiveData<Meal?>()
-    val mealData: MutableLiveData<Meal?> get() = _mealData
+    private val _mealData = MutableLiveData<com.shapeide.rasadesa.domain.Meal?>()
+    val mealData: MutableLiveData<com.shapeide.rasadesa.domain.Meal?> get() = _mealData
 
     init {
         if (mType.equals(DetailFragment.VAL_TYPE_RANDOM)) {
@@ -41,7 +41,7 @@ class DetailViewModel constructor(
     class DetailVMFactory constructor(
         val type: String?,
         val id: Int,
-        private val mealRepository: MealRepository
+        private val mealRepository: com.shapeide.rasadesa.data.repository.MealRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")

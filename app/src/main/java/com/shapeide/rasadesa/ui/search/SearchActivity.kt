@@ -15,7 +15,7 @@ import com.shapeide.rasadesa.BuildConfig.TAG
 import com.shapeide.rasadesa.R
 import com.shapeide.rasadesa.adapters.SearchAdapter
 import com.shapeide.rasadesa.databinding.ActivitySearchBinding
-import com.shapeide.rasadesa.domains.Search
+import com.shapeide.rasadesa.domain.Search
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -87,13 +87,13 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         }
     }
 
-    override fun onDelete(search: Search) {
+    override fun onDelete(search: com.shapeide.rasadesa.domain.Search) {
         Log.d(TAG, "onDelete: Delete been selected")
         searchViewModel.deleteMealSearch(search)
         searchViewModel.searchHistoryData()
     }
 
-    override fun onDetail(search: Search) {
+    override fun onDetail(search: com.shapeide.rasadesa.domain.Search) {
         Log.d(TAG, "onDetail: List of search been clicked, ${search.text}")
         searchViewModel.addMealSearch(search)
 

@@ -19,7 +19,7 @@ import com.shapeide.rasadesa.ui.detail.DetailFragment
 import com.shapeide.rasadesa.ui.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.listener.MealDetailListener
 import com.shapeide.rasadesa.ui.search.SearchActivity
-import com.shapeide.rasadesa.utills.RasaApplication
+import com.shapeide.rasadesa.RasaApplication
 import com.shapeide.rasadesa.utills.NetworkStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

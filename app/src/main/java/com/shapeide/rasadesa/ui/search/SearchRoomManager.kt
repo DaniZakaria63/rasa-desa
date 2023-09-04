@@ -1,21 +1,16 @@
 package com.shapeide.rasadesa.ui.search
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.asLiveData
 import com.shapeide.rasadesa.BuildConfig
-import com.shapeide.rasadesa.databases.DesaDatabase
-import com.shapeide.rasadesa.databases.search.MealSearchEntity
-import com.shapeide.rasadesa.databases.search.asSearchDomain
-import com.shapeide.rasadesa.domains.Search
-import com.shapeide.rasadesa.networks.APIEndpoint
-import com.shapeide.rasadesa.networks.ResponseMeals
-import com.shapeide.rasadesa.networks.models.MealModel
-import com.shapeide.rasadesa.utills.DispatcherProvider
-import com.shapeide.rasadesa.utills.isOnline
-import kotlinx.coroutines.coroutineScope
+import com.shapeide.rasadesa.room.data.repository.DesaDatabase
+import com.shapeide.rasadesa.room.domain.MealSearchEntity
+import com.shapeide.rasadesa.room.domain.asSearchDomain
+import com.shapeide.rasadesa.data.source.APIEndpoint
+import com.shapeide.rasadesa.domain.ResponseMeals
+import com.shapeide.rasadesa.domain.MealModel
+import com.shapeide.rasadesa.coroutines.DispatcherProvider
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -26,7 +21,7 @@ class SearchRoomManager @Inject constructor(
 ) {
     val _searchHistoryData = desaDatabase.searchDao.findAll().map { it.asSearchDomain() }.asLiveData()
 
-    suspend fun queryMealSearch(query: String = ""): List<Search> = withContext(dispatcherProvider.io){
+    suspend fun queryMealSearch(query: String = ""): List<com.shapeide.rasadesa.domain.Search> = withContext(dispatcherProvider.io){
         try {
             Log.d(BuildConfig.TAG, "queryMealSearch: getting data from API")
             val result: ResponseMeals<MealModel> = apiEndpoint.getSearchMeal(query)
@@ -49,9 +44,9 @@ class SearchRoomManager @Inject constructor(
         desaDatabase.searchDao.deleteOne(searchId)
     }
 
-    private fun List<MealModel>.toSearchModel(): List<Search> {
+    private fun List<MealModel>.toSearchModel(): List<com.shapeide.rasadesa.domain.Search> {
         return map {
-            Search(
+            com.shapeide.rasadesa.domain.Search(
                 id = it.idMeal.toString(),
                 text = it.strMeal.toString()
             )
