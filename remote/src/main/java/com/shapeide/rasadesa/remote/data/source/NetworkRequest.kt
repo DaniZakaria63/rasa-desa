@@ -1,7 +1,7 @@
 package com.shapeide.rasadesa.remote.data.source
 
+import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.remote.domain.RecipeModel
-import com.shapeide.rasadesa.remote.domain.RecipePreviewModel
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
  * by Retrofit
  * */
 interface NetworkRequest {
-    suspend fun getRecipes(mealType: String, isRandom: Boolean = true) : Flow<List<RecipePreviewModel>>
+    suspend fun getRecipes(mealType: String, isRandom: Boolean = true) : Flow<List<RecipePreview>>
     suspend fun getSingleRecipe(recipeId: String): Flow<RecipeModel>
 }

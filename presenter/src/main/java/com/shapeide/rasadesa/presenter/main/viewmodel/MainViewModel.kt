@@ -1,70 +1,49 @@
 package com.shapeide.rasadesa.presenter.main.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.*
-import com.shapeide.rasadesa.BuildConfig.TAG
-import com.shapeide.rasadesa.data.repository.FilterMealRepository
-import com.shapeide.rasadesa.ui.listener.NetworkState
-import com.shapeide.rasadesa.coroutines.DispatcherProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
+import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
+import com.shapeide.rasadesa.domain.domain.MealType
+import com.shapeide.rasadesa.presenter.main.state.RecipeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val filterMealRepository: com.shapeide.rasadesa.data.repository.FilterMealRepository,
-    private val categoryRepository: com.shapeide.rasadesa.data.repository.CategoryRepository,
-    mealRepository: com.shapeide.rasadesa.data.repository.MealRepository,
-    private val defaultAreaRepository: com.shapeide.rasadesa.data.repository.DefaultAreaRepository,
-    private val ingredientRepository: com.shapeide.rasadesa.data.repository.IngredientRepository,
-    private val dispatcherProvider: DispatcherProvider
-): ViewModel() {
+    val getRecipesWithParams: GetRecipesWithParamsInteractor,
+    val dispatcherProvider: DispatcherProvider
+) : ViewModel() {
+    private val _recipesState: MutableStateFlow<RecipeUiState> =
+        MutableStateFlow(RecipeUiState(isLoading = true))
 
-    val categoryData: LiveData<List<com.shapeide.rasadesa.domain.Category>> = categoryRepository._categoryData
-    val filterMealData: LiveData<List<com.shapeide.rasadesa.domain.FilterMeal>> = filterMealRepository.filterMealData
-    val favoriteMealData: LiveData<List<com.shapeide.rasadesa.domain.Meal>> = mealRepository._favoriteData
-    val areaData: LiveData<List<com.shapeide.rasadesa.domain.Area>> = defaultAreaRepository._areaData
-    val ingredientData: LiveData<List<com.shapeide.rasadesa.domain.Ingredient>> =ingredientRepository._ingredientData
+    val recipeState: StateFlow<RecipeUiState> = _recipesState.asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.Lazily, RecipeUiState())
 
-    private val _selectedMealCategory = MutableLiveData("Beef")
-    val selectedMealCategory: LiveData<String> get() = _selectedMealCategory
-
-    private val _networkState = MutableLiveData(NetworkState.LOADING)
-    val networkState: LiveData<NetworkState> get() = _networkState
-
-    init {
+    fun getRecipesByMealType(mealType: MealType = MealType.Breakfast) {
         viewModelScope.launch(dispatcherProvider.main) {
-            try {
-                categoryRepository.syncCategory()
-                syncFilterMealByMealName("Beef") //The beginning
-                _networkState.value = NetworkState.SUCCESS
-            } catch (networkError: IOException) {
-                _networkState.value = NetworkState.ERROR
-            }
-        }
-    }
-
-    /* For giving the data based on clicked meal category */
-    fun syncFilterMealByMealName(mealName: String) {
-        viewModelScope.launch(dispatcherProvider.main) {
-            filterMealRepository.syncByMeal(mealName)
-            _selectedMealCategory.value = mealName
-        }
-    }
-
-    fun syncDiscovery() {
-        viewModelScope.launch(dispatcherProvider.main) {
-            defaultAreaRepository.syncArea()
-            categoryRepository.syncCategory()
-            ingredientRepository.syncIngredient()
-        }
-    }
-
-    fun deleteLocalCategory() {
-        viewModelScope.launch(dispatcherProvider.main) {
-            Log.d(TAG, "deleteLocalCategory: Delete all the datas")
-            categoryRepository.deleteLocalCategory()
+            getRecipesWithParams(mealType)
+                .flowOn(dispatcherProvider.io)
+                .map { data ->
+                    if (data.isSuccess) {
+                        RecipeUiState(dataList = data.getOrNull())
+                    } else if (data.isFailure) {
+                        RecipeUiState(isError = true)
+                    } else {
+                        RecipeUiState(isLoading = true)
+                    }
+                }
+                .collect {
+                    _recipesState.emit(it)
+                }
         }
     }
 }

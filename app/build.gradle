@@ -53,19 +53,32 @@ android {
 
 dependencies {
     implementation project(path: ':core')
-    implementation project(path: ':room')
+    implementation project(path: ':local')
     implementation project(path: ':remote')
+    implementation project(path: ':search')
+    implementation project(path: ':presenter')
+    implementation project(path: ':domain')
+    implementation project(path: ':ui')
 
     // Hilt
     implementation(libs.hilt.android)
-    implementation project(path: ':search')
-    implementation project(path: ':presenter')
-    implementation project(path: ':ui')
     ksp(libs.hilt.compiler)
     androidTestImplementation(libs.hilt.test)
     kspAndroidTest(libs.hilt.compiler)
 
-    testImplementation(libs.junit.core)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.expresso.core)
+    // Timber
+    implementation(libs.timber.core)
+
+    // Room
+    implementation(libs.room.core)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.logging)
+
+    // Gson
+    implementation(libs.gson.core)
 }

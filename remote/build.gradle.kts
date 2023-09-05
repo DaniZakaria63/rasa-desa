@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -25,16 +27,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":core")))
 
     // Coroutines
     implementation(libs.coroutines.core)
@@ -46,5 +47,8 @@ dependencies {
     implementation(libs.retrofit.logging)
     implementation(libs.gson.core)
 
-    testImplementation(libs.junit.core)
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(project(mapOf("path" to ":domain")))
+    ksp(libs.hilt.compiler)
 }

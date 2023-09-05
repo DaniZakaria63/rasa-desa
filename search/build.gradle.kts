@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -38,9 +38,9 @@ dependencies {
     implementation(libs.coroutines.android)
 
     // AppSearch
-    implementation(libs.search.core)
-    implementation(libs.search.local)
-    implementation(libs.search.platform)
-    ksp(libs.search.compiler)
+//    implementation(libs.search.core)
+//    implementation(libs.search.local)
+//    implementation(libs.search.platform)
+//    ksp(libs.search.compiler)
 
 }

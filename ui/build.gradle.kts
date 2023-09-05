@@ -27,17 +27,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -47,31 +47,31 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":presenter")))
 
     implementation(libs.core.ktx)
-//    implementation("androidx.appcompat:appcompat:1.5.1")
-//    implementation("com.google.android.material:material:1.6.1")
-//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-//    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.appcompat)
     implementation(libs.activity.ktx)
     implementation(libs.fragment.ktx)
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.viewmodel)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     // Compose
     implementation(platform(libs.compose.bom))
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-    androidTestImplementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui.core)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material3.icon)
 
-    implementation(libs.compose.runtime)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.layout)
-    implementation(libs.compose.material)
-    implementation(libs.compose.tooling)
+    androidTestImplementation(platform(libs.compose.bom))
 
     // Navigation
     implementation(libs.navigation.ui)
@@ -79,8 +79,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
+    androidTestImplementation(libs.compose.ui.test.junit4)
     annotationProcessor(libs.glide.compiler)
-    debugImplementation(libs.ui.test.manifest)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

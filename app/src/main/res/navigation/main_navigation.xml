@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.shapeide.rasadesa.ui.home.HomeFragment"
+        android:name="com.shapeide.rasadesa.ui.old.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -22,12 +22,12 @@
     </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.shapeide.rasadesa.ui.favorite.FavoriteFragment"
+        android:name="com.shapeide.rasadesa.ui.old.favorite.FavoriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/discoverFragment"
-        android:name="com.shapeide.rasadesa.ui.discover.DiscoverFragment"
+        android:name="com.shapeide.rasadesa.ui.old.discover.DiscoverFragment"
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover" />
 </navigation>

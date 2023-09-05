@@ -13,10 +13,15 @@ searchVersion = "1.1.0-alpha03"
 roomVersion = "2.5.2"
 lifecycleVersion = "2.5.1"
 coreKtxVersion = "1.9.0"
-composeVersion = "2022.10.00"
+composeVersion = "2023.08.00"
+timberVersion = "5.0.1"
+
 org-jetbrains-kotlin-android = "1.8.10"
-lifecycle-runtime-ktx = "2.6.1"
 activity-compose = "1.7.2"
+agp = "8.1.1"
+appcompat = "1.6.1"
+material = "1.9.0"
+
 [libraries]
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
@@ -35,14 +40,7 @@ activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activ
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentVersion" }
 lifecycle-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
 lifecycle-args = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycleVersion" }
-
-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeVersion" }
-compose-runtime = { module = "androidx.compose.runtime:runtime" }
-compose-ui = { module = "androidx.compose.ui:ui" }
-compose-foundation = { module = "androidx.compose.foundation:foundation" }
-compose-layout = { module = "androidx.compose.foundation:foundation-layout" }
-compose-material = { module = "androidx.compose.material:material" }
-compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
+lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleVersion" }
 
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationVersion" }
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationVersion" }
@@ -58,26 +56,36 @@ search-compiler = { module = "androidx.appsearch:appsearch-compiler", version.re
 room-core = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+timber-core = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 
 junit-core = { module = "junit:junit", version.ref = "junitVersion" }
 junit-ext = { module = "androidx.test.ext:junit", version.ref = "jUnitExtVersion" }
 expresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "expressoVersion" }
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+#ALL ABOUT COMPOSE
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-runtime = { group = "androidx.lifecycle", name="lifecycle-runtime-compose", version.ref="lifecycleVersion" }
+compose-viewmodel = { group = "androidx.lifecycle", name="lifecycle-viewmodel-compose", version.ref="lifecycleVersion" }
+
+compose-bom = { group = "androidx.compose", name="compose-bom", version.ref = "composeVersion" }
+compose-ui-core = { group = "androidx.compose.ui", name="ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name="ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material3-icon= { group="androidx.compose.material", name="material-icons-extended" }
 [plugins]
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+com-android-library = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 hilt = ["hilt-android", "hilt-compiler", "hilt-test"]
 retrofit = ["retrofit-core", "retrofit-gson", "retrofit-logging"]
 navigation = ["navigation-ui", "navigation-fragment"]
-compose = ["compose-bom", "compose-foundation", "compose-layout", "compose-material", "compose-runtime", "compose-tooling", "compose-ui"]
 glide = ["glide-core", "glide-compiler"]
 search = ["search-compiler", "search-core", "search-local", "search-platform"]
 room = ["room-compiler", "room-core", "room-runtime"]
