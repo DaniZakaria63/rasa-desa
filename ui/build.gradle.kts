@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -48,6 +50,7 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":presenter")))
+    implementation(project(mapOf("path" to ":domain")))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
@@ -57,6 +60,7 @@ dependencies {
     implementation(libs.compose.runtime)
     implementation(libs.compose.activity)
     implementation(libs.compose.viewmodel)
+    implementation(libs.compose.viewmodel.hilt)
 
     // Coroutines
     implementation(libs.coroutines.core)
@@ -71,15 +75,21 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.icon)
 
-    androidTestImplementation(platform(libs.compose.bom))
-
     // Navigation
     implementation(libs.navigation.ui)
     implementation(libs.navigation.fragment)
 
     // Glide
-    implementation(libs.glide.core)
+    implementation(libs.coil.core)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    // Timber
+    implementation(libs.timber.core)
+
+    androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
-    annotationProcessor(libs.glide.compiler)
     debugImplementation(libs.compose.ui.test.manifest)
 }

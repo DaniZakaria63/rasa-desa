@@ -3,10 +3,10 @@ package com.shapeide.rasadesa.hilt
 import android.content.Context
 import androidx.room.Room
 import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
-import com.shapeide.rasadesa.room.data.DesaDatabase
-import com.shapeide.rasadesa.room.data.dao.RecipePreviewDao
-import com.shapeide.rasadesa.room.data.repository.DefaultRecipeDataStore
-import com.shapeide.rasadesa.room.data.source.RecipeDataStore
+import com.shapeide.rasadesa.local.data.DesaDatabase
+import com.shapeide.rasadesa.local.data.dao.RecipePreviewDao
+import com.shapeide.rasadesa.local.data.repository.DefaultRecipeDataStore
+import com.shapeide.rasadesa.local.data.source.RecipeDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

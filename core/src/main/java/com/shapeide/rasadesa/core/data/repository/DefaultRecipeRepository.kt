@@ -2,8 +2,10 @@ package com.shapeide.rasadesa.core.data.repository
 
 import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
 import com.shapeide.rasadesa.core.data.source.RecipeRepository
+import com.shapeide.rasadesa.domain.domain.MealType
+import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest
-import com.shapeide.rasadesa.room.data.source.RecipeDataStore
+import com.shapeide.rasadesa.local.data.source.RecipeDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -19,21 +21,22 @@ class DefaultRecipeRepository @Inject constructor(
 ) : RecipeRepository {
 
     /*TODO: Implement this function*/
-    override suspend fun getRecipes(): Flow<Result<List<com.shapeide.rasadesa.domain.domain.RecipePreview>>> = flow{
+    override suspend fun getRecipes(): Flow<Result<List<RecipePreview>>> = flow {
         emit(Result.success(listOf()))
     }
 
     /*Check whether online api is not working*/
-    override suspend fun getRecipesByMealType(mealType: com.shapeide.rasadesa.domain.domain.MealType): Flow<Result<List<com.shapeide.rasadesa.domain.domain.RecipePreview>>> {
+    override suspend fun getRecipesByMealType(mealType: MealType): Flow<Result<List<RecipePreview>>> {
         return networkRequest.getRecipes(mealType.name)
             .catch {
                 merge(recipeDataStore.getRecipesByType(mealType.name)).catch {
-                    Result.failure<List<com.shapeide.rasadesa.domain.domain.RecipePreview>>(it)
+                    Result.failure<List<RecipePreview>>(it)
                 }
             }
-            .map { value: List<com.shapeide.rasadesa.domain.domain.RecipePreview> ->
+            .map { value: List<RecipePreview> ->
                 Result.success(value)
             }
+            .catch { emit(Result.failure(it)) }
             .flowOn(dispatcherProvider.io)
     }
 }

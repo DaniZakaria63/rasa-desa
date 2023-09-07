@@ -5,7 +5,7 @@ import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
 import com.shapeide.rasadesa.core.data.repository.DefaultRecipeRepository
 import com.shapeide.rasadesa.core.data.source.RecipeRepository
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest
-import com.shapeide.rasadesa.room.data.source.RecipeDataStore
+import com.shapeide.rasadesa.local.data.source.RecipeDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

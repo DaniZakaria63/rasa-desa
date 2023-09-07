@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.shapeide.rasadesa"
+    namespace = "com.shapeide.rasadesa.core"
     compileSdk = 33
 
     defaultConfig {

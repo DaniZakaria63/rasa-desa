@@ -2,9 +2,9 @@ package com.shapeide.rasadesa
 
 import android.util.Log
 import androidx.lifecycle.asLiveData
-import com.shapeide.rasadesa.room.data.repository.DesaDatabase
-import com.shapeide.rasadesa.room.domain.MealSearchEntity
-import com.shapeide.rasadesa.room.domain.asSearchDomain
+import com.shapeide.rasadesa.local.data.repository.DesaDatabase
+import com.shapeide.rasadesa.local.domain.MealSearchEntity
+import com.shapeide.rasadesa.local.domain.asSearchDomain
 import com.shapeide.rasadesa.remote.data.source.APIEndpoint
 import com.shapeide.rasadesa.domain.ResponseMeals
 import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider

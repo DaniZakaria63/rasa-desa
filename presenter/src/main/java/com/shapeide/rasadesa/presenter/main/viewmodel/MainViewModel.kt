@@ -5,14 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
 import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
 import com.shapeide.rasadesa.domain.domain.MealType
-import com.shapeide.rasadesa.presenter.main.state.RecipeUiState
+import com.shapeide.rasadesa.domain.domain.RecipePreview
+import com.shapeide.rasadesa.presenter.base.state.RecipeDataState
+import com.shapeide.rasadesa.presenter.home.state.HomeScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,11 +27,25 @@ class MainViewModel @Inject constructor(
     val getRecipesWithParams: GetRecipesWithParamsInteractor,
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
-    private val _recipesState: MutableStateFlow<RecipeUiState> =
-        MutableStateFlow(RecipeUiState(isLoading = true))
+    private val _homeScreenState = MutableSharedFlow<HomeScreenState>()
+    val homeScreenState get() = _homeScreenState.asSharedFlow()
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    val recipeState: StateFlow<RecipeUiState> = _recipesState.asStateFlow()
-        .stateIn(viewModelScope, SharingStarted.Lazily, RecipeUiState())
+    private val _recipesState: MutableStateFlow<RecipeDataState> =
+        MutableStateFlow(RecipeDataState(isLoading = true))
+
+    val recipeState: StateFlow<RecipeDataState> = _recipesState.asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.Lazily, RecipeDataState())
+
+    val recipeDummy: StateFlow<RecipeDataState> = MutableStateFlow(
+        RecipeDataState(recipeList = listOf(
+        RecipePreview(image = "https://dummyimage.com/300", label = "One", dietLabels = listOf("Vegan", "Vegetarian")),
+        RecipePreview(image = "https://dummyimage.com/300", label = "Two", dietLabels = listOf("Meat", "Meatball")),
+        RecipePreview(image = "https://dummyimage.com/300", label = "Three", dietLabels = listOf("Strict", "Vegan")),
+    ))
+    )
+        .asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), RecipeDataState())
 
     fun getRecipesByMealType(mealType: MealType = MealType.Breakfast) {
         viewModelScope.launch(dispatcherProvider.main) {
@@ -34,11 +53,11 @@ class MainViewModel @Inject constructor(
                 .flowOn(dispatcherProvider.io)
                 .map { data ->
                     if (data.isSuccess) {
-                        RecipeUiState(dataList = data.getOrNull())
+                        RecipeDataState(recipeList = data.getOrNull())
                     } else if (data.isFailure) {
-                        RecipeUiState(isError = true)
+                        RecipeDataState(isError = true)
                     } else {
-                        RecipeUiState(isLoading = true)
+                        RecipeDataState(isLoading = true)
                     }
                 }
                 .collect {

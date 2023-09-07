@@ -15,6 +15,7 @@ lifecycleVersion = "2.5.1"
 coreKtxVersion = "1.9.0"
 composeVersion = "2023.08.00"
 timberVersion = "5.0.1"
+coilVersion = "2.4.0"
 
 org-jetbrains-kotlin-android = "1.8.10"
 activity-compose = "1.7.2"
@@ -45,6 +46,7 @@ lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-kt
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationVersion" }
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationVersion" }
 
+coil-core = { module="io.coil-kt:coil-compose", version.ref="coilVersion"}
 glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
 
@@ -58,25 +60,33 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersi
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 timber-core = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 
+# ALL ABOUT TESTING
 junit-core = { module = "junit:junit", version.ref = "junitVersion" }
 junit-ext = { module = "androidx.test.ext:junit", version.ref = "jUnitExtVersion" }
+test-core = { group = "androidx.test", name = "core-ktx", version = "1.5.0" }
+test-testing = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version = "5.4.0" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.0.0" }
+turbine = { group = "app.cash.turbine", name = "turbine", version = "1.0.0" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.7.2" }
 expresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "expressoVersion" }
 
-#ALL ABOUT COMPOSE
+# ALL ABOUT COMPOSE
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-compose-runtime = { group = "androidx.lifecycle", name="lifecycle-runtime-compose", version.ref="lifecycleVersion" }
-compose-viewmodel = { group = "androidx.lifecycle", name="lifecycle-viewmodel-compose", version.ref="lifecycleVersion" }
+compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleVersion" }
+compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleVersion" }
+compose-viewmodel-hilt={group="androidx.hilt", name="hilt-navigation-compose", version="1.0.0"}
 
-compose-bom = { group = "androidx.compose", name="compose-bom", version.ref = "composeVersion" }
-compose-ui-core = { group = "androidx.compose.ui", name="ui" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeVersion" }
+compose-ui-core = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-compose-ui-tooling = { group = "androidx.compose.ui", name="ui-tooling" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-compose-material3-icon= { group="androidx.compose.material", name="material-icons-extended" }
+compose-material3-icon = { group = "androidx.compose.material", name = "material-icons-extended" }
 [plugins]
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
