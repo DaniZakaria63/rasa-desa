@@ -32,20 +32,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch(Dispatchers.Main) {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.getRecipesByMealType(MealType.Breakfast)
-                viewModel.recipeState.collect {
-                    Timber.d("Data: ${it.recipeList}")
-                    when (it.status) {
-                        Status.ERROR -> Timber.e("Data: Something Error")
-                        Status.DATA -> Timber.d("Data: ${it.recipeList}")
-                        Status.LOADING -> Timber.d("Still Loading")
-                    }
-                }
-            }
-        }
-
         setContent {
             RasaDesaTheme {
                 HomeScreen()

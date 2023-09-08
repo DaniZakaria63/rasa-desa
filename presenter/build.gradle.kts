@@ -57,6 +57,10 @@ dependencies {
     testImplementation(libs.test.testing)
     testImplementation(libs.turbine)
 
+    // Hilt Test
     androidTestImplementation(libs.hilt.test)
     kspAndroidTest(libs.hilt.compiler)
+
+    // Timber
+    implementation(libs.timber.core)
 }

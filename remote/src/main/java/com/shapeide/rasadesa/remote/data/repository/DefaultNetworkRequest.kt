@@ -7,6 +7,7 @@ import com.shapeide.rasadesa.remote.domain.HitsPreviewResponse
 import com.shapeide.rasadesa.remote.domain.HitsSingleResponse
 import com.shapeide.rasadesa.remote.domain.RecipeModel
 import com.shapeide.rasadesa.remote.mappers.asDomainModel
+import com.shapeide.rasadesa.remote.mappers.toRecipePreviewModelList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class DefaultNetworkRequest @Inject constructor(
             mealType = mealType,
             isRandom = isRandom
         )
-        emit(data.hits?.asDomainModel()?: listOf())
+        emit(data.hits?.toRecipePreviewModelList()?.asDomainModel()?: listOf())
     }
 
     override suspend fun getSingleRecipe(recipeId: String): Flow<RecipeModel> = flow {

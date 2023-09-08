@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class DefaultRecipeRepository @Inject constructor(
@@ -28,11 +29,11 @@ class DefaultRecipeRepository @Inject constructor(
     /*Check whether online api is not working*/
     override suspend fun getRecipesByMealType(mealType: MealType): Flow<Result<List<RecipePreview>>> {
         return networkRequest.getRecipes(mealType.name)
-            .catch {
-                merge(recipeDataStore.getRecipesByType(mealType.name)).catch {
-                    Result.failure<List<RecipePreview>>(it)
-                }
-            }
+//            .catch {
+//                merge(recipeDataStore.getRecipesByType(mealType.name)).catch {
+//                    Result.failure<List<RecipePreview>>(it)
+//                }
+//            }
             .map { value: List<RecipePreview> ->
                 Result.success(value)
             }

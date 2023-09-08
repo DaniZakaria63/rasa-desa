@@ -1,11 +1,9 @@
 package com.shapeide.rasadesa.presenter.base
 
-import kotlinx.coroutines.flow.MutableSharedFlow
-
 abstract class BaseDataState(
     open val isLoading: Boolean = false,
     open val isError: Boolean = false,
-    open val _eventError: MutableSharedFlow<StateError>?,
+    open val eventError: StateError? = null,
 ) {
     open val status: Status
         get() = if (isError) {

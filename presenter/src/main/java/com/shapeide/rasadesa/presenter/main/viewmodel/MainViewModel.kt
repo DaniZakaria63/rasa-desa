@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,8 +29,9 @@ class MainViewModel @Inject constructor(
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
     private val _homeScreenState = MutableSharedFlow<HomeScreenState>()
-    val homeScreenState get() = _homeScreenState.asSharedFlow()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+    val homeScreenState
+        get() = _homeScreenState.asSharedFlow()
+            .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val _recipesState: MutableStateFlow<RecipeDataState> =
         MutableStateFlow(RecipeDataState(isLoading = true))
@@ -38,11 +40,25 @@ class MainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, RecipeDataState())
 
     val recipeDummy: StateFlow<RecipeDataState> = MutableStateFlow(
-        RecipeDataState(recipeList = listOf(
-        RecipePreview(image = "https://dummyimage.com/300", label = "One", dietLabels = listOf("Vegan", "Vegetarian")),
-        RecipePreview(image = "https://dummyimage.com/300", label = "Two", dietLabels = listOf("Meat", "Meatball")),
-        RecipePreview(image = "https://dummyimage.com/300", label = "Three", dietLabels = listOf("Strict", "Vegan")),
-    ))
+        RecipeDataState(
+            recipeList = listOf(
+                RecipePreview(
+                    image = "https://dummyimage.com/300",
+                    label = "One",
+                    dietLabels = listOf("Vegan", "Vegetarian")
+                ),
+                RecipePreview(
+                    image = "https://dummyimage.com/300",
+                    label = "Two",
+                    dietLabels = listOf("Meat", "Meatball")
+                ),
+                RecipePreview(
+                    image = "https://dummyimage.com/300",
+                    label = "Three",
+                    dietLabels = listOf("Strict", "Vegan")
+                ),
+            )
+        )
     )
         .asStateFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), RecipeDataState())
@@ -50,7 +66,7 @@ class MainViewModel @Inject constructor(
     fun getRecipesByMealType(mealType: MealType = MealType.Breakfast) {
         viewModelScope.launch(dispatcherProvider.main) {
             getRecipesWithParams(mealType)
-                .flowOn(dispatcherProvider.io)
+                .flowOn(dispatcherProvider.main)
                 .map { data ->
                     if (data.isSuccess) {
                         RecipeDataState(recipeList = data.getOrNull())
@@ -61,6 +77,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
                 .collect {
+                    Timber.i("Datas: ${it.recipeList}")
                     _recipesState.emit(it)
                 }
         }

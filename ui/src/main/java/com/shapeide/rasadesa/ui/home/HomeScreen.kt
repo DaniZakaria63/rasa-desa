@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.presenter.base.StateError
+import com.shapeide.rasadesa.presenter.base.StateErrorType
 import com.shapeide.rasadesa.presenter.base.Status
 import com.shapeide.rasadesa.presenter.home.state.HomeScreenState
 import com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel
@@ -41,11 +43,16 @@ fun HomeScreen(
         HomeScreenState(Unit)
     )
 
-    val dummyList by viewModel.recipeDummy.collectAsStateWithLifecycle()
-    LaunchedEffect(dummyList) {
-        when (dummyList.status) {
+    LaunchedEffect(Unit){
+        viewModel.getRecipesByMealType()
+    }
+    val recipeState by viewModel.recipeState.collectAsStateWithLifecycle()
+    LaunchedEffect(recipeState) {
+        Timber.i("Data Status depends: ${recipeState.status} , ${recipeState.isLoading}, ${recipeState.recipeList.isNullOrEmpty()}")
+        when (recipeState.status) {
             Status.ERROR -> {
                 loadingIndicator = false
+                Timber.e("Error happened")
             }
             Status.DATA -> {
                 loadingIndicator = false
@@ -53,10 +60,10 @@ fun HomeScreen(
             }
             Status.LOADING -> {
                 loadingIndicator = true
+                Timber.d("Loading")
             }
         }
     }
-
 
     Surface {
         LazyColumn {
@@ -96,7 +103,7 @@ fun HomeScreen(
             item {
                 if(loadingIndicator) CircularProgressIndicator()
             }
-            items(dummyList.recipeList ?: listOf()) { recipe: RecipePreview ->
+            items(recipeState.recipeList ?: listOf()) { recipe: RecipePreview ->
                 HomeList(recipe)
             }
         }

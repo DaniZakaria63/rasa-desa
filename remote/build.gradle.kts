@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":domain")))
 
     // Coroutines
     implementation(libs.coroutines.core)
@@ -49,6 +50,5 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
-    implementation(project(mapOf("path" to ":domain")))
     ksp(libs.hilt.compiler)
 }
