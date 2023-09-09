@@ -1,11 +1,9 @@
-package com.shapeide.rasadesa.presenter.base.state
+package com.shapeide.rasadesa.presenter.base
 
 import com.shapeide.rasadesa.domain.domain.RecipePreview
-import com.shapeide.rasadesa.presenter.base.BaseDataState
-import com.shapeide.rasadesa.presenter.base.StateError
-import com.shapeide.rasadesa.presenter.base.Status
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import com.shapeide.rasadesa.presenter.base.source.BaseDataState
+import com.shapeide.rasadesa.presenter.base.source.StateError
+import com.shapeide.rasadesa.presenter.domain.Status
 
 data class RecipeDataState(
     var recipeList: List<RecipePreview>? = null,

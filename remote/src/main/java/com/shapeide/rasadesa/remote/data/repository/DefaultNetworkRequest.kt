@@ -4,8 +4,9 @@ import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.remote.data.source.APIEndpoint
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest
 import com.shapeide.rasadesa.remote.domain.HitsPreviewResponse
-import com.shapeide.rasadesa.remote.domain.HitsSingleResponse
 import com.shapeide.rasadesa.remote.domain.RecipeModel
+import com.shapeide.rasadesa.remote.domain.RecipeSealedResponse
+import com.shapeide.rasadesa.remote.domain.RecipeSingleResponse
 import com.shapeide.rasadesa.remote.mappers.asDomainModel
 import com.shapeide.rasadesa.remote.mappers.toRecipePreviewModelList
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +32,7 @@ class DefaultNetworkRequest @Inject constructor(
     }
 
     override suspend fun getSingleRecipe(recipeId: String): Flow<RecipeModel> = flow {
-        val data: HitsSingleResponse = apiEndpoint.getSingleRecipe(recipeId)
-        emit(data.singleHit?:RecipeModel())
+        val data: RecipeSingleResponse = apiEndpoint.getSingleRecipe(recipeId)
+        emit(data.recipe?:RecipeModel())
     }
 }

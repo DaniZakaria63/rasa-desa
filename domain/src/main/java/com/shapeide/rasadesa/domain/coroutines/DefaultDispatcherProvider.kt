@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.domain.coroutines
 
+import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

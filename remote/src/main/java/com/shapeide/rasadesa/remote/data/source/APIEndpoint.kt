@@ -1,7 +1,8 @@
 package com.shapeide.rasadesa.remote.data.source
 
 import com.shapeide.rasadesa.remote.domain.HitsPreviewResponse
-import com.shapeide.rasadesa.remote.domain.HitsSingleResponse
+import com.shapeide.rasadesa.remote.domain.RecipeSealedResponse
+import com.shapeide.rasadesa.remote.domain.RecipeSingleResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,5 +26,5 @@ interface APIEndpoint {
     suspend fun getSingleRecipe(
         @Path("id") recipeId: String,
         @Query("type") type: String = "public",
-    ): HitsSingleResponse
+    ): RecipeSingleResponse
 }

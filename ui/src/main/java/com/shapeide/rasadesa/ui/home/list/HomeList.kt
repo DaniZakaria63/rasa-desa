@@ -13,9 +13,10 @@ import com.shapeide.rasadesa.domain.domain.RecipePreview
 
 @Composable
 fun HomeList(
-    recipe: RecipePreview
+    recipe: RecipePreview,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier=modifier) {
         SubcomposeAsyncImage(
             model = recipe.image,
             contentDescription = null,

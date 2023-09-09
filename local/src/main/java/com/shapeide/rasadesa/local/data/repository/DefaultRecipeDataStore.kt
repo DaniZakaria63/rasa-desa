@@ -1,6 +1,6 @@
 package com.shapeide.rasadesa.local.data.repository
 
-import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
+import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.local.data.dao.RecipePreviewDao
 import com.shapeide.rasadesa.local.data.source.RecipeDataStore

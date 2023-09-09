@@ -2,7 +2,7 @@ package com.shapeide.rasadesa.hilt
 
 import android.content.Context
 import androidx.room.Room
-import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
+import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.local.data.DesaDatabase
 import com.shapeide.rasadesa.local.data.dao.RecipePreviewDao
 import com.shapeide.rasadesa.local.data.repository.DefaultRecipeDataStore

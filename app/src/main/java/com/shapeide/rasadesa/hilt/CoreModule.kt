@@ -1,7 +1,7 @@
 package com.shapeide.rasadesa.hilt
 
 import com.shapeide.rasadesa.domain.coroutines.DefaultDispatcherProvider
-import com.shapeide.rasadesa.domain.coroutines.DispatcherProvider
+import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.core.data.repository.DefaultRecipeRepository
 import com.shapeide.rasadesa.core.data.source.RecipeRepository
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest

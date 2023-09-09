@@ -15,7 +15,7 @@ import com.shapeide.rasadesa.ui.MainActivityOld
 import com.shapeide.rasadesa.ui.old.detail.DetailFragment
 import com.shapeide.rasadesa.ui.old.listener.HomeSearchListener
 import com.shapeide.rasadesa.ui.old.listener.MealDetailListener
-import com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel
+import com.shapeide.rasadesa.presenter.home.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +25,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     private lateinit var rvMealAdapter: HomeMealAdapter
     private lateinit var searchListener: HomeSearchListener
     private lateinit var mMealDetailListener: MealDetailListener
-    private val mainViewModel: com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel by activityViewModels()
+    private val mainViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

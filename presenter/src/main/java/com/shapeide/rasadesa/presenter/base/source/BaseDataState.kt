@@ -1,4 +1,6 @@
-package com.shapeide.rasadesa.presenter.base
+package com.shapeide.rasadesa.presenter.base.source
+
+import com.shapeide.rasadesa.presenter.domain.Status
 
 abstract class BaseDataState(
     open val isLoading: Boolean = false,
@@ -8,8 +10,10 @@ abstract class BaseDataState(
     open val status: Status
         get() = if (isError) {
             Status.ERROR
-        } else {
+        } else if (isLoading) {
             Status.LOADING
+        } else {
+            Status.DATA
         }
 }
 

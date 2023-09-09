@@ -13,7 +13,7 @@ import com.shapeide.rasadesa.adapters.FavoriteAdapter
 import com.shapeide.rasadesa.ui.MainActivityOld
 import com.shapeide.rasadesa.ui.old.detail.DetailFragment
 import com.shapeide.rasadesa.ui.old.listener.MealDetailListener
-import com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel
+import com.shapeide.rasadesa.presenter.home.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +22,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var mFavoriteAdapter: FavoriteAdapter
     private lateinit var mMealDetailListener: MealDetailListener
     private lateinit var mMainActivityOld: com.shapeide.rasadesa.ui.MainActivityOld
-    private val mFavoriteViewModel: com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel by activityViewModels()
+    private val mFavoriteViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

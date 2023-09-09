@@ -3,7 +3,6 @@ package com.shapeide.rasadesa.remote.domain
 import com.google.gson.annotations.SerializedName
 
 data class TotalDailyModel(
-
     @SerializedName("ENERC_KCAL") var ENERCKCAL: TotalSubModel? = TotalSubModel(),
     @SerializedName("FAT") var FAT: TotalSubModel? = TotalSubModel(),
     @SerializedName("FASAT") var FASAT: TotalSubModel? = TotalSubModel(),
@@ -29,5 +28,4 @@ data class TotalDailyModel(
     @SerializedName("VITD") var VITD: TotalSubModel? = TotalSubModel(),
     @SerializedName("TOCPHA") var TOCPHA: TotalSubModel? = TotalSubModel(),
     @SerializedName("VITK1") var VITK1: TotalSubModel? = TotalSubModel()
-
 )

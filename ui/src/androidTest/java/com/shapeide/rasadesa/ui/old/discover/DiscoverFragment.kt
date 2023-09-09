@@ -14,7 +14,7 @@ import com.shapeide.rasadesa.adapters.IngredientsAdapter
 import com.shapeide.rasadesa.databinding.FragmentDiscoverBinding
 import com.shapeide.rasadesa.ui.old.detail.DetailFragment
 import com.shapeide.rasadesa.ui.old.listener.MealDetailListener
-import com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel
+import com.shapeide.rasadesa.presenter.home.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +24,7 @@ class DiscoverFragment : Fragment(R.layout.fragment_discover) {
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var mCallbackListener: MealDetailListener
     private var mBinding: FragmentDiscoverBinding? = null
-    private val discoverViewModel : com.shapeide.rasadesa.presenter.main.viewmodel.MainViewModel by activityViewModels()
+    private val discoverViewModel : HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
