@@ -3,9 +3,11 @@ package com.shapeide.rasadesa.core.data.repository
 import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.core.data.source.RecipeRepository
 import com.shapeide.rasadesa.domain.domain.MealType
+import com.shapeide.rasadesa.domain.domain.Recipe
 import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest
 import com.shapeide.rasadesa.local.data.source.RecipeDataStore
+import com.shapeide.rasadesa.remote.domain.RecipeModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -36,6 +38,14 @@ class DefaultRecipeRepository @Inject constructor(
                 Result.success(value)
             }
             .catch { emit(Result.failure(it)) }
+            .flowOn(dispatcherProvider.io)
+    }
+
+    override suspend fun getRecipeById(recipeId: String): Flow<Result<Recipe>> {
+        return networkRequest.getSingleRecipe(recipeId)
+            .map { value: Recipe ->
+                Result.success(value)
+            }.catch { emit(Result.failure(it)) }
             .flowOn(dispatcherProvider.io)
     }
 }

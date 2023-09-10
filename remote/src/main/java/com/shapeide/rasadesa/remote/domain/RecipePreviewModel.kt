@@ -12,5 +12,5 @@ data class RecipePreviewModel(
     @SerializedName("totalTime") var totalTime: Int? = null,
     @SerializedName("dietLabels") var dietLabels: ArrayList<String> = arrayListOf(),
 ){
-    val parsedId = uri?.let { it.split("#")[1] } ?: ""
+    val parsedId get() = uri?.let { it.split("#")[1] } ?: "err#1"
 }

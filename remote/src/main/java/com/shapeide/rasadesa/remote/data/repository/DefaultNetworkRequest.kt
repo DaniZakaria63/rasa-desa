@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.remote.data.repository
 
+import com.shapeide.rasadesa.domain.domain.Recipe
 import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.remote.data.source.APIEndpoint
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest
@@ -8,6 +9,7 @@ import com.shapeide.rasadesa.remote.domain.RecipeModel
 import com.shapeide.rasadesa.remote.domain.RecipeSealedResponse
 import com.shapeide.rasadesa.remote.domain.RecipeSingleResponse
 import com.shapeide.rasadesa.remote.mappers.asDomainModel
+import com.shapeide.rasadesa.remote.mappers.toDomainModel
 import com.shapeide.rasadesa.remote.mappers.toRecipePreviewModelList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,8 +33,8 @@ class DefaultNetworkRequest @Inject constructor(
         emit(data.hits?.toRecipePreviewModelList()?.asDomainModel()?: listOf())
     }
 
-    override suspend fun getSingleRecipe(recipeId: String): Flow<RecipeModel> = flow {
+    override suspend fun getSingleRecipe(recipeId: String): Flow<Recipe> = flow {
         val data: RecipeSingleResponse = apiEndpoint.getSingleRecipe(recipeId)
-        emit(data.recipe?:RecipeModel())
+        emit(data.recipe?.toDomainModel()?:Recipe())
     }
 }

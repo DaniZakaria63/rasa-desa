@@ -34,6 +34,7 @@ import com.shapeide.rasadesa.ui.R
 import com.shapeide.rasadesa.ui.home.categories.HomeCategory
 import com.shapeide.rasadesa.ui.home.list.HomeList
 import com.shapeide.rasadesa.ui.navigation.SearchDestination
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -44,6 +45,7 @@ fun HomeScreen(
     navigatorCallback: (HomeNavigator) -> Unit,
 ) {
     var loadingIndicator by remember { mutableStateOf(true) }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
         viewModel.getRecipesByMealType()
@@ -72,7 +74,7 @@ fun HomeScreen(
 
     val navigator by viewModel.navigation.collectAsStateWithLifecycle(initialValue = null)
     LaunchedEffect(navigator){
-        navigator?.let{ navigatorCallback(it) }
+        navigator?.let{nav-> navigatorCallback(nav) }
     }
 
     Surface {
@@ -119,8 +121,10 @@ fun HomeScreen(
                 if (loadingIndicator) CircularProgressIndicator()
             }
             items(recipeState.recipeList ?: listOf()) { recipe: RecipePreview ->
-                HomeList(recipe, modifier = Modifier.clickable {
-                    viewModel.navigateTo(HomeNavigator.NavigateToDetailScreen(recipe.id?:""))
+                HomeList(recipe, onClicked = { recipeID ->
+                    coroutineScope.launch(Dispatchers.Main) {
+                        viewModel.navigateTo(HomeNavigator.NavigateToDetailScreen(recipeID?:"err#2"))
+                    }
                 })
             }
         }

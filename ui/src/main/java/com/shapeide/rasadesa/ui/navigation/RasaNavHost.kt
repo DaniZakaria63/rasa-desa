@@ -30,7 +30,7 @@ fun RasaNavHost(
                     }
 
                     is HomeNavigator.NavigateToDetailScreen -> {
-                        navController.navigate("${DetailDestination.route}/${it.id}") {
+                        navController.navigate("${DetailDestination.route}/?${DetailDestination.detailIdArgs}=${it.id}") {
                             launchSingleTop = true
                         }
                     }

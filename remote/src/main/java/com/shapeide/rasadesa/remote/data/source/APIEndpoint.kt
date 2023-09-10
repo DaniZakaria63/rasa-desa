@@ -24,7 +24,7 @@ interface APIEndpoint {
     // Recipe Detail
     @GET("/api/recipes/v2/{id}")
     suspend fun getSingleRecipe(
-        @Path("id") recipeId: String,
+        @Path("id") recipeId: String = "null",
         @Query("type") type: String = "public",
     ): RecipeSingleResponse
 }

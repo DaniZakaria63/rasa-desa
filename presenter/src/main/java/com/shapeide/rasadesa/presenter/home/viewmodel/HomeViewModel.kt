@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
 import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.domain.domain.MealType
-import com.shapeide.rasadesa.presenter.base.RecipeDataState
+import com.shapeide.rasadesa.presenter.base.RecipeListDataState
 import com.shapeide.rasadesa.presenter.home.navigator.HomeNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,11 +26,11 @@ class HomeViewModel @Inject constructor(
     val getRecipesWithParams: GetRecipesWithParamsInteractor,
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
-    private val _recipesState: MutableStateFlow<RecipeDataState> =
-        MutableStateFlow(RecipeDataState(isLoading = true))
+    private val _recipesState: MutableStateFlow<RecipeListDataState> =
+        MutableStateFlow(RecipeListDataState(isLoading = true))
 
-    val recipeState: StateFlow<RecipeDataState> = _recipesState.asStateFlow()
-        .stateIn(viewModelScope, SharingStarted.Lazily, RecipeDataState())
+    val recipeState: StateFlow<RecipeListDataState> = _recipesState.asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.Lazily, RecipeListDataState())
 
     private val _navigation = MutableSharedFlow<HomeNavigator>()
     val navigation get() = _navigation.asSharedFlow()
@@ -42,11 +42,11 @@ class HomeViewModel @Inject constructor(
                 .flowOn(dispatcherProvider.main)
                 .map { data ->
                     if (data.isSuccess) {
-                        RecipeDataState(recipeList = data.getOrNull())
+                        RecipeListDataState(recipeList = data.getOrNull())
                     } else if (data.isFailure) {
-                        RecipeDataState(isError = true)
+                        RecipeListDataState(isError = true)
                     } else {
-                        RecipeDataState(isLoading = true)
+                        RecipeListDataState(isLoading = true)
                     }
                 }
                 .collect {
