@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-
+    implementation(kotlin("reflect"))
     implementation(project(mapOf("path" to ":core")))
     implementation(project(mapOf("path" to ":domain")))
 

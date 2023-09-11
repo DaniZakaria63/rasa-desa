@@ -1,6 +1,7 @@
 package com.shapeide.rasadesa.presenter.mappers
 
 import com.shapeide.rasadesa.presenter.base.source.BaseDataState
+import timber.log.Timber
 
 
 inline fun <T> extractDataState(
@@ -12,6 +13,7 @@ inline fun <T> extractDataState(
     return if (data.isSuccess) {
         whenSuccess()
     } else if (data.isFailure) {
+        Timber.e(data.exceptionOrNull())
         whenFailure()
     } else {
         loading()

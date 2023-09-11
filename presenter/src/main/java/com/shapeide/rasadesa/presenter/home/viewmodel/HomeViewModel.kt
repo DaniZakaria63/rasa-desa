@@ -7,6 +7,7 @@ import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.domain.domain.MealType
 import com.shapeide.rasadesa.presenter.base.RecipeListDataState
 import com.shapeide.rasadesa.presenter.home.navigator.HomeNavigator
+import com.shapeide.rasadesa.presenter.mappers.extractDataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,13 +42,12 @@ class HomeViewModel @Inject constructor(
             getRecipesWithParams(mealType)
                 .flowOn(dispatcherProvider.main)
                 .map { data ->
-                    if (data.isSuccess) {
-                        RecipeListDataState(recipeList = data.getOrNull())
-                    } else if (data.isFailure) {
-                        RecipeListDataState(isError = true)
-                    } else {
-                        RecipeListDataState(isLoading = true)
-                    }
+                    extractDataState(
+                        data,
+                        {RecipeListDataState(recipeList = data.getOrNull())},
+                        {RecipeListDataState(isError = true)},
+                        {RecipeListDataState(isLoading = true)}
+                    ) as RecipeListDataState
                 }
                 .collect {
                     _recipesState.emit(it)

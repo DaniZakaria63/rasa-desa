@@ -15,7 +15,7 @@ data class DetailScreenState(
     val nutrients: Nutrients? = Nutrients(),
     val dailyNutrients: NutrientsDaily? = NutrientsDaily(),
     val digest: List<Digest>? = listOf(),
-    val moreRecipes: List<RecipePreview>? = listOf(),
+    var moreRecipes: List<RecipePreview>? = listOf(),
 ) {
     data class Header(
         val calories: String = "",

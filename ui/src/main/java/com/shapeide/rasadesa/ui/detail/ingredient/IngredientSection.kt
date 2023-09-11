@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -20,12 +22,10 @@ import coil.compose.AsyncImage
 import com.shapeide.rasadesa.domain.domain.Ingredients
 import com.shapeide.rasadesa.ui.R
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun IngredientSection(ingredients: List<Ingredients>?) {
-    FlowColumn {
-        Text(text = "Ingredients")
-        ingredients?.forEach { ingredient ->
+    Column {
+        ingredients?.forEach{ ingredient ->
             var expanded by rememberSaveable {
                 mutableStateOf(false)
             }
@@ -56,7 +56,7 @@ fun IngredientSection(ingredients: List<Ingredients>?) {
                     }
                     Column {
                         Text(text = "Category: ${ingredient.foodCategory}")
-                        Text(text = "Food: ${ingredient.food?:"-"}")
+                        Text(text = "Food: ${ingredient.food ?: "-"}")
                     }
                 }
             }

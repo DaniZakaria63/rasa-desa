@@ -4,10 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shapeide.rasadesa.core.interactors.get_recipe_by_id.GetRecipeDetailByIdInteractor
 import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
+import com.shapeide.rasadesa.domain.domain.Ingredients
 import com.shapeide.rasadesa.domain.domain.MealType
+import com.shapeide.rasadesa.domain.domain.Nutrients
+import com.shapeide.rasadesa.domain.domain.NutrientsSub
 import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.presenter.base.RecipeDataState
 import com.shapeide.rasadesa.presenter.base.RecipeListDataState
+import com.shapeide.rasadesa.presenter.detail.navigator.DetailNavigator
 import com.shapeide.rasadesa.presenter.detail.state.DetailScreenState
 import com.shapeide.rasadesa.presenter.detail.state.DetailTabState
 import com.shapeide.rasadesa.presenter.domain.DetailTab
@@ -19,12 +23,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.primaryConstructor
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
@@ -32,47 +41,48 @@ class DetailViewModel @Inject constructor(
     val getRecipesWithParams: GetRecipesWithParamsInteractor,
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
+    val nutrientKeyList: List<String> by lazy { extractKeyList() }
+
+    private val _navigatorDetail: MutableSharedFlow<DetailNavigator> =
+        MutableSharedFlow()
+    val navigatorDetail get() = _navigatorDetail.asSharedFlow()
+        .shareIn(viewModelScope, SharingStarted.Lazily)
+
     private val _recipeState: MutableStateFlow<RecipeDataState> =
         MutableStateFlow(RecipeDataState(isLoading = true))
 
     private val _recipesOtherState: MutableStateFlow<RecipeListDataState> =
         MutableStateFlow(RecipeListDataState(isLoading = true))
 
-    // TODO: Join other state recipes flow
     val detailScreenState: SharedFlow<DetailScreenState> get() =
         _recipeState
             .asSharedFlow()
             .map { it.toState() }
             .flowOn(dispatcherProvider.main)
-            .stateIn(viewModelScope, SharingStarted.Eagerly, DetailScreenState())
+            .combine(_recipesOtherState){ state, recipe ->
+                state.moreRecipes = recipe.recipeList
+                state
+            }
+            .shareIn(viewModelScope, SharingStarted.Eagerly)
 
     private val _tabState: MutableSharedFlow<DetailTabState> =
         MutableSharedFlow()
 
     val tabState: SharedFlow<DetailTabState> = _tabState.asSharedFlow()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, DetailTabState())
+        .shareIn(viewModelScope, SharingStarted.Eagerly)
 
     fun getDetail(id: String?) {
         viewModelScope.launch(dispatcherProvider.main) {
             getRecipeDetailById(id ?: "null")
                 .flowOn(dispatcherProvider.main)
                 .map { data ->
-//                    extractDataState(
-//                        data,
-//                        { RecipeDataState(recipe = data.getOrNull()) },
-//                        { RecipeDataState(isError = true) },
-//                        { RecipeDataState(isLoading = true) }
-//                    ) as RecipeDataState
-                    if (data.isSuccess) {
-                        RecipeDataState(recipe = data.getOrNull())
-                    } else if (data.isFailure) {
-                        Timber.e(data.exceptionOrNull())
-                        RecipeDataState(isError = true)
-                    } else {
-                        RecipeDataState(isLoading = true)
-                    }
+                    extractDataState(
+                        data,
+                        { RecipeDataState(recipe = data.getOrNull()) },
+                        { RecipeDataState(isError = true) },
+                        { RecipeDataState(isLoading = true) }
+                    ) as RecipeDataState
                 }.collect {
-                    Timber.i("getRecipeDetailsById returns data: ${it.recipe} | Status: ${it.status}")
                     _recipeState.emit(it)
                 }
 
@@ -83,16 +93,40 @@ class DetailViewModel @Inject constructor(
                         RecipeListDataState(recipeList = data.getOrNull())
                     }
                     .collect {
-                        Timber.i("getRecipeWithParams returns data: ${it.status}")
                         _recipesOtherState.emit(it)
                     }
             }.join()
         }
     }
 
+    fun extractKeyList(): List<String>{
+        return Nutrients::class.primaryConstructor!!.parameters.map { it.name?:"-" }
+    }
+
+    fun extractValueList(nutrients: Nutrients): List<NutrientsSub>{
+        val list :MutableList<NutrientsSub> = mutableListOf()
+        try {
+            nutrientKeyList.forEach { nutrient ->
+                val value = nutrients::class.memberProperties.first { it.name == nutrient }
+                list.add(value.getter.call(nutrients) as NutrientsSub)
+            }
+        }catch(e: Exception){
+            Timber.d("Nutrient Key List: $nutrientKeyList")
+            Timber.d("Nutrient Value Object: $nutrients")
+            Timber.e(e)
+        }
+        return list
+    }
+
     fun updateTabPosition(state: DetailTab){
         viewModelScope.launch(dispatcherProvider.main) {
             _tabState.emit(DetailTabState(tabActiveState = state))
+        }
+    }
+
+    fun navigateTo(navigator: DetailNavigator){
+        viewModelScope.launch(dispatcherProvider.main) {
+            _navigatorDetail.emit(navigator)
         }
     }
 }

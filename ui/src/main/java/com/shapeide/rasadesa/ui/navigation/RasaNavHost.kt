@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.shapeide.rasadesa.presenter.detail.navigator.DetailNavigator
 import com.shapeide.rasadesa.presenter.home.navigator.HomeNavigator
 import com.shapeide.rasadesa.ui.detail.DetailScreen
 import com.shapeide.rasadesa.ui.home.HomeScreen
@@ -26,13 +27,11 @@ fun RasaNavHost(
             HomeScreen {
                 when (it) {
                     is HomeNavigator.NavigateToSearchScreen -> {
-                        navController.navigate(SearchDestination.route)
+                        navController.navigateSingleTopTo(SearchDestination.route)
                     }
 
                     is HomeNavigator.NavigateToDetailScreen -> {
-                        navController.navigate("${DetailDestination.route}/?${DetailDestination.detailIdArgs}=${it.id}") {
-                            launchSingleTop = true
-                        }
+                        navController.navigateToSingleDetail(it.id)
                     }
 
                     else -> {
@@ -50,7 +49,21 @@ fun RasaNavHost(
             deepLinks = DetailDestination.deepLink
         ) { navBackStackEntry ->
             val recipeID = navBackStackEntry.arguments?.getString(DetailDestination.detailIdArgs)
-            DetailScreen(recipe_id = recipeID)
+            DetailScreen(recipe_id = recipeID){
+                when(it){
+                    is DetailNavigator.NavigateToHomeScreen -> navController.popBackStack()
+                    is DetailNavigator.NavigateToAnotherDetailScreen -> {
+                        navController.navigateToSingleDetail(it.id)
+                    }
+                    else -> Timber.e(IllegalAccessException("Detail route error, HOW???"))
+                }
+            }
         }
     }
 }
+
+private fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) { launchSingleTop = true }
+
+private fun NavHostController.navigateToSingleDetail(id: String) =
+this.navigateSingleTopTo("${DetailDestination.route}/?${DetailDestination.detailIdArgs}=$id")
