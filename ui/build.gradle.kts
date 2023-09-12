@@ -79,7 +79,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.navigation.fragment)
 
-    // Glide
+    // Coil
     implementation(libs.coil.core)
 
     // Hilt

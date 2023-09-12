@@ -1,10 +1,14 @@
 package com.shapeide.rasadesa.ui.home.categories
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrunchDining
+import androidx.compose.material.icons.filled.Fastfood
+import androidx.compose.material.icons.filled.LunchDining
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.shapeide.rasadesa.domain.domain.MealType
-import com.shapeide.rasadesa.ui.R
 
-enum class HomeCategoryMenu(val title: String, val icon: Int) {
-    BREAKFAST(MealType.Breakfast.name, R.drawable.ic_outline_home),
-    DINNER(MealType.Dinner.name, R.drawable.ic_outline_compass),
-    LUNCH(MealType.Lunch.name, R.drawable.ic_outline_favorite),
+enum class HomeCategoryMenu(val title: String, val icon: ImageVector) {
+    BREAKFAST(MealType.Breakfast.name, Icons.Filled.Fastfood),
+    DINNER(MealType.Dinner.name, Icons.Filled.BrunchDining),
+    LUNCH(MealType.Lunch.name, Icons.Filled.LunchDining),
 }

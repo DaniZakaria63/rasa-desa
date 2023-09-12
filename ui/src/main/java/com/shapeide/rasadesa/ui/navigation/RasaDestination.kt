@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -21,7 +22,7 @@ object HomeDestination : BaseDestination {
 
 object SearchDestination : BaseDestination {
     override val icon: ImageVector
-        get() = Icons.Filled.Search
+        get() = Icons.Outlined.Search
     override val route: String
         get() = NavTarget.Search.label
 }

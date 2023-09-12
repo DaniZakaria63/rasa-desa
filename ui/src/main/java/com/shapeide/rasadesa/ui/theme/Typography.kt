@@ -6,6 +6,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.shapeide.rasadesa.ui.R
 
 private val roboto = FontFamily(
@@ -24,6 +25,7 @@ val customTypography = Typography(
     titleMedium = TextStyle(
         fontFamily = prata,
         fontWeight = FontWeight.Bold,
+        letterSpacing = 2.sp
     ),
     titleSmall = TextStyle(
         fontFamily = roboto,
