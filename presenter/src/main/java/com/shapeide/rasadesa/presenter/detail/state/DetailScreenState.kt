@@ -18,6 +18,7 @@ data class DetailScreenState(
     var moreRecipes: List<RecipePreview>? = listOf(),
 ) {
     data class Header(
+        val title: String = "",
         val calories: String = "",
         val time: String = "",
         val weight: String = "",

@@ -6,9 +6,10 @@ import com.shapeide.rasadesa.presenter.detail.state.DetailScreenState
 
 fun RecipeDataState.toState(): DetailScreenState = DetailScreenState(
     header = DetailScreenState.Header(
-        calories = recipe?.calories.toString(),
+        title = recipe?.label.toString(),
+        calories = recipe?.calories?.toInt().toString(),
         time = recipe?.totalTime.toString(),
-        weight = recipe?.totalWeight.toString(),
+        weight = recipe?.totalWeight?.toInt().toString(),
         source = recipe?.source.toString(),
         sourceLink = recipe?.url.toString(),
         image = recipe?.image.toString()
