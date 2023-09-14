@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/activity_filter.xml
     tools:context=".ui.old.filter.FilterActivity">
+=======
+    tools:context=".ui.activities.FilterActivity">
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/activity_filter.xml
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

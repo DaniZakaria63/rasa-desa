@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/activity_detail.xml
     tools:context=".ui.old.detail.DetailActivity">
+=======
+    tools:context=".ui.activities.DetailActivity">
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/activity_detail.xml
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -17,7 +21,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/activity_detail.xml
             app:contentScrim="?attr/colorTertiary"
+=======
+            app:contentScrim="@color/primaryColor"
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/activity_detail.xml
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:toolbarId="@id/toolbar">
 
@@ -44,11 +52,22 @@
         app:layout_anchorGravity="top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/activity_detail.xml
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_detail" />
+=======
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_medium"
+            android:text="@string/lipsum"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/activity_detail.xml
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

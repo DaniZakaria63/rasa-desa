@@ -6,7 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/fragment_home.xml
     tools:context=".ui.old.home.HomeFragment">
+=======
+    tools:context=".ui.fragments.HomeFragment">
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/fragment_home.xml
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,6 +21,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/div_topbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/small"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_title" />
+
+                <TextView
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/xsmall"
+                    android:text="@string/app_subtitle" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_search"
                 style="@style/TextNormal"
@@ -26,7 +56,7 @@
                 android:layout_marginTop="@dimen/big"
                 android:text="Delicious Dishes"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/div_topbar" />
 
             <TextView
                 android:id="@+id/tv_forrecipe"
@@ -43,8 +73,13 @@
                 android:id="@+id/div_search"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/fragment_home.xml
                 android:visibility="visible"
                 android:background="?attr/colorOnPrimary"
+=======
+                android:background="@android:color/black"
+                android:visibility="gone"
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/fragment_home.xml
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_forrecipe" />
 
@@ -54,7 +89,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/big"
                 android:scrollIndicators="bottom"
+<<<<<<< HEAD:app/src/androidTest/java/com/shapeide/rasadesa/layout/fragment_home.xml
                 app:layout_constraintTop_toBottomOf="@id/div_search"
+=======
+                app:layout_constraintTop_toBottomOf="@id/div_searchview"
+>>>>>>> 042c86f22302f7ea88f3641297bc748a5d4434dd:app/src/main/res/layout/fragment_home.xml
                 tools:layout_editor_absoluteX="43dp" />
 
             <TextView
