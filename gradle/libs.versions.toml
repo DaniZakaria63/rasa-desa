@@ -1,0 +1,104 @@
+[versions]
+junitVersion = "4.13.2"
+jUnitExtVersion = "1.1.3"
+expressoVersion = "3.4.0"
+hiltVersion = "2.47"
+coroutinesVersion = "1.5.0"
+retrofitVersion = "2.9.0"
+activityVersion = "1.7.2"
+fragmentVersion = "1.6.1"
+navigationVersion = "2.7.1"
+glideVersion = "4.14.2"
+searchVersion = "1.1.0-alpha03"
+roomVersion = "2.5.2"
+lifecycleVersion = "2.5.1"
+coreKtxVersion = "1.9.0"
+composeVersion = "2023.08.00"
+timberVersion = "5.0.1"
+coilVersion = "2.4.0"
+
+org-jetbrains-kotlin-android = "1.8.10"
+activity-compose = "1.7.2"
+agp = "8.1.1"
+appcompat = "1.6.1"
+material = "1.9.0"
+
+[libraries]
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
+
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
+hilt-test = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltVersion" }
+
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitVersion" }
+retrofit-logging = { module = "com.squareup.okhttp3:logging-interceptor", version = "5.0.0-alpha.11" }
+gson-core = { module = "com.google.code.gson:gson", version.ref = "retrofitVersion" }
+
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityVersion" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentVersion" }
+lifecycle-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
+lifecycle-args = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycleVersion" }
+lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleVersion" }
+
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationVersion" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationVersion" }
+
+coil-core = { module="io.coil-kt:coil-compose", version.ref="coilVersion"}
+glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
+
+search-core = { module = "androidx.appsearch:appsearch", version.ref = "searchVersion" }
+search-local = { module = "androidx.appsearch:appsearch-local-storage", version.ref = "searchVersion" }
+search-platform = { module = "androidx.appsearch:appsearch-platform-storage", version.ref = "searchVersion" }
+search-compiler = { module = "androidx.appsearch:appsearch-compiler", version.ref = "searchVersion" }
+
+room-core = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+timber-core = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
+
+# ALL ABOUT TESTING
+junit-core = { module = "junit:junit", version.ref = "junitVersion" }
+junit-ext = { module = "androidx.test.ext:junit", version.ref = "jUnitExtVersion" }
+test-core = { group = "androidx.test", name = "core-ktx", version = "1.5.0" }
+test-testing = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version = "5.4.0" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.0.0" }
+turbine = { group = "app.cash.turbine", name = "turbine", version = "1.0.0" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.7.2" }
+expresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "expressoVersion" }
+
+# ALL ABOUT COMPOSE
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleVersion" }
+compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleVersion" }
+compose-viewmodel-hilt={group="androidx.hilt", name="hilt-navigation-compose", version="1.0.0"}
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeVersion" }
+compose-ui-core = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material3-icon = { group = "androidx.compose.material", name = "material-icons-extended" }
+[plugins]
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+com-android-library = { id = "com.android.library", version.ref = "agp" }
+
+[bundles]
+coroutines = ["coroutines-core", "coroutines-android"]
+hilt = ["hilt-android", "hilt-compiler", "hilt-test"]
+retrofit = ["retrofit-core", "retrofit-gson", "retrofit-logging"]
+navigation = ["navigation-ui", "navigation-fragment"]
+glide = ["glide-core", "glide-compiler"]
+search = ["search-compiler", "search-core", "search-local", "search-platform"]
+room = ["room-compiler", "room-core", "room-runtime"]
+junit = ["junit-core", "junit-ext"]
+espresso = ["expresso-core"]
+
