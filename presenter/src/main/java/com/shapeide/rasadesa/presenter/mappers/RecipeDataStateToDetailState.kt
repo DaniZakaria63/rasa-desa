@@ -18,7 +18,7 @@ fun RecipeDataState.toState(): DetailScreenState = DetailScreenState(
 //        emission = recipe.emission,
 //        emissionClass = recipe.emissionClass,
 //        cuisineType = recipe.cuisineType,
-//        mealType = recipe.mealType,
+//        mealType = recipe.,
         healthLabels = recipe?.healthLabels
     ),
     ingredients = recipe?.ingredients,

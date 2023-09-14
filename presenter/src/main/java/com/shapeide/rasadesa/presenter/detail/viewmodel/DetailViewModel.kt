@@ -46,7 +46,7 @@ class DetailViewModel @Inject constructor(
     private val _navigatorDetail: MutableSharedFlow<DetailNavigator> =
         MutableSharedFlow()
     val navigatorDetail get() = _navigatorDetail.asSharedFlow()
-        .shareIn(viewModelScope, SharingStarted.Lazily)
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val _recipeState: MutableStateFlow<RecipeDataState> =
         MutableStateFlow(RecipeDataState(isLoading = true))
@@ -63,13 +63,13 @@ class DetailViewModel @Inject constructor(
                 state.moreRecipes = recipe.recipeList
                 state
             }
-            .shareIn(viewModelScope, SharingStarted.Eagerly)
+            .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val _tabState: MutableSharedFlow<DetailTabState> =
         MutableSharedFlow()
 
     val tabState: SharedFlow<DetailTabState> = _tabState.asSharedFlow()
-        .shareIn(viewModelScope, SharingStarted.Eagerly)
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     fun getDetail(id: String?) {
         viewModelScope.launch(dispatcherProvider.main) {
@@ -90,7 +90,12 @@ class DetailViewModel @Inject constructor(
                 getRecipesWithParams(MealType.Breakfast)
                     .flowOn(dispatcherProvider.io)
                     .map { data ->
-                        RecipeListDataState(recipeList = data.getOrNull())
+                        extractDataState(
+                            data,
+                            { RecipeListDataState(recipeList = data.getOrNull()) },
+                            { RecipeListDataState(isError = true) },
+                            { RecipeListDataState(isLoading = true)}
+                        ) as RecipeListDataState
                     }
                     .collect {
                         _recipesOtherState.emit(it)
@@ -111,8 +116,7 @@ class DetailViewModel @Inject constructor(
                 list.add(value.getter.call(nutrients) as NutrientsSub)
             }
         }catch(e: Exception){
-            Timber.d("Nutrient Key List: $nutrientKeyList")
-            Timber.d("Nutrient Value Object: $nutrients")
+            Timber.d("Error Nutrient Key List: $nutrientKeyList => $nutrients")
             Timber.e(e)
         }
         return list
@@ -128,5 +132,12 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.main) {
             _navigatorDetail.emit(navigator)
         }
+    }
+
+    //  Not implemented yet
+    fun addToFavorite(
+
+    ){
+
     }
 }

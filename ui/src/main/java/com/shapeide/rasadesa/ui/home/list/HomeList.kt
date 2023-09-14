@@ -17,6 +17,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -26,89 +30,103 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.ui.theme.Dimens
+import com.shapeide.rasadesa.ui.widget.shimmerBrush
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun HomeList(
     recipe: RecipePreview,
+    modifier: Modifier = Modifier,
     onClicked: (String?) -> Unit,
-    modifier: Modifier = Modifier
 ) {
+    var loadingProcess by remember {
+        mutableStateOf(true)
+    }
+
     Card(
         onClick = { onClicked(recipe.id) },
         elevation = CardDefaults.cardElevation(
             defaultElevation = Dimens.small
         ),
         modifier = Modifier
-            .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = Dimens.normal)
+            .fillMaxWidth()
+            .padding(vertical = Dimens.medium)
     ) {
         Column(modifier = modifier) {
             SubcomposeAsyncImage(
                 model = recipe.image,
                 contentDescription = null,
-                loading = {
-                    CircularProgressIndicator()
-                },
                 contentScale = ContentScale.Crop,
+                onLoading = { loadingProcess = true },
+                onSuccess = { loadingProcess = false },
+                onError = { loadingProcess = false},
                 modifier = Modifier
                     .clip(RoundedCornerShape(Dimens.normal))
+                    .background(shimmerBrush(showShimmer = loadingProcess))
                     .fillMaxWidth()
-                    .height(250.dp)
+                    .height(200.dp)
             )
             Text(
                 text = recipe.label.toString(),
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                fontSize = Dimens.Text.subtitle,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = Dimens.normal, vertical = Dimens.medium)
+                modifier = Modifier.padding(Dimens.normal)
             )
 
+            /*TODO: Restructure this into data list and do looping*/
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = Dimens.normal)
             ) {
-                Text(
-                    text = "Type",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .weight(0.5f)
-                )
-                Text(
-                    text = recipe.mealType.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .padding(horizontal = Dimens.small)
-                        .weight(0.5f)
-                )
-            }
+                Column(modifier = Modifier.padding(horizontal = Dimens.small)) {
+                    Text(
+                        text = "Type",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = Dimens.Text.body,
+                    )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.normal)
-            ) {
-                Text(
-                    text = "Calories",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .weight(0.5f)
-                )
-                Text(
-                    text = recipe.caloriesInt.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .padding(horizontal = Dimens.small)
-                        .weight(0.5f)
-                )
+                    Text(
+                        text = recipe.mealType.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = Dimens.Text.body,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.padding(horizontal = Dimens.medium)
+                ) {
+                    Text(
+                        text = "Calories",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = Dimens.Text.body,
+                    )
+                    Text(
+                        text = recipe.caloriesInt.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = Dimens.Text.body,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.padding(horizontal = Dimens.normal)
+                ) {
+                    Text(
+                        text = "Time",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = Dimens.Text.body,
+                    )
+                    Text(
+                        text = "${recipe.totalTime} min",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = Dimens.Text.body,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
             }
 
             FlowRow(

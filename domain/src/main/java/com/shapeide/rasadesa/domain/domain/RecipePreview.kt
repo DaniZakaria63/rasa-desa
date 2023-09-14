@@ -11,4 +11,5 @@ data class RecipePreview(
     var dietLabels: List<String> = arrayListOf(),
 ){
     val caloriesInt: Int? get() = calories?.toInt()
+    val labelShorter: String get() = if((label?.length ?: 0) > 35) label?.take(35)+"..." else label.toString()
 }

@@ -4,4 +4,5 @@ enum class NavTarget(val label: String) {
     Home("home"),
     Search("search"),
     Detail("detail"),
+    About("about"),
 }
