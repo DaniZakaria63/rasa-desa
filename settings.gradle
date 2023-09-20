@@ -14,3 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Rasa Desa"
 include ':app'
+include ':core'
+include ':local'
+include ':remote'
+include ':search'
+include ':presenter'
+include ':ui'
+include ':domain'

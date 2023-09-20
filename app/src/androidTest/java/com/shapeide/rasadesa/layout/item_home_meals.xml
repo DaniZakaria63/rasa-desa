@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="140dp"
+    android:layout_height="200dp"
+    android:layout_marginStart="@dimen/medium"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="@dimen/xsmall"
+    android:layout_marginBottom="@dimen/small"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card_primary_rounded">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/dummy" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_card_sec_rounded2">
+
+            <TextView
+                android:id="@+id/tv_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/normal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="This is dummy text"
+                android:textAlignment="center" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

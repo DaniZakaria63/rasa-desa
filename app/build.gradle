@@ -1,15 +1,18 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.dagger.hilt.android'
+    id 'com.google.devtools.ksp'
 }
 
 android {
-    compileSdk 32
+    namespace 'com.shapeide.rasadesa'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.shapeide.rasadesa"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -17,36 +20,65 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField "Boolean", "DEBUG_MODE", "true"
-            buildConfigField "String", "TAG", "\"ASD\""
-        }
         release {
-            buildConfigField "Boolean", "DEBUG_MODE", "false"
-            buildConfigField "String", "TAG", "\"DANI\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+
+    buildFeatures {
+        viewBinding true
     }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    kotlin {
+        jvmToolchain(11)
+    }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
-dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+dependencies {
+    implementation project(path: ':core')
+    implementation project(path: ':local')
+    implementation project(path: ':remote')
+    implementation project(path: ':search')
+    implementation project(path: ':presenter')
+    implementation project(path: ':domain')
+    implementation project(path: ':ui')
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.test)
+    kspAndroidTest(libs.hilt.compiler)
+
+    // Timber
+    implementation(libs.timber.core)
+
+    // Room
+    implementation(libs.room.core)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.logging)
+
+    // Gson
+    implementation(libs.gson.core)
 }

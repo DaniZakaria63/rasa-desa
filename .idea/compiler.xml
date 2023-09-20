@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="Rasa_Desa.core" target="17" />
+      <module name="Rasa_Desa.domain" target="17" />
+      <module name="Rasa_Desa.local" target="17" />
+      <module name="Rasa_Desa.presenter" target="17" />
+      <module name="Rasa_Desa.remote" target="17" />
+      <module name="Rasa_Desa.search" target="17" />
+      <module name="Rasa_Desa.ui" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
