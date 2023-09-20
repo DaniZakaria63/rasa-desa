@@ -25,7 +25,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Fastfood
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.HourglassBottom
 import androidx.compose.material.icons.outlined.MonitorWeight
@@ -71,6 +73,7 @@ import com.shapeide.rasadesa.ui.detail.nutrient.NutrientSection
 import com.shapeide.rasadesa.ui.theme.Dimens
 import com.shapeide.rasadesa.ui.widget.CustomTabMenu
 import com.shapeide.rasadesa.ui.widget.shimmerBrush
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -86,30 +89,24 @@ fun DetailScreen(
     var loadingProcess by remember {
         mutableStateOf(true)
     }
-    val navigatorState: DetailNavigator? by viewModel.navigatorDetail.collectAsStateWithLifecycle(
-        initialValue = null
-    )
-    LaunchedEffect(navigatorState) {
-        Timber.i("Navigator Information: $navigatorState")
-        navigatorState?.let { state -> navigatorCallback(state) }
-    }
-
-    val detailScreenState: DetailScreenState by viewModel.detailScreenState.collectAsStateWithLifecycle(
-        initialValue = DetailScreenState()
-    )
-    val detailTabState: DetailTabState by viewModel.tabState.collectAsStateWithLifecycle(
-        initialValue = DetailTabState()
-    )
-    LaunchedEffect(recipe_id) {
-        listScrollState.animateScrollToItem(index = 0)
-        viewModel.getDetail(recipe_id)
-    }
-
     var tabIndex by remember {
         mutableIntStateOf(0)
     }
-    LaunchedEffect(detailTabState) {
+    val detailTabState: DetailTabState by viewModel.tabState.collectAsStateWithLifecycle()
+    LaunchedEffect(detailTabState){
         tabIndex = detailTabState.tabActiveState?.ordinal ?: 0
+    }
+    val detailScreenState: DetailScreenState by viewModel.detailScreenState.collectAsStateWithLifecycle()
+
+    val favoriteStatus by viewModel.favoriteStatus.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
+        listScrollState.animateScrollToItem(index = 0)
+        viewModel.getDetail(recipe_id)
+        viewModel.getFavoriteStatus()
+
+        viewModel.navigatorDetail.collectLatest {
+            navigatorCallback(it)
+        }
     }
 
     LazyColumn(state = listScrollState) {
@@ -157,9 +154,9 @@ fun DetailScreen(
                         .padding(top = Dimens.large, end = Dimens.large)
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.FavoriteBorder,
+                        imageVector = if(favoriteStatus) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = "icon.favorite",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = if(favoriteStatus) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surfaceVariant)
                             .size(Dimens.iconXLarge)

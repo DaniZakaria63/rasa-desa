@@ -3,6 +3,7 @@ package com.shapeide.rasadesa.presenter.search.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
+import com.shapeide.rasadesa.core.interactors.set_caching_recipes.SetCachingRecipesListInteractor
 import com.shapeide.rasadesa.domain.domain.MealType
 import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.presenter.base.RecipeListDataState
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,11 +32,17 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     val getRecipesWithParams: GetRecipesWithParamsInteractor,
+    val setCachingRecipesList: SetCachingRecipesListInteractor,
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
-    val _queryListParams: List<MealType> by lazy { MealType.values().toList() }
-    private var _queryState: MutableStateFlow<MealType> = MutableStateFlow(MealType.Breakfast)
 
+    private val _navigation: MutableSharedFlow<SearchNavigator> = MutableSharedFlow()
+    val navigation get() =  _navigation.asSharedFlow()
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+
+    val _queryListParams: List<MealType> by lazy { MealType.values().toList() }
+
+    private var _queryState: MutableStateFlow<MealType> = MutableStateFlow(MealType.Breakfast)
     val queryState: StateFlow<MealType> get() = _queryState
         .asStateFlow()
         .stateIn(viewModelScope, SharingStarted.Eagerly, MealType.Breakfast)
@@ -52,10 +60,6 @@ class SearchViewModel @Inject constructor(
         _searchErrorState.asSharedFlow()
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    private val _navigation: MutableSharedFlow<SearchNavigator> = MutableSharedFlow()
-    val navigation get() =  _navigation.asSharedFlow()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
-
     fun searchDataByType(type: MealType) {
         viewModelScope.launch(dispatcherProvider.main) {
             getRecipesWithParams(type)
@@ -68,6 +72,7 @@ class SearchViewModel @Inject constructor(
                         { RecipeListDataState(isLoading = true) }
                     ) as RecipeListDataState
                 }.collect {
+                    if(it.recipeList != null) setCachingRecipesList(it.recipeList!!)
                     _searchDataState.emit(it)
                 }
         }

@@ -8,6 +8,7 @@ data class RecipePreview(
     var mealType: String? = "",
     var calories: Double? = 0.0,
     var totalTime: Int? = null,
+    var isFavorite: Boolean? = false,
     var dietLabels: List<String> = arrayListOf(),
 ){
     val caloriesInt: Int? get() = calories?.toInt()

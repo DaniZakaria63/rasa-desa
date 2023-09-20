@@ -13,6 +13,7 @@ fun List<RecipePreviewModel>.asDomainModel(): List<RecipePreview> {
             it.mealType.listToString(),
             it.calories,
             it.totalTime,
+            it.isFavorite,
             it.dietLabels
         )
     }

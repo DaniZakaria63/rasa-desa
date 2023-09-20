@@ -10,7 +10,7 @@ import com.shapeide.rasadesa.local.typeconverter.ListDietConverter
 @TypeConverters(ListDietConverter::class)
 @Database(
     entities = [RecipePreviewEntity::class],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class DesaDatabase : RoomDatabase() {

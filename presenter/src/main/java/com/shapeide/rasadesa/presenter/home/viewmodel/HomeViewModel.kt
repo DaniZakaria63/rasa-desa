@@ -2,7 +2,11 @@ package com.shapeide.rasadesa.presenter.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shapeide.rasadesa.core.interactors.get_recipe_favorite_by_id.GetRecipeFavoriteByIdInteractor
+import com.shapeide.rasadesa.core.interactors.get_recipes_favorites.GetRecipesFavoritesInteractor
 import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
+import com.shapeide.rasadesa.core.interactors.set_caching_recipes.SetCachingRecipesListInteractor
+import com.shapeide.rasadesa.core.interactors.set_recipe_favorite.SetRecipeFavoriteInteractor
 import com.shapeide.rasadesa.domain.source.DispatcherProvider
 import com.shapeide.rasadesa.domain.domain.MealType
 import com.shapeide.rasadesa.presenter.base.RecipeListDataState
@@ -25,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     val getRecipesWithParams: GetRecipesWithParamsInteractor,
+    val setCachingRecipesList: SetCachingRecipesListInteractor,
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
     private val _recipesState: MutableStateFlow<RecipeListDataState> =
@@ -51,6 +56,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .collect {
                     _recipesState.emit(it)
+                    if(it.recipeList != null) setCachingRecipesList(it.recipeList!!)
                 }
         }
     }

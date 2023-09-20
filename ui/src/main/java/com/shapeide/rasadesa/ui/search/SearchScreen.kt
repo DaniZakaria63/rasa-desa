@@ -54,11 +54,14 @@ import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.shapeide.rasadesa.domain.domain.MealType
 import com.shapeide.rasadesa.presenter.search.navigator.SearchNavigator
+import com.shapeide.rasadesa.presenter.search.state.SearchScreenState
 import com.shapeide.rasadesa.presenter.search.viewmodel.SearchViewModel
 import com.shapeide.rasadesa.ui.theme.Dimens
 import com.shapeide.rasadesa.ui.widget.CustomTabMenu
 import com.shapeide.rasadesa.ui.widget.shimmerBrush
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,27 +82,23 @@ fun SearchScreen(
     var tabIndex by remember {
         mutableIntStateOf(0)
     }
-
-    LaunchedEffect(query) {
+    var searchErrorState by remember {
+        mutableStateOf(SearchScreenState.SearchError())
+    }
+    val searchDataSearch by viewModel.searchDataState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
         viewModel.parseQuery(query)
+        viewModel.navigation.collectLatest {
+            navigatorCallback(it)
+        }
+        viewModel.searchErrorState.collectLatest {
+            searchErrorState = it
+        }
     }
-
-    val navigatorState by viewModel.navigation.collectAsStateWithLifecycle(initialValue = null)
-    LaunchedEffect(navigatorState) {
-        navigatorState?.let { navigatorCallback(it) }
-    }
-
     val searchQueryState by viewModel.queryState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(searchQueryState) {
+    LaunchedEffect(searchQueryState){
         tabIndex = searchQueryState.ordinal
     }
-
-    val searchDataSearch by viewModel.searchDataState.collectAsStateWithLifecycle()
-
-    val searchErrorState by viewModel.searchErrorState.collectAsStateWithLifecycle(
-        initialValue = null
-    )
 
     Column {
         LazyColumn {

@@ -40,10 +40,12 @@ import com.shapeide.rasadesa.presenter.home.navigator.HomeNavigator
 import com.shapeide.rasadesa.presenter.home.viewmodel.HomeViewModel
 import com.shapeide.rasadesa.presenter.search.navigator.SearchNavigator
 import com.shapeide.rasadesa.ui.home.categories.HomeCategory
+import com.shapeide.rasadesa.ui.home.categories.HomeCategoryMenu
 import com.shapeide.rasadesa.ui.home.list.HomeList
 import com.shapeide.rasadesa.ui.navigation.AboutDestination
 import com.shapeide.rasadesa.ui.theme.Dimens
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -55,10 +57,6 @@ fun HomeScreen(
 ) {
     var loadingIndicator by remember { mutableStateOf(true) }
     val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(true) {
-        viewModel.getRecipesByMealType()
-    }
 
     val recipeState by viewModel.recipeState.collectAsStateWithLifecycle()
     LaunchedEffect(recipeState.status) {
@@ -81,9 +79,11 @@ fun HomeScreen(
         }
     }
 
-    val navigator by viewModel.navigation.collectAsStateWithLifecycle(initialValue = null)
-    LaunchedEffect(navigator) {
-        navigator?.let { nav -> navigatorCallback(nav) }
+    LaunchedEffect(Unit) {
+        viewModel.getRecipesByMealType()
+        viewModel.navigation.collectLatest {
+            navigatorCallback(it)
+        }
     }
 
     LazyColumn(modifier = Modifier.padding(horizontal = Dimens.large)) {
@@ -145,12 +145,16 @@ fun HomeScreen(
             ) {
                 coroutineScope.launch {
                     viewModel.navigateTo(
-                        HomeNavigator.NavigateToSearchScreen(
-                            Pair(
-                                SearchNavigator.SEARCH_PARAM_ARGS_QUERY,
-                                it.title
+                        if (it == HomeCategoryMenu.FAVORITE) {
+                            HomeNavigator.NavigateToFavoriteScreen
+                        } else {
+                            HomeNavigator.NavigateToSearchScreen(
+                                Pair(
+                                    SearchNavigator.SEARCH_PARAM_ARGS_QUERY,
+                                    it.title
+                                )
                             )
-                        )
+                        }
                     )
                 }
             }

@@ -3,7 +3,9 @@ package com.shapeide.rasadesa.presenter.detail.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shapeide.rasadesa.core.interactors.get_recipe_by_id.GetRecipeDetailByIdInteractor
+import com.shapeide.rasadesa.core.interactors.get_recipe_favorite_by_id.GetRecipeFavoriteByIdInteractor
 import com.shapeide.rasadesa.core.interactors.get_recipes_with_params.GetRecipesWithParamsInteractor
+import com.shapeide.rasadesa.core.interactors.set_recipe_favorite.SetRecipeFavoriteInteractor
 import com.shapeide.rasadesa.domain.domain.Ingredients
 import com.shapeide.rasadesa.domain.domain.MealType
 import com.shapeide.rasadesa.domain.domain.Nutrients
@@ -22,7 +24,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -39,8 +43,11 @@ import kotlin.reflect.full.primaryConstructor
 class DetailViewModel @Inject constructor(
     val getRecipeDetailById: GetRecipeDetailByIdInteractor,
     val getRecipesWithParams: GetRecipesWithParamsInteractor,
+    val getRecipeFavoriteById: GetRecipeFavoriteByIdInteractor,
+    val setRecipeFavorite: SetRecipeFavoriteInteractor,
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
+    private var recipeIdKey: String = "initial"
     val nutrientKeyList: List<String> by lazy { extractKeyList() }
 
     private val _navigatorDetail: MutableSharedFlow<DetailNavigator> =
@@ -54,24 +61,30 @@ class DetailViewModel @Inject constructor(
     private val _recipesOtherState: MutableStateFlow<RecipeListDataState> =
         MutableStateFlow(RecipeListDataState(isLoading = true))
 
-    val detailScreenState: SharedFlow<DetailScreenState> get() =
+    private var isRecipeFavorite: Boolean = false
+    private val _favoriteStatus: MutableStateFlow<Boolean> = MutableStateFlow(isRecipeFavorite)
+    val favoriteStatus: StateFlow<Boolean> = _favoriteStatus.asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), isRecipeFavorite)
+
+    val detailScreenState: StateFlow<DetailScreenState> get() =
         _recipeState
-            .asSharedFlow()
+            .asStateFlow()
             .map { it.toState() }
             .flowOn(dispatcherProvider.main)
             .combine(_recipesOtherState){ state, recipe ->
                 state.moreRecipes = recipe.recipeList
                 state
             }
-            .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), DetailScreenState())
 
-    private val _tabState: MutableSharedFlow<DetailTabState> =
-        MutableSharedFlow()
+    private val _tabState: MutableStateFlow<DetailTabState> =
+        MutableStateFlow(DetailTabState())
 
-    val tabState: SharedFlow<DetailTabState> = _tabState.asSharedFlow()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+    val tabState: StateFlow<DetailTabState> = _tabState.asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), DetailTabState())
 
     fun getDetail(id: String?) {
+        recipeIdKey = id.toString()
         viewModelScope.launch(dispatcherProvider.main) {
             getRecipeDetailById(id ?: "null")
                 .flowOn(dispatcherProvider.main)
@@ -88,7 +101,7 @@ class DetailViewModel @Inject constructor(
 
             launch(dispatcherProvider.main) {
                 getRecipesWithParams(MealType.Breakfast)
-                    .flowOn(dispatcherProvider.io)
+                    .flowOn(dispatcherProvider.main)
                     .map { data ->
                         extractDataState(
                             data,
@@ -134,10 +147,20 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    //  Not implemented yet
-    fun addToFavorite(
+    fun getFavoriteStatus(){
+        viewModelScope.launch(dispatcherProvider.main) {
+            val isFavorite = getRecipeFavoriteById(recipeIdKey)
+            Timber.i("GetFavoriteStatus: Favorite Recipe Status: $isFavorite")
+            isRecipeFavorite = isFavorite
+            _favoriteStatus.emit(isFavorite)
+        }
+    }
 
-    ){
-
+    fun addToFavorite(){
+        viewModelScope.launch(dispatcherProvider.main) {
+            val recipe = setRecipeFavorite(recipeIdKey, !isRecipeFavorite)
+            Timber.i("AddToFavorite: Favorite Recipe Status: $recipe")
+            getFavoriteStatus()
+        }
     }
 }

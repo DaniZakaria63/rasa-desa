@@ -2,6 +2,7 @@ package com.shapeide.rasadesa.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fastfood
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
@@ -27,6 +28,13 @@ object AboutDestination : BaseDestination {
         get() = Icons.Filled.Info
     override val route: String
         get() = NavTarget.About.label
+}
+
+object FavoriteDestination : BaseDestination {
+    override val icon: ImageVector
+        get() = Icons.Filled.Favorite
+    override val route: String
+        get() = NavTarget.Favorite.label
 }
 
 object SearchDestination : BaseDestination {

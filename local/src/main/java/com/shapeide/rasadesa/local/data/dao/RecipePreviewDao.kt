@@ -18,4 +18,13 @@ interface RecipePreviewDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(data: List<RecipePreviewEntity>)
+
+    @Query("SELECT * FROM tbl_recipe_preview WHERE is_favorite=1")
+    fun findAllByFavorite(): Flow<List<RecipePreviewEntity>>
+
+    @Query("UPDATE tbl_recipe_preview SET is_favorite=:favorite WHERE _id = :recipeId")
+    fun updateFavorite(recipeId:String, favorite: Boolean)
+
+    @Query("SELECT is_favorite FROM tbl_recipe_preview WHERE _id = :recipeId")
+    fun collectFavorite(recipeId:String): Boolean
 }

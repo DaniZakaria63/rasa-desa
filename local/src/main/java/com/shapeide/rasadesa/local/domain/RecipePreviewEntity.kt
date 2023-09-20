@@ -14,5 +14,6 @@ data class RecipePreviewEntity(
     @ColumnInfo("meal_type") var mealType: String? = null,
     @ColumnInfo("calories") var calories: Double? = null,
     @ColumnInfo("total_time") var totalTime: Int? = null,
+    @ColumnInfo("is_favorite") var isFavorite: Boolean? = false,
     @ColumnInfo("diets") var diets: List<String> = listOf(),
 )

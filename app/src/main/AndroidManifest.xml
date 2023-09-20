@@ -14,13 +14,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:enableOnBackInvokedCallback="true"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
 
 <!--
         Search activity using default content provider
-        the query listener are fine, it worked
+        the query listener are fine, it works
         the problem start happened after calling retrofit
         so, the search will revert back to home fragment
         <activity

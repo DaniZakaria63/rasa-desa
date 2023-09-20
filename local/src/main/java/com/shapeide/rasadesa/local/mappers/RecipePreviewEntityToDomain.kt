@@ -13,11 +13,12 @@ fun List<RecipePreviewEntity>.asDomainModel(): List<RecipePreview> {
             it.mealType,
             it.calories,
             it.totalTime,
+            it.isFavorite,
             it.diets
         )
     }
 }
 
 fun RecipePreviewEntity.asDomainModel(): RecipePreview {
-    return RecipePreview(_id, uri, label, image, mealType, calories, totalTime, diets)
+    return RecipePreview(_id, uri, label, image, mealType, calories, totalTime, isFavorite, diets)
 }

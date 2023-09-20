@@ -8,11 +8,14 @@ import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.remote.data.source.NetworkRequest
 import com.shapeide.rasadesa.local.data.source.RecipeDataStore
 import com.shapeide.rasadesa.remote.domain.RecipeModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DefaultRecipeRepository @Inject constructor(
@@ -46,6 +49,30 @@ class DefaultRecipeRepository @Inject constructor(
             .map { value: Recipe ->
                 Result.success(value)
             }.catch { emit(Result.failure(it)) }
+            .flowOn(dispatcherProvider.io)
+    }
+
+    override suspend fun setCachingRecipeList(recipeList: List<RecipePreview>){
+        coroutineScope {
+            launch(dispatcherProvider.io) {
+                recipeDataStore.setAllRecipes(recipeList)
+            }
+        }
+    }
+
+    override suspend fun getRecipeFavoriteById(recipeId: String): Boolean =
+        withContext(dispatcherProvider.io) {
+            recipeDataStore.getRecipeFavoriteById(recipeId)
+        }
+    override suspend fun setRecipeFavorite(recipeId: String, isFavorite: Boolean): Boolean =
+        withContext(dispatcherProvider.io) {
+            recipeDataStore.setRecipesFavoriteItem(recipeId, isFavorite)
+        }
+
+    override suspend fun getRecipeFavorite(): Flow<Result<List<RecipePreview>>> {
+        return recipeDataStore.getRecipesFavorite()
+            .map { Result.success(it) }
+            .catch { emit(Result.failure(it)) }
             .flowOn(dispatcherProvider.io)
     }
 }

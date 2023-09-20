@@ -19,10 +19,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.shapeide.rasadesa.presenter.detail.navigator.DetailNavigator
+import com.shapeide.rasadesa.presenter.favorite.navigator.FavoriteNavigator
 import com.shapeide.rasadesa.presenter.home.navigator.HomeNavigator
 import com.shapeide.rasadesa.presenter.search.navigator.SearchNavigator
 import com.shapeide.rasadesa.ui.about.AboutScreen
 import com.shapeide.rasadesa.ui.detail.DetailScreen
+import com.shapeide.rasadesa.ui.favorite.FavoriteScreen
 import com.shapeide.rasadesa.ui.home.HomeScreen
 import com.shapeide.rasadesa.ui.search.SearchScreen
 import timber.log.Timber
@@ -67,6 +69,10 @@ fun RasaNavHost(
                         navController.navigateSingleTopTo(AboutDestination.route)
                     }
 
+                    is HomeNavigator.NavigateToFavoriteScreen -> {
+                        navController.navigateSingleTopTo(FavoriteDestination.route)
+                    }
+
                     else -> {
                         Timber.e(IllegalAccessException("What??? How???"))
                     }
@@ -77,6 +83,20 @@ fun RasaNavHost(
             route = AboutDestination.route,
         ) {
             AboutScreen()
+        }
+        composable(
+            route = FavoriteDestination.route,
+        ) {
+            FavoriteScreen {
+                when (it) {
+                    is FavoriteNavigator.NavigateToDetailScreen -> navController.navigateToDetail(it.detailId)
+                    is FavoriteNavigator.NavigateToHomeScreen -> navController.navigateSingleTopTo(
+                        HomeDestination.route
+                    )
+
+                    else -> Timber.e(IllegalAccessException("How???"))
+                }
+            }
         }
         composable(
             route = SearchDestination.routeWithArgs,

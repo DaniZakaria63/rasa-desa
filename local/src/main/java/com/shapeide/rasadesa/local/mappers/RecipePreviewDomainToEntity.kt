@@ -14,6 +14,7 @@ fun List<RecipePreview>.toDatabaseModel(): List<RecipePreviewEntity> {
             it.mealType,
             it.calories,
             it.totalTime,
+            it.isFavorite,
             it.dietLabels
         )
     }
