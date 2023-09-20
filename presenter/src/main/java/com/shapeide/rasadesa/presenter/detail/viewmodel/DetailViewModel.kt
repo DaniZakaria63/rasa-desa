@@ -48,12 +48,12 @@ class DetailViewModel @Inject constructor(
     val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
     private var recipeIdKey: String = "initial"
-    val nutrientKeyList: List<String> by lazy { extractKeyList() }
 
     private val _navigatorDetail: MutableSharedFlow<DetailNavigator> =
         MutableSharedFlow()
-    val navigatorDetail get() = _navigatorDetail.asSharedFlow()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+    val navigatorDetail
+        get() = _navigatorDetail.asSharedFlow()
+            .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val _recipeState: MutableStateFlow<RecipeDataState> =
         MutableStateFlow(RecipeDataState(isLoading = true))
@@ -66,15 +66,12 @@ class DetailViewModel @Inject constructor(
     val favoriteStatus: StateFlow<Boolean> = _favoriteStatus.asStateFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), isRecipeFavorite)
 
-    val detailScreenState: StateFlow<DetailScreenState> get() =
-        _recipeState
-            .asStateFlow()
-            .map { it.toState() }
-            .flowOn(dispatcherProvider.main)
-            .combine(_recipesOtherState){ state, recipe ->
-                state.moreRecipes = recipe.recipeList
-                state
-            }
+    val detailScreenState: StateFlow<DetailScreenState> =
+        combine(_recipeState, _recipesOtherState) { state, other ->
+            val newState = state.toState()
+            newState.moreRecipes = other.recipeList
+            newState
+        }.flowOn(dispatcherProvider.io)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), DetailScreenState())
 
     private val _tabState: MutableStateFlow<DetailTabState> =
@@ -107,7 +104,7 @@ class DetailViewModel @Inject constructor(
                             data,
                             { RecipeListDataState(recipeList = data.getOrNull()) },
                             { RecipeListDataState(isError = true) },
-                            { RecipeListDataState(isLoading = true)}
+                            { RecipeListDataState(isLoading = true) }
                         ) as RecipeListDataState
                     }
                     .collect {
@@ -117,37 +114,19 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun extractKeyList(): List<String>{
-        return Nutrients::class.primaryConstructor!!.parameters.map { it.name?:"-" }
-    }
-
-    fun extractValueList(nutrients: Nutrients): List<NutrientsSub>{
-        val list :MutableList<NutrientsSub> = mutableListOf()
-        try {
-            nutrientKeyList.forEach { nutrient ->
-                val value = nutrients::class.memberProperties.first { it.name == nutrient }
-                list.add(value.getter.call(nutrients) as NutrientsSub)
-            }
-        }catch(e: Exception){
-            Timber.d("Error Nutrient Key List: $nutrientKeyList => $nutrients")
-            Timber.e(e)
-        }
-        return list
-    }
-
-    fun updateTabPosition(state: DetailTab){
+    fun updateTabPosition(state: DetailTab) {
         viewModelScope.launch(dispatcherProvider.main) {
             _tabState.emit(DetailTabState(tabActiveState = state))
         }
     }
 
-    fun navigateTo(navigator: DetailNavigator){
+    fun navigateTo(navigator: DetailNavigator) {
         viewModelScope.launch(dispatcherProvider.main) {
             _navigatorDetail.emit(navigator)
         }
     }
 
-    fun getFavoriteStatus(){
+    fun getFavoriteStatus() {
         viewModelScope.launch(dispatcherProvider.main) {
             val isFavorite = getRecipeFavoriteById(recipeIdKey)
             Timber.i("GetFavoriteStatus: Favorite Recipe Status: $isFavorite")
@@ -156,7 +135,7 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun addToFavorite(){
+    fun addToFavorite() {
         viewModelScope.launch(dispatcherProvider.main) {
             val recipe = setRecipeFavorite(recipeIdKey, !isRecipeFavorite)
             Timber.i("AddToFavorite: Favorite Recipe Status: $recipe")

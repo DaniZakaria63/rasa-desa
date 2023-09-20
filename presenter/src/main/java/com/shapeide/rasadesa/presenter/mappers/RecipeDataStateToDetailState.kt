@@ -1,5 +1,6 @@
 package com.shapeide.rasadesa.presenter.mappers
 
+import com.shapeide.rasadesa.domain.domain.Nutrients
 import com.shapeide.rasadesa.presenter.base.RecipeDataState
 import com.shapeide.rasadesa.presenter.detail.state.DetailScreenState
 
@@ -22,7 +23,7 @@ fun RecipeDataState.toState(): DetailScreenState = DetailScreenState(
         healthLabels = recipe?.healthLabels
     ),
     ingredients = recipe?.ingredients,
-    nutrients = recipe?.totalNutrients,
+    nutrients = extractValueList(recipe?.totalNutrients?: Nutrients()),
     dailyNutrients = recipe?.totalDaily,
     digest = recipe?.digest,
 )

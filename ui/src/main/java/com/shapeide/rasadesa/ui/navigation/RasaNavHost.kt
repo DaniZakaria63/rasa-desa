@@ -37,7 +37,7 @@ fun RasaNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AboutDestination.route,
+        startDestination = HomeDestination.route,
         modifier = modifier,
         enterTransition = {
             slideIntoContainer(

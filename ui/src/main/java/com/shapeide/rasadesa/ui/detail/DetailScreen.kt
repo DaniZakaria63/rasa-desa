@@ -99,11 +99,13 @@ fun DetailScreen(
     val detailScreenState: DetailScreenState by viewModel.detailScreenState.collectAsStateWithLifecycle()
 
     val favoriteStatus by viewModel.favoriteStatus.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) {
+    LaunchedEffect(recipe_id) {
         listScrollState.animateScrollToItem(index = 0)
         viewModel.getDetail(recipe_id)
         viewModel.getFavoriteStatus()
+    }
 
+    LaunchedEffect(Unit){
         viewModel.navigatorDetail.collectLatest {
             navigatorCallback(it)
         }

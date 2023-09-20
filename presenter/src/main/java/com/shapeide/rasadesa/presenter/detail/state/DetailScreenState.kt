@@ -4,6 +4,7 @@ import com.shapeide.rasadesa.domain.domain.Digest
 import com.shapeide.rasadesa.domain.domain.Ingredients
 import com.shapeide.rasadesa.domain.domain.Nutrients
 import com.shapeide.rasadesa.domain.domain.NutrientsDaily
+import com.shapeide.rasadesa.domain.domain.NutrientsSub
 import com.shapeide.rasadesa.domain.domain.RecipePreview
 import com.shapeide.rasadesa.presenter.base.RecipeDataState
 import com.shapeide.rasadesa.presenter.domain.DetailTab
@@ -12,7 +13,7 @@ data class DetailScreenState(
     val header: Header = Header(),
     val others: Others = Others(),
     val ingredients: List<Ingredients>? = listOf<Ingredients>(),
-    val nutrients: Nutrients? = Nutrients(),
+    val nutrients: List<NutrientsSub>? = listOf(),
     val dailyNutrients: NutrientsDaily? = NutrientsDaily(),
     val digest: List<Digest>? = listOf(),
     var moreRecipes: List<RecipePreview>? = listOf(),
@@ -34,4 +35,6 @@ data class DetailScreenState(
         val mealType: List<String>? = listOf(),
         val healthLabels: List<String>? = listOf()
     )
+
+
 }
