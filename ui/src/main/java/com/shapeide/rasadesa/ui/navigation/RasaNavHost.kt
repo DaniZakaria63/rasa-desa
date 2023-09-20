@@ -37,7 +37,7 @@ fun RasaNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeDestination.route,
+        startDestination = AboutDestination.route,
         modifier = modifier,
         enterTransition = {
             slideIntoContainer(
@@ -82,7 +82,9 @@ fun RasaNavHost(
         composable(
             route = AboutDestination.route,
         ) {
-            AboutScreen()
+            AboutScreen{
+                navController.popBackStack()
+            }
         }
         composable(
             route = FavoriteDestination.route,
